@@ -23,8 +23,6 @@ const getWeight = (weight: TextFontWeightType) => {
       return "font-AirbnbCerealMedium"
     case 'bold':
       return "font-AirbnbCerealBold"
-    default:
-      return "font-AirbnbCerealMedium"
   }
 }
 
@@ -41,6 +39,8 @@ const Text: React.FC<IText> = ({ text, type, weight, color }) => {
       return <h4 className={`text-fs30 ${getWeight(weight)} ${color}`}>{text}</h4>
     case 'h5':
       return <h5 className={`text-fs24 ${getWeight(weight)} ${color}`}>{text}</h5>
+    case 'label':
+      return <label className={`text-fs14 ${getWeight(weight)} ${color}`}>{text}</label>
     default:
       return <p className={`${getSize(type)} ${getWeight(weight)} ${color}`}>{text}</p>
   }

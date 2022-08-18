@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./pages/**/*.{js,jsx,ts,tsx}",
@@ -15,9 +16,9 @@ module.exports = {
     fontFamily: {
       sans: ["Arial", "sans-serif"],
       serif: ["Garamond", "serif"],
-      AirbnbCerealBold: ["AirbnbCerealBold"],
-      AirbnbCerealMedium: ["AirbnbCerealMedium"],
       AirbnbCerealLight: ["AirbnbCerealLight"],
+      AirbnbCerealMedium: ["AirbnbCerealMedium"],
+      AirbnbCerealBold: ["AirbnbCerealBold"],
     },
     fontSize: {
       fs10: [

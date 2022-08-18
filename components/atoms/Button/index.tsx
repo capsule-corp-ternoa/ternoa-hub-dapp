@@ -16,7 +16,7 @@ const getButtonSize = (size: TButtonSize) => {
 const getButtonType = (type: TButtonType, disabled: boolean) => {
   switch (type) {
     case 'primary':
-      return !disabled ? 'bg-gray-800 hover:bg-gray-900 hover:shadow-xl focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-500 active:shadow-lg transition duration-150 ease-in-out' : 'bg-slate-400'
+      return !disabled ? 'bg-gray-800 hover:bg-gray-900 hover:shadow-xl focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-500 active:shadow-lg transition duration-150 ease-in-out' : 'bg-gray-200'
     case 'secondary':
       return 'bg-white-default border-2 border-gray-800 hover:bg-gray-100 hover:border-gray-900 hover:shadow-xl focus:shadow-lg focus:outline-none focus:ring-0 active:border-gray-100 active:shadow-lg transition duration-150 ease-in-out'
     case 'danger':
@@ -24,13 +24,13 @@ const getButtonType = (type: TButtonType, disabled: boolean) => {
   }
 }
 
-const getTextProps = (type: TButtonType, size: TButtonSize, text: string): IText => {
+const getTextProps = (type: TButtonType, size: TButtonSize, text: string, disabled: boolean): IText => {
 
   const textType = size === 'large' ? 'p1' : 'p3'
 
   switch (type) {
     case 'primary':
-      return { text, type: textType, weight: 'medium', color: 'text-white-default' }
+      return { text, type: textType, weight: 'medium', color: disabled ? 'text-gray-400' : 'text-white-default' }
     case 'secondary':
       return { text, type: textType, weight: 'medium', color: 'text-gray-800' }
     case 'danger':
@@ -43,9 +43,9 @@ const Card: React.FC<IButton> = ({ text, size, type, disabled = false }) => {
     <button
       type="button"
       disabled
-      className={`inline-block ${getButtonSize(size)} ${getButtonType(type, disabled)} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor: pointer`}
+      className={`inline-block ${getButtonSize(size)} ${getButtonType(type, disabled)} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer`}
     >
-      <Text {...getTextProps(type, size, text)} />
+      <Text {...getTextProps(type, size, text, disabled)} />
     </button>
   )
 }
