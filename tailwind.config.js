@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
+const withMT = require("@material-tailwind/react/utils/withMT");
 
-module.exports = {
+module.exports = withMT({
   content: [
     "./pages/**/*.{js,jsx,ts,tsx}",
     "./components/**/*.{js,jsx,ts,tsx}",
@@ -100,38 +102,41 @@ module.exports = {
       extrabold: 800,
       black: 900,
     },
-    spacing: {
-      s1: "1px",
-      s2: "2px",
-      s4: "4px",
-      s8: "8px",
-      s16: "16px",
-      s20: "20px",
-      s24: "24px",
-      s28: "28px",
-      s32: "32px",
-      s40: "40px",
-      s48: "48px",
-      s56: "56px",
-      s64: "64px",
-      s136: "136px",
-      s144: "144px",
-      s176: "176px",
-      s184: "184px",
-      s240: "240px",
-    },
     minWidth: {
-      '144': '144px',
-      '184': '184px',
-      '240': '240px',
+      144: "144px",
+      184: "184px",
+      240: "240px",
     },
     extend: {
+      spacing: {
+        s1: "1px",
+        s2: "2px",
+        s4: "4px",
+        s8: "8px",
+        s16: "16px",
+        s20: "20px",
+        s24: "24px",
+        s28: "28px",
+        s32: "32px",
+        s40: "40px",
+        s48: "48px",
+        s56: "56px",
+        s64: "64px",
+        s136: "136px",
+        s144: "144px",
+        s176: "176px",
+        s184: "184px",
+        s240: "240px",
+      },
       colors: {
-        white: {
+        black: {
           default: "#000000",
         },
         white: {
           default: "#FFFFFF",
+        },
+        blue: {
+          default: "#2454FF",
         },
         gray: {
           50: "#F8FAFC",
@@ -170,4 +175,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+});

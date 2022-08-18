@@ -17,6 +17,7 @@
     }
   },
   "dependencies": {
+    "@material-tailwind/react": "^1.2.3",
     "@polkadot/react-identicon": "^2.9.5",
     "clsx": "^1.2.1",
     "next": "12.2.4",
