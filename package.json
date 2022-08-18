@@ -17,7 +17,10 @@
     }
   },
   "dependencies": {
+    "@polkadot/react-identicon": "^2.9.5",
+    "clsx": "^1.2.1",
     "next": "12.2.4",
+    "phosphor-react": "^1.4.1",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^7.7.2",
     "react": "18.2.0",
