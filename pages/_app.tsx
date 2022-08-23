@@ -1,13 +1,13 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import { ThemeProvider } from "@material-tailwind/react";
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { WalletConnectClientContextProvider } from "../contexts/WalletConnectClientContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider>
+    <WalletConnectClientContextProvider>
       <Component {...pageProps} />
-    </ThemeProvider>
-  )
+    </WalletConnectClientContextProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;
