@@ -18,19 +18,22 @@
   },
   "dependencies": {
     "@polkadot/react-identicon": "^2.9.5",
-    "clsx": "^1.2.1",
     "@walletconnect/core": "2.0.0-beta.100",
     "@walletconnect/legacy-modal": "2.0.0-beta.100",
     "@walletconnect/sign-client": "2.0.0-beta.100",
     "@walletconnect/types": "2.0.0-beta.100",
     "@walletconnect/utils": "2.0.0-beta.100",
     "better-sqlite3": "^7.6.2",
+    "@reduxjs/toolkit": "^1.8.5",
+    "clsx": "^1.2.1",
     "next": "12.2.4",
     "phosphor-react": "^1.4.1",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^7.7.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
     "util": "^0.12.4"
   },
   "overrides": {
