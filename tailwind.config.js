@@ -121,13 +121,14 @@ module.exports = {
       s240: "240px",
     },
     minWidth: {
-      '144': '144px',
-      '184': '184px',
-      '240': '240px',
+      144: "144px",
+      184: "184px",
+      240: "240px",
     },
     extend: {
+      display: ["group-hover"],
       colors: {
-        white: {
+        black: {
           default: "#000000",
         },
         white: {
@@ -165,6 +166,9 @@ module.exports = {
           300: "#FCA5A5",
           400: "#F87171",
           500: "#EF4444",
+        },
+        blue: {
+          default: "#2454FF",
         },
       },
     },

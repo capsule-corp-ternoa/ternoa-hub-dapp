@@ -1,5 +1,6 @@
 import * as NextImage from "next/image";
 import '../styles/globals.css';
+import "../components/atoms/Switch/styles.css";
 
 const BREAKPOINT_INT = {
   xs: 375,

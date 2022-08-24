@@ -5,11 +5,11 @@ import { IText } from "../Text/types"
 const getButtonSize = (size: TButtonSize) => {
   switch (size) {
     case 'large':
-      return ' min-w-240 h-s56'
+      return 'md:min-w-240 lg:min-w-240 xl:min-w-240 h-s56'
     case 'medium':
-      return 'min-w-s184 h-s48'
+      return 'md:min-w-184 lg:min-w-184 xl:min-w-184 h-s48'
     case 'small':
-      return 'min-w-s144 h-s40'
+      return 'md:min-w-144 lg:min-w-144 xl:min-w-144 h-s40'
   }
 }
 
@@ -43,7 +43,7 @@ const Card: React.FC<IButton> = ({ text, size, type, disabled = false }) => {
     <button
       type="button"
       disabled
-      className={`inline-block ${getButtonSize(size)} ${getButtonType(type, disabled)} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer`}
+      className={`inline-block xs:min-w-[100%] sm:min-w-[100%] ${getButtonSize(size)} ${getButtonType(type, disabled)} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer`}
     >
       <Text {...getTextProps(type, size, text, disabled)} />
     </button>
