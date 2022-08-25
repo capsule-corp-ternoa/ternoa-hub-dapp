@@ -16,3 +16,13 @@
   font-family: "AirbnbCerealLight";
   src: url("./fonts/AirbnbCerealLight.woff");
 }
+
+input {
+  outline: none; 
+  -webkit-appearance: none;
+}
+
+input:focus {
+  outline: none; 
+  -webkit-appearance: none;
+}
