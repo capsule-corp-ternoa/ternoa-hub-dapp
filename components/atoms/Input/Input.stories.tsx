@@ -6,9 +6,13 @@ import Icon from "../Icon";
 import { mockInputProps } from "./Input.mocks";
 import { IInput } from "./types";
 
+export const BaseInput: React.FC<IInput> = (props) => (
+  <Input {...props} ref={undefined} />
+);
+
 export default {
-  title: "templates/Input",
-  component: Input,
+  title: "atoms/Input",
+  component: BaseInput,
   argTypes: {
     type: { table: { disable: true } },
     required: {
@@ -22,9 +26,9 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof Input>;
+} as ComponentMeta<typeof BaseInput>;
 
-const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />;
+const Template: ComponentStory<typeof BaseInput> = (args) => <BaseInput {...args} />;
 
 export const Primary = Template.bind({});
 export const Error = Template.bind({});

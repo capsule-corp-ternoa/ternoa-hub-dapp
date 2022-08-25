@@ -1,4 +1,5 @@
-export type IconSizeType = 16 | 24 | 32;
+export type IconSizeType = 16 | 20 | 24 | 32 | 64 | 128;
+import { IconWeight } from "phosphor-react";
 
 export type IconNamesType =
   | "CaretLeft"
@@ -22,10 +23,20 @@ export type IconNamesType =
   | "Share"
   | "Heart"
   | "Info"
-  | "Warning";
+  | "Warning"
+  | "File"
+  | "FileSearch"
+  | "ArrowFatLineDown"
+  | "DeviceMobile"
+  | "CheckCircle"
+  | "X"
+  | "TwitterLogo"
+  | "Percent";
 
 export interface IIcon {
   name: IconNamesType;
   size: IconSizeType;
   color?: string;
+  className?: string;
+  weight?: IconWeight;
 }

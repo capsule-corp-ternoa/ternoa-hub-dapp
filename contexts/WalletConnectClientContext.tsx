@@ -11,17 +11,14 @@ import { isMobile as checkIsMobile } from "@walletconnect/legacy-utils";
 import { ERROR } from "@walletconnect/utils";
 import { IContext } from "./types";
 import { PairingTypes, SessionTypes } from "@walletconnect/types";
+import WalletConnectModal from "../components/organisms/modals/WalletConnectModal";
 
 const DEFAULT_APP_METADATA = {
-  name: "SufinTiimy collection",
-  description: "SufinTiimy collection",
+  name: "TernoArt",
+  description: "TernoArt dApp",
   url: "https://ternoa.com",
   icons: ["https://www.ternoa.com/favicon.ico"],
 };
-
-const TERNOA_CHAIN = "ternoa:6859c81ca95ef624c9dfe4dc6e3381c3";
-
-const PROJECT_ID = "31eb5f43f429f30946cda1c9396997fd";
 
 export const WalletConnectClientContext = createContext<IContext>(
   {} as IContext
@@ -38,6 +35,8 @@ export const WalletConnectClientContextProvider = ({
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
   const [account, setAccount] = useState<string>();
+  const [walletConnectModalUri, setWalletConnectModalUri] =
+    useState<string | undefined>(undefined);
   const isMobile = checkIsMobile();
 
   const isConnected = !!session;
@@ -67,7 +66,7 @@ export const WalletConnectClientContextProvider = ({
         setIsConnecting(true);
         const requiredNamespaces = {
           ternoa: {
-            chains: [TERNOA_CHAIN],
+            chains: [process.env.NEXT_PUBLIC_TERNOA_CHAIN!],
             events: ["polkadot_event_test"],
             methods: ["sign_message"],
           },
@@ -78,9 +77,8 @@ export const WalletConnectClientContextProvider = ({
         });
         if (uri) {
           if (!isMobile) {
-            QRCodeModal.open(uri, () => {
-              setIsConnecting(false);
-            });
+            console.log("URI:", uri);
+            setWalletConnectModalUri(uri);
           } else {
             window.location.replace(`ternoa-wallet://wc?uri=${uri}`);
           }
@@ -88,13 +86,15 @@ export const WalletConnectClientContextProvider = ({
         const session = await approval();
         console.log("Established session:", session);
         onSessionConnected(session);
+        return session;
       } catch (e) {
         console.error(e);
+        return null;
         // ignore rejection
       } finally {
         setIsConnecting(false);
         if (!isMobile) {
-          QRCodeModal.close();
+          setWalletConnectModalUri(undefined);
         }
       }
     },
@@ -166,7 +166,7 @@ export const WalletConnectClientContextProvider = ({
       const _client = await Client.init({
         logger: "debug",
         relayUrl: "wss://wallet-connectrelay.ternoa.network/",
-        projectId: PROJECT_ID,
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
         metadata: DEFAULT_APP_METADATA,
       });
       console.log("CREATED CLIENT: ", _client);
@@ -179,6 +179,29 @@ export const WalletConnectClientContextProvider = ({
       setIsInitializing(false);
     }
   }, [checkPersistedState, subscribeToEvents]);
+
+  const request = async (hash: string) => {
+    if (client) {
+      return client.request<string>({
+        chainId: process.env.NEXT_PUBLIC_TERNOA_CHAIN!,
+        topic: session!.topic,
+        request: {
+          method: "sign_message",
+          params: {
+            pubKey: account,
+            request: {
+              nonce: 1,
+              validity: null,
+              submit: true,
+              hash,
+            },
+          },
+        },
+      });
+    } else {
+      throw new Error("Client not available");
+    }
+  };
 
   useEffect(() => {
     if (!client) {
@@ -198,8 +221,17 @@ export const WalletConnectClientContextProvider = ({
         session,
         connect,
         disconnect,
+        request,
       }}
     >
+      <WalletConnectModal
+        isOpened={Boolean(walletConnectModalUri)}
+        onClose={() => {
+          setWalletConnectModalUri(undefined);
+          setIsConnecting(false);
+        }}
+        uri={walletConnectModalUri}
+      />
       {children}
     </WalletConnectClientContext.Provider>
   );

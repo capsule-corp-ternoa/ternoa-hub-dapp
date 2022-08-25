@@ -6,7 +6,7 @@ import { mockSwitchProps } from "./Switch.mocks";
 import { ISwitch } from "./types";
 
 export default {
-  title: "templates/Switch",
+  title: "atoms/Switch",
   component: Switch,
   argTypes: {
     type: { table: { disable: true } },

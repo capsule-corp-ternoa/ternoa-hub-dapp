@@ -6,7 +6,7 @@ import { mockButtonProps } from './Radio.mocks'
 import { IRadio } from './types';
 
 export default {
-  title: 'templates/Radio',
+  title: 'atoms/Radio',
   component: Radio,
   argTypes: {},
 } as ComponentMeta<typeof Radio>;

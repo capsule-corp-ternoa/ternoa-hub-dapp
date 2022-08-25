@@ -6,7 +6,7 @@ import { mockTextProps } from './Text.mocks'
 import { IText } from './types';
 
 export default {
-  title: 'templates/Text',
+  title: 'atoms/Text',
   component: Text,
   argTypes: {},
 } as ComponentMeta<typeof Text>;

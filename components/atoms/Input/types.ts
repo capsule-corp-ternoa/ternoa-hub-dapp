@@ -6,7 +6,7 @@ export interface IInput extends React.ComponentProps<"input"> {
   /**
    * Input type
    */
-  type: TInputType;
+  type?: TInputType;
   /**
    * Placeholder & label text
    */
@@ -71,4 +71,12 @@ export interface IInput extends React.ComponentProps<"input"> {
    * Label text
    */
   label?: string;
+  /**
+   * Error text
+   */
+  error?: string;
+  /**
+   * HTML Input type
+   */
+  inputType?: React.HTMLInputTypeAttribute;
 }

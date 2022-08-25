@@ -6,7 +6,7 @@ import { mockAvatarProps } from './Avatar.mocks'
 import { IAvatar } from './types';
 
 export default {
-  title: 'templates/Avatar',
+  title: 'atoms/Avatar',
   component: Avatar,
   argTypes: {},
 } as ComponentMeta<typeof Avatar>;

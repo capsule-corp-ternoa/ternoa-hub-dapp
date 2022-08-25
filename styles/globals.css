@@ -18,11 +18,34 @@
 }
 
 input {
-  outline: none; 
+  outline: none;
   -webkit-appearance: none;
 }
 
 input:focus {
-  outline: none; 
+  outline: none;
   -webkit-appearance: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+textarea {
+  outline: none;
+  -webkit-appearance: none;
+}
+
+textarea:focus {
+  outline: none;
+  -webkit-appearance: none;
+}
+
+body {
+  background-color: black;
 }

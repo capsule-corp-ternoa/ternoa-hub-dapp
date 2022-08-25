@@ -1,6 +1,8 @@
 import * as NextImage from "next/image";
-import '../styles/globals.css';
+import "../styles/globals.css";
 import "../components/atoms/Switch/styles.css";
+import "../components/atoms/LoaderEllipsis/styles.css";
+import "./styles.css";
 
 const BREAKPOINT_INT = {
   xs: 375,
@@ -27,10 +29,10 @@ const customViewports = Object.fromEntries(
 
 const OriginalNextImage = NextImage.default;
 
-Object.defineProperty(NextImage, 'default', {
+Object.defineProperty(NextImage, "default", {
   configurable: true,
-  value: (props) => <OriginalNextImage {...props} unoptimized />
-})
+  value: (props) => <OriginalNextImage {...props} unoptimized />,
+});
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -41,11 +43,24 @@ export const parameters = {
     },
   },
   grid: {
-    gridOn: true,
+    gridOn: false,
     columns: 12,
     gap: "20px",
     gutter: "50px",
     maxWidth: "1024px",
   },
-  viewport: { viewports: customViewports }
+  viewport: { viewports: customViewports },
+  backgrounds: {
+    default: "ternoart",
+    values: [
+      {
+        name: "ternoart",
+        value: "#F1F5F9",
+      },
+      {
+        name: "white",
+        value: "#FFFFFF",
+      },
+    ],
+  },
 };

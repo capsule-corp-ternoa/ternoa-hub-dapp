@@ -1,4 +1,4 @@
-export type TAvatarSize = 38 | 64 | 72 | 87;
+export type TAvatarSize = 25 | 38 | 64 | 72 | 87;
 
 export type TextFontWeightType =
   | "substrate"
