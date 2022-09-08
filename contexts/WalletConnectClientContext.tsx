@@ -34,6 +34,7 @@ export const WalletConnectClientContextProvider = ({
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
+  const [isDisconnecting, setIsDisconnecting] = useState<boolean>(false);
   const [account, setAccount] = useState<string>();
   const [walletConnectModalUri, setWalletConnectModalUri] =
     useState<string | undefined>(undefined);
@@ -109,12 +110,17 @@ export const WalletConnectClientContextProvider = ({
     if (typeof session === "undefined") {
       throw new Error("Session is not connected");
     }
-    await client.disconnect({
-      topic: session.topic,
-      reason: ERROR.USER_DISCONNECTED.format(),
-    });
-    // Reset app state after disconnect.
-    reset();
+    try {
+      setIsDisconnecting(true);
+      await client.disconnect({
+        topic: session.topic,
+        reason: ERROR.USER_DISCONNECTED.format(),
+      });
+      // Reset app state after disconnect.
+      reset();
+    } finally {
+      setIsDisconnecting(false);
+    }
   }, [client, session]);
 
   const subscribeToEvents = useCallback(
@@ -215,6 +221,7 @@ export const WalletConnectClientContextProvider = ({
         pairings,
         isInitializing,
         isConnecting,
+        isDisconnecting,
         isConnected,
         account,
         client,

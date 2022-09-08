@@ -31,7 +31,8 @@ export type IconNamesType =
   | "CheckCircle"
   | "X"
   | "TwitterLogo"
-  | "Percent";
+  | "Percent"
+  | "Power";
 
 export interface IIcon {
   name: IconNamesType;

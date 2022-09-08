@@ -15,8 +15,15 @@ export interface IBaseTemplate {
 }
 
 const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
-  const { connect, isInitializing, isConnected, isConnecting, account } =
-    useWalletConnectClient();
+  const {
+    connect,
+    isInitializing,
+    isConnected,
+    isConnecting,
+    account,
+    disconnect,
+    isDisconnecting,
+  } = useWalletConnectClient();
   const { balances, isLoadingBalances } = useSelector(
     (state: RootState) => state.blockchain
   );
@@ -71,6 +78,8 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
           isConnected={isConnected}
           onClickConnect={connect}
           isLoading={isConnecting || isInitializing}
+          onClickDisconnect={disconnect}
+          isDisconnecting={isDisconnecting}
         />
         {children}
         <Footer />

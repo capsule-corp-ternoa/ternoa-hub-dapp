@@ -9,6 +9,7 @@ export interface IContext {
   disconnect: () => Promise<void>;
   isInitializing: boolean;
   isConnecting: boolean;
+  isDisconnecting: boolean;
   isConnected: boolean;
   account?: string;
   request: (hash: string) => Promise<string>;

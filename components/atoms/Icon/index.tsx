@@ -280,6 +280,15 @@ const Icon: React.FC<IIcon> = ({
           className={className}
         />
       );
+    case "Power":
+      return (
+        <Phosphor.Power
+          size={size}
+          color={color}
+          weight={weight}
+          className={className}
+        />
+      );
     default:
       return (
         <Phosphor.Question

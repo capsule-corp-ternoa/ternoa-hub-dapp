@@ -5,6 +5,7 @@ const base: INavbar = {
   pubKey: "5HmxCDKUzwuNutMdeaNfNtAP5223NhHR8FsCZAT7kmrNb5cz",
   avatarTheme: "polkadot",
   onClickConnect: () => {},
+  onClickDisconnect: () => {},
   isConnected: true,
 };
 

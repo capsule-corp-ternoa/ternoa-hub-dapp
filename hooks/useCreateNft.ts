@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createTxHex } from "ternoa-js";
+import { batchTxHex, createTxHex } from "ternoa-js";
 import mime from "mime-types";
 import * as IpfsService from "../services/ipfs";
 import { useWalletConnectClient } from "./useWalletConnectClient";
@@ -68,12 +68,29 @@ export const useCreateNft = () => {
     return await IpfsService.uploadFile(blob);
   };
 
+  const createTx = async (hash: string, royalty: number, quantity: number) => {
+    const txHash = await createTxHex("nft", "createNft", [
+      hash,
+      `000${royalty * 10000}`,
+      undefined,
+      false,
+    ]);
+    if (quantity === 1) {
+      return txHash;
+    } else {
+      const txHashes = Array(quantity).fill(txHash);
+      return await batchTxHex(txHashes);
+    }
+  };
+
+
   const createNft = async ({
     file,
     preview,
     title,
     description,
     royalty,
+    quantity
   }: CreatNftParams) => {
     setCreateNftLoadingState("loading");
     setNftMintLoadingState("idle");
@@ -87,12 +104,7 @@ export const useCreateNft = () => {
         title,
         description,
       });
-      txHash = await createTxHex("nft", "createNft", [
-        ipfsJsonResponse.Hash,
-        `000${royalty * 10000}`,
-        undefined,
-        false,
-      ]);
+      txHash = await createTx(ipfsJsonResponse.Hash, royalty, quantity);
       await setTxId(ipfsJsonResponse.Hash);
     } catch (err) {
       if (err instanceof Error) {
