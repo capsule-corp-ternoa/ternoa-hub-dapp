@@ -9,4 +9,5 @@ export interface IText {
   type: TextType;
   color?: string;
   weight: TextFontWeightType;
+  className?: string;
 }

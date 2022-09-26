@@ -6,7 +6,7 @@ import { mockInputSwitchProps } from "./InputSwitch.mocks";
 import { IInputSwitch } from "./types";
 
 export default {
-  title: "templates/InputSwitch",
+  title: "atoms/InputSwitch",
   component: InputSwitch,
   argTypes: {
     type: { table: { disable: true } },

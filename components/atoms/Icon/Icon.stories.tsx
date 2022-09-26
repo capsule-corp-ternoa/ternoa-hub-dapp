@@ -6,7 +6,7 @@ import { mockIconProps } from './Icon.mocks'
 import { IIcon } from './types';
 
 export default {
-  title: 'templates/Icon',
+  title: 'atoms/Icon',
   component: Icon,
   argTypes: {},
 } as ComponentMeta<typeof Icon>;

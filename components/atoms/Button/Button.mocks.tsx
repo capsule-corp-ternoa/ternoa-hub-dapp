@@ -21,8 +21,16 @@ const danger: IButton = {
   disabled: false
 }
 
+const tertiary: IButton = {
+  text: 'Hello World!',
+  size: 'large',
+  type: 'tertiary',
+  disabled: false
+}
+
 export const mockButtonProps = {
   primary,
   secondary,
-  danger
+  danger,
+  tertiary
 }

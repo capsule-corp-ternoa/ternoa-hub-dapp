@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { dummySlice } from "./slices/dummySlice";
+import { blockchain } from "./slices/blockchain";
 
 const rootReducer = {
-  [dummySlice.name]: dummySlice.reducer,
+  [blockchain.name]: blockchain.reducer,
 };
 
 export const store = configureStore({

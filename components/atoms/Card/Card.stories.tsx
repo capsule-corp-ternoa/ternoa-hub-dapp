@@ -5,7 +5,7 @@ import Card, { ICard } from '.';
 import { mockCardProps } from './Card.mocks'
 
 export default {
-  title: 'templates/Card',
+  title: 'atoms/Card',
   component: Card,
   argTypes: {},
 } as ComponentMeta<typeof Card>;
