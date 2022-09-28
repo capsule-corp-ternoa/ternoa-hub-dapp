@@ -3,7 +3,8 @@ import { batchTxHex, createTxHex } from "ternoa-js";
 import mime from "mime-types";
 import * as IpfsService from "../services/ipfs";
 import { useWalletConnectClient } from "./useWalletConnectClient";
-import { LoadingState, NftJSON } from "../types";
+import { LoadingState, NftJsonData } from "../types";
+import { nftApi } from "../store/slices/nfts";
 
 export interface CreatNftParams {
   file: File;
@@ -48,7 +49,7 @@ export const useCreateNft = () => {
     const ipfsFileResponse = await IpfsService.uploadFile(file);
     const ipfsPreviewResonse =
       preview && (await IpfsService.uploadFile(preview));
-    const json: NftJSON = {
+    const json: NftJsonData = {
       title,
       description,
       image: ipfsPreviewResonse
@@ -83,14 +84,13 @@ export const useCreateNft = () => {
     }
   };
 
-
   const createNft = async ({
     file,
     preview,
     title,
     description,
     royalty,
-    quantity
+    quantity,
   }: CreatNftParams) => {
     setCreateNftLoadingState("loading");
     setNftMintLoadingState("idle");
@@ -117,6 +117,7 @@ export const useCreateNft = () => {
       try {
         setNftMintLoadingState("loading");
         await walletConnectRequest(txHash);
+        nftApi.util.invalidateTags(["Nfts"]);
       } catch (err) {
         if (err && (err as any).code === -32000) {
           setMintNftError(

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { initializeApi } from "ternoa-js";
-import * as yup from "../../../utils/yup";
+import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import Navbar from "../../organisms/Navbar";
 import { useWalletConnectClient } from "../../../hooks/useWalletConnectClient";
-import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../../store";
-import { getBalances } from "../../../store/slices/blockchain";
+import {
+  blockchain,
+  getBalances,
+} from "../../../store/slices/blockchain/blockchain";
 import Footer from "../../organisms/Footer";
 
 export interface IBaseTemplate {
@@ -15,6 +16,7 @@ export interface IBaseTemplate {
 }
 
 const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
+  const router = useRouter();
   const {
     connect,
     isInitializing,
@@ -22,25 +24,21 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
     isConnecting,
     account,
     disconnect,
-    isDisconnecting,
   } = useWalletConnectClient();
   const { balances, isLoadingBalances } = useSelector(
     (state: RootState) => state.blockchain
   );
-  const [isConnectedToBlockchain, setIsConnectedToBlockchain] =
-    useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (isConnectedToBlockchain && account) {
-      dispatch(getBalances(account));
-    }
-  }, [isConnectedToBlockchain, account, dispatch]);
+    dispatch(blockchain.actions.setAddress(account));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
 
-  useEffect(() => {
-    yup.init();
-    initializeApi().then(() => setIsConnectedToBlockchain(true));
-  }, []);
+  const onClickLogout = () => {
+    disconnect();
+    router.push("/");
+  };
 
   return (
     <React.Fragment>
@@ -70,16 +68,18 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <main className="bg-gray-100">
+      <main className="bg-gray-100 min-h-screen flex flex-col">
         <Navbar
+          onClickAddress={() => {}}
+          onClickMyNfts={() => router.push("/mynfts")}
+          onClickLogout={onClickLogout}
           caps={balances?.free.replace("CAPS", "")}
           isLoadingCaps={isLoadingBalances}
           avatarTheme="polkadot"
           isConnected={isConnected}
           onClickConnect={connect}
           isLoading={isConnecting || isInitializing}
-          onClickDisconnect={disconnect}
-          isDisconnecting={isDisconnecting}
+          pubKey={account}
         />
         {children}
         <Footer />

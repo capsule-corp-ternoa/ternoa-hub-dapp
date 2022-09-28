@@ -58,7 +58,7 @@ const Text: React.FC<IText> = ({
       );
     case "h4":
       return (
-        <h4 className={`text-fs30 ${getWeight(weight)} ${color} ${className}`}>
+        <h4 className={`text-fs18 md:text-fs30 ${getWeight(weight)} ${color} ${className}`}>
           {text}
         </h4>
       );

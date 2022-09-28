@@ -64,6 +64,7 @@ const Button: React.FC<IButton> = ({
   type,
   disabled = false,
   className = "",
+  autoWidth,
   ...props
 }) => {
   return (
@@ -76,7 +77,9 @@ const Button: React.FC<IButton> = ({
       )} ${getButtonType(
         type,
         disabled
-      )} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer ${className}`}
+      )} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer ${
+        autoWidth && "!min-w-[auto]"
+      } ${className}`}
     >
       <Text {...getTextProps(type, size, text, disabled)} />
     </button>

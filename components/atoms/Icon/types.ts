@@ -32,7 +32,8 @@ export type IconNamesType =
   | "X"
   | "TwitterLogo"
   | "Percent"
-  | "Power";
+  | "Power"
+  | "SignOut";
 
 export interface IIcon {
   name: IconNamesType;

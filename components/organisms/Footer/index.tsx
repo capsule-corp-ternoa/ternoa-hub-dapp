@@ -9,7 +9,7 @@ const Footer: React.FC<IFooter> = ({ className = "" }) => {
       className={`h-[182px] md:h-[86px] w-full bg-black-default flex justify-center ${className}`}
     >
       <GridWrapper className="flex flex-row items-center justify-between">
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <Text
             type="p3"
             text="© Ternoart. All rights reserved."

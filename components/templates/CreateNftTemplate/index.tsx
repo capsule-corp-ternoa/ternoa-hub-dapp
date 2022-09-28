@@ -83,7 +83,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row-reverse justify-center">
+    <div className="flex flex-col md:flex-row-reverse justify-center h-[max-content]">
       <div className="md:ml-s24 md:mb-[0px] flex flex-col justify-between">
         <Controller
           control={control}

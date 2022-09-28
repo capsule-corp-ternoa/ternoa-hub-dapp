@@ -289,6 +289,15 @@ const Icon: React.FC<IIcon> = ({
           className={className}
         />
       );
+    case "SignOut":
+      return (
+        <Phosphor.SignOut
+          size={size}
+          color={color}
+          weight={weight}
+          className={className}
+        />
+      );
     default:
       return (
         <Phosphor.Question

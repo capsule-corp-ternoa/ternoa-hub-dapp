@@ -1,4 +1,6 @@
 import * as NextImage from "next/image";
+import "@szhsin/react-menu/dist/index.css";
+import "@szhsin/react-menu/dist/transitions/slide.css";
 import "../styles/globals.css";
 import "../components/atoms/Switch/styles.css";
 import "../components/atoms/LoaderEllipsis/styles.css";

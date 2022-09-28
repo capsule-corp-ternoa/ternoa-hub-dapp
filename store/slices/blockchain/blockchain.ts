@@ -1,17 +1,26 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { Balances, BlockchainState } from "./types";
 import { balanceToNumber, getBalances as SDKgetBalances } from "ternoa-js";
-import { RootState } from "..";
+import { RootState } from "../..";
 
 const initialState: BlockchainState = {
+  isConnected: false,
   isLoadingBalances: false,
   balances: undefined,
+  address: undefined,
 };
 
 export const blockchain = createSlice({
   name: "blockchain",
   initialState,
-  reducers: {},
+  reducers: {
+    setAddress: (state, action: PayloadAction<string | undefined>) => {
+      state.address = action.payload;
+    },
+    setBlockchainConnected: (state, action: PayloadAction<boolean>) => {
+      state.isConnected = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(getBalances.pending, (state) => {
       state.isLoadingBalances = true;
