@@ -1,0 +1,178 @@
+import React, { useEffect, useState } from "react";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
+import { Accept } from "react-dropzone";
+import Button from "../../atoms/Button";
+import Input from "../../atoms/Input";
+import Text from "../../atoms/Text";
+import Textarea from "../../atoms/Textarea";
+import { ICreateNftTemplate, INftFormResult } from "./types";
+import FileForm from "../../molecules/FileForm";
+
+const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
+  const [isPreviewVisible, setIsPreviewVisible] = useState<boolean>();
+
+  const schema = yup
+    .object({
+      name: yup.string().required().label("Name"),
+      description: yup.string().required().label("Description"),
+      quantity: yup.number().truncate().positive().required().label("Quantity"),
+      royalty: yup
+        .number()
+        .typeError("You must specify a royalty number")
+        .min(0)
+        .label("Royalty"),
+      file: yup.mixed().required().label("File"),
+      preview: yup.lazy(() => {
+        if (isPreviewVisible) {
+          return yup.mixed().required().label("Preview");
+        } else {
+          return yup.mixed().notRequired();
+        }
+      }),
+    })
+    .required();
+
+  const formData = useForm<INftFormResult>({
+    resolver: yupResolver(schema),
+  });
+
+  const fileValue = formData.getValues("file");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+    setValue,
+    control,
+  } = formData;
+
+  useEffect(() => {
+    const isImage = fileValue?.type.includes("image");
+    setIsPreviewVisible(fileValue && !isImage);
+  }, [fileValue]);
+
+  const _onSelectFile = (file: File) => {
+    clearErrors("file");
+    setValue("file", file);
+  };
+
+  const _onSelectPreview = (file: File) => {
+    clearErrors("preview");
+    setValue("preview", file);
+  };
+
+  const acceptedFileTypes: Accept = {
+    "image/*": [".png", ".jpg", ".gif", ".svg"],
+    "video/*": [".mp4", ".webm", ".mov", ".avi", ".ogg"],
+    "audio/*": [".mp3", ".wav"],
+    "application/pdf": [".pdf"],
+    "application/zip": [".zip"],
+  };
+
+  const acceptedPreviewTypes: Accept = {
+    "image/*": [".png", ".jpg", ".gif", ".svg"],
+  };
+
+  const onClickSubmit = () => {
+    handleSubmit((formResponse) => {
+      onSubmit({ result: formResponse, formData });
+    })();
+  };
+
+  return (
+    <div className="flex flex-col md:flex-row-reverse justify-center">
+      <div className="md:ml-s24 md:mb-[0px] flex flex-col justify-between">
+        <Controller
+          control={control}
+          name="file"
+          render={({ field: { ref, ...fieldProps } }) => (
+            <FileForm
+              label="NFT file"
+              required={true}
+              labelIcon="Eye"
+              onSelectFile={_onSelectFile}
+              accept={acceptedFileTypes}
+              className="mb-s24 md:mb-s8"
+              error={errors.file?.message}
+              {...fieldProps}
+            />
+          )}
+        />
+        {isPreviewVisible && (
+          <Controller
+            control={control}
+            name="preview"
+            render={({ field: { ref, ...fieldProps } }) => (
+              <FileForm
+                label="NFT preview"
+                required={true}
+                labelIcon="Eye"
+                onSelectFile={_onSelectPreview}
+                accept={acceptedPreviewTypes}
+                className="md:mt-s8 mb-s24 md:mb-[0px]"
+                error={errors.preview?.message}
+                {...fieldProps}
+              />
+            )}
+          />
+        )}
+      </div>
+      <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto">
+        <Text text="Create your NFT" type="h3" weight="bold" />
+        <form className="mt-s4 md:mt-s8 flex flex-col flex-1">
+          <Input
+            id="name"
+            label="Name"
+            placeholder="NFT's name"
+            required={true}
+            error={errors.name?.message}
+            {...register("name")}
+          />
+          <Textarea
+            id="description"
+            label="Description"
+            required={true}
+            placeholder="Tell about the NFT in a few words"
+            rows={5}
+            style={{ resize: "none" }}
+            error={errors.description?.message}
+            {...register("description")}
+          />
+          <Input
+            id="quantity"
+            label="Quantity"
+            required={true}
+            placeholder="Ex: 50"
+            error={errors.quantity?.message}
+            inputType="number"
+            {...register("quantity")}
+          />
+          <Input
+            id="royalty"
+            label="Royalty"
+            placeholder="Ex: 8%"
+            required={true}
+            error={errors.royalty?.message}
+            defaultValue={undefined}
+            inputType="number"
+            {...register("royalty")}
+          />
+          <div className="flex flex-1 items-end">
+            <Button
+              text="Create NFT"
+              type="primary"
+              size="medium"
+              className="mt-s20 md:mt-s32"
+              onClick={onClickSubmit}
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CreateNftTemplate;

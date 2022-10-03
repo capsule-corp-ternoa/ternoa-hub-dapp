@@ -1,26 +1,51 @@
-html,
-body {
-  padding: 0;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "AirbnbCerealBold";
+  src: url("./fonts/AirbnbCerealBold.woff");
+}
+
+@font-face {
+  font-family: "AirbnbCerealMedium";
+  src: url("./fonts/AirbnbCerealMedium.woff");
+}
+
+@font-face {
+  font-family: "AirbnbCerealLight";
+  src: url("./fonts/AirbnbCerealLight.woff");
+}
+
+input {
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input:focus {
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+textarea {
+  outline: none;
+  -webkit-appearance: none;
 }
 
-* {
-  box-sizing: border-box;
+textarea:focus {
+  outline: none;
+  -webkit-appearance: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+body {
+  background-color: black;
 }
