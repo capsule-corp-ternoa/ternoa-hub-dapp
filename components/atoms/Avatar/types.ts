@@ -1,4 +1,4 @@
-export type TAvatarSize = 25 | 38 | 64 | 72 | 87;
+export type TAvatarSize = 20 | 25 | 38 | 50 | 64 | 72 | 87;
 
 export type TextFontWeightType =
   | "substrate"
@@ -10,4 +10,5 @@ export interface IAvatar {
   pubKey: string;
   size: TAvatarSize;
   theme?: TextFontWeightType;
+  className?: string;
 }

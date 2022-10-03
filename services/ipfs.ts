@@ -1,4 +1,5 @@
 import axios from "axios";
+import { NftJsonData } from "../types";
 
 export interface IpfsUploadFileResponse {
   Hash: string;
@@ -14,7 +15,7 @@ export const uploadFile = async (file: string | Blob) => {
     url: `${process.env.NEXT_PUBLIC_ALPHANET_IPFS_GATEWAY_BASE_URL}/api/v0/add`,
     data: formData,
     headers: {
-      apikey: process.env.NEXT_PUBLIC_ALPHANET_IPFS_GATEWAY_KEY || '',
+      apikey: process.env.NEXT_PUBLIC_ALPHANET_IPFS_GATEWAY_KEY || "",
     },
   });
   return response.data;

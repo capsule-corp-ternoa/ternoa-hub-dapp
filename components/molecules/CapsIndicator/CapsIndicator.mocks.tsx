@@ -6,7 +6,7 @@ const base: ICapsIndicator = {
   avatarTheme: "polkadot",
   isConnected: true,
   onClickConnect: () => {},
-  onClickDisconnect: () => {},
+  onClickConnected: () => {},
 };
 
 export const mockCapsIndicatorProps = {

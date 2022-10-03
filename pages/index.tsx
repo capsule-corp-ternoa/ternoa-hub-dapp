@@ -98,7 +98,7 @@ const Home: NextPage = () => {
         onClose={() => setIsIpfsErrorModalVisible(false)}
         title="There was an error trying to create the NFT"
       />
-      <div className="flex justify-center bg-gray-100 py-s40">
+      <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
         <CreateNftTemplate onSubmit={onSubmit} />
       </div>
     </BaseTemplate>

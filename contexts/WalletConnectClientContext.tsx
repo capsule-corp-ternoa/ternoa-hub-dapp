@@ -4,9 +4,9 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useRef,
 } from "react";
 import Client from "@walletconnect/sign-client";
-import QRCodeModal from "@walletconnect/legacy-modal";
 import { isMobile as checkIsMobile } from "@walletconnect/legacy-utils";
 import { ERROR } from "@walletconnect/utils";
 import { IContext } from "./types";
@@ -29,6 +29,7 @@ export const WalletConnectClientContextProvider = ({
 }: {
   children: ReactNode | ReactNode[];
 }) => {
+  const initialized = useRef<boolean>();
   const [client, setClient] = useState<Client>();
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
@@ -188,6 +189,7 @@ export const WalletConnectClientContextProvider = ({
 
   const request = async (hash: string) => {
     if (client) {
+      console.log("SENDING TO", account);
       return client.request<string>({
         chainId: process.env.NEXT_PUBLIC_TERNOA_CHAIN!,
         topic: session!.topic,
@@ -210,7 +212,8 @@ export const WalletConnectClientContextProvider = ({
   };
 
   useEffect(() => {
-    if (!client) {
+    if (!client && !initialized.current) {
+      initialized.current = true;
       createClient();
     }
   }, [client, createClient]);

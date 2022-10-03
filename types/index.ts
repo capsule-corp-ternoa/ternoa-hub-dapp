@@ -1,6 +1,6 @@
 export type LoadingState = "idle" | "loading" | "finished";
 
-export interface NftJSON {
+export interface NftJsonData {
   title: string;
   description: string;
   image: string;
