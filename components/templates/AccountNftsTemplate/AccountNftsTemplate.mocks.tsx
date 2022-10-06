@@ -36,12 +36,7 @@ const base: IAccountNftsTemplate = {
     },
     {
       isLoading: false,
-      preview: {
-        src: "https://ipfs-dev.trnnfr.com/ipfs/QmQ1sD95jLSo1vJK6mcXHGogrph8Bqpgx7L8Vy4SX6Xbrg",
-        alt: "NFT",
-      },
       creator: "5GYiVxT9SLvW8mUDPK3PorCYYRWtkw6XRNh7PLfxDPsSHLxF",
-      name: "Nft Mock Name 4",
     },
     {
       isLoading: false,

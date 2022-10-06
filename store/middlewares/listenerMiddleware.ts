@@ -2,7 +2,7 @@ import { createListenerMiddleware, addListener } from "@reduxjs/toolkit";
 import type { TypedStartListening, TypedAddListener } from "@reduxjs/toolkit";
 import type { AppDispatch, RootState } from "../index";
 import { addFetchNftsJsonDataListener } from "../slices/nftsData/listeners";
-import { addClearOnChangeAddressListener, addGetBalancesListener } from "../slices/blockchain/listeners";
+import { addClearOnChangeAddressListener } from "../slices/blockchain/listeners";
 
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
 
@@ -17,5 +17,4 @@ export const addAppListener = addListener as TypedAddListener<
 >;
 
 addFetchNftsJsonDataListener(startAppListening);
-addGetBalancesListener(startAppListening);
 addClearOnChangeAddressListener(startAppListening);

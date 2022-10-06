@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { batchTxHex, createTxHex } from "ternoa-js";
 import mime from "mime-types";
+import { useSelector } from "react-redux";
 import * as IpfsService from "../services/ipfs";
 import { useWalletConnectClient } from "./useWalletConnectClient";
 import { LoadingState, NftJsonData } from "../types";
 import { nftApi } from "../store/slices/nfts";
+import { RootState } from "../store";
 
 export interface CreatNftParams {
   file: File;
@@ -24,6 +26,10 @@ export class WalletConnectRejectedRequest extends Error {
 
 export const useCreateNft = () => {
   const { request: walletConnectRequest } = useWalletConnectClient();
+  const currentNetwork = useSelector(
+    (state: RootState) => state.blockchain.currentNetwork
+  );
+  
   const [mintNftLoadingState, setNftMintLoadingState] =
     useState<LoadingState>("idle");
   const [createNftLoadingState, setCreateNftLoadingState] =
@@ -46,9 +52,9 @@ export const useCreateNft = () => {
     title: string;
     description: string;
   }): Promise<IpfsService.IpfsUploadFileResponse> => {
-    const ipfsFileResponse = await IpfsService.uploadFile(file);
+    const ipfsFileResponse = await IpfsService.uploadFile(file, currentNetwork);
     const ipfsPreviewResonse =
-      preview && (await IpfsService.uploadFile(preview));
+      preview && (await IpfsService.uploadFile(preview, currentNetwork));
     const json: NftJsonData = {
       title,
       description,
@@ -66,7 +72,7 @@ export const useCreateNft = () => {
     const blob = new Blob([JSON.stringify(json)], {
       type: "application/json",
     });
-    return await IpfsService.uploadFile(blob);
+    return await IpfsService.uploadFile(blob, currentNetwork);
   };
 
   const createTx = async (hash: string, royalty: number, quantity: number) => {

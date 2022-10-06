@@ -8,9 +8,8 @@ import { Provider, useDispatch } from "react-redux";
 import { WalletConnectClientContextProvider } from "../contexts/WalletConnectClientContext";
 import { AppDispatch, store } from "../store";
 import { useRef, useEffect } from "react";
-import { initializeApi } from "ternoa-js";
 import * as yup from "../utils/yup";
-import { blockchain } from "../store/slices/blockchain/blockchain";
+import { connect } from "../store/slices/blockchain/blockchain";
 
 const Initialize = () => {
   const initialized = useRef<boolean>();
@@ -20,9 +19,7 @@ const Initialize = () => {
     if (!initialized.current) {
       initialized.current = true;
       yup.init();
-      initializeApi().then(() =>
-        dispatch(blockchain.actions.setBlockchainConnected(true))
-      );
+      dispatch(connect());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

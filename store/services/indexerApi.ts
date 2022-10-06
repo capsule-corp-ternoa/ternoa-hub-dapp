@@ -1,12 +1,15 @@
 import { BaseQueryFn, createApi, retry } from "@reduxjs/toolkit/query/react";
 import { request, ClientError } from "graphql-request";
+import { RootState } from "..";
 
 const graphqlBaseQuery: BaseQueryFn<{ body: string }, unknown> = async (
   { body },
   api
 ) => {
   try {
-    const indexerUrl = process.env.NEXT_PUBLIC_INDEXER_URL;
+    const state = api.getState() as RootState;
+    const currentNetwork = state.blockchain.currentNetwork;
+    const indexerUrl = currentNetwork.indexerUrl;
     if (!indexerUrl) {
       throw Error("INDEXER URL NOT DEFINED");
     }

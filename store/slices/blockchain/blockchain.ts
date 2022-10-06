@@ -1,13 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { Balances, BlockchainState } from "./types";
-import { balanceToNumber, getBalances as SDKgetBalances } from "ternoa-js";
+import { safeDisconnect, initializeApi } from "ternoa-js";
 import { RootState } from "../..";
+import { ALPHANET_NETWORK } from "../../../constants/network";
+import { Network } from "../../../types";
+import { indexerApi } from "../../services/indexerApi";
+import type { BlockchainState } from "./types";
 
 const initialState: BlockchainState = {
+  isConnecting: false,
   isConnected: false,
-  isLoadingBalances: false,
-  balances: undefined,
   address: undefined,
+  currentNetwork: ALPHANET_NETWORK,
 };
 
 export const blockchain = createSlice({
@@ -17,35 +20,50 @@ export const blockchain = createSlice({
     setAddress: (state, action: PayloadAction<string | undefined>) => {
       state.address = action.payload;
     },
-    setBlockchainConnected: (state, action: PayloadAction<boolean>) => {
-      state.isConnected = action.payload;
-    },
   },
   extraReducers(builder) {
-    builder.addCase(getBalances.pending, (state) => {
-      state.isLoadingBalances = true;
+    builder.addCase(changeNetwork.pending, (state) => {
+      state.isConnecting = true;
+      state.isConnected = false;
     });
-    builder.addCase(getBalances.fulfilled, (state, action) => {
-      state.isLoadingBalances = false;
-      state.balances = action.payload;
+    builder.addCase(changeNetwork.fulfilled, (state, action) => {
+      state.isConnecting = false;
+      state.currentNetwork = action.payload;
+      state.isConnected = true;
     });
-    builder.addCase(getBalances.rejected, (state) => {
-      state.isLoadingBalances = false;
+    builder.addCase(changeNetwork.rejected, (state) => {
+      state.isConnecting = false;
+    });
+    builder.addCase(connect.pending, (state) => {
+      state.isConnecting = true;
+      state.isConnected = false;
+    });
+    builder.addCase(connect.fulfilled, (state, action) => {
+      state.isConnecting = false;
+      state.isConnected = true;
+    });
+    builder.addCase(connect.rejected, (state) => {
+      state.isConnecting = false;
     });
   },
 });
 
-export const getBalances = createAsyncThunk<
-  Balances,
-  string,
+export const changeNetwork = createAsyncThunk<
+  Network,
+  Network,
   { state: RootState }
->("blockchain/getBalances", async (address) => {
-  const response = await SDKgetBalances(address);
-  const balances = {
-    free: balanceToNumber(response.free),
-    reserved: balanceToNumber(response.reserved),
-    miscFrozen: balanceToNumber(response.miscFrozen),
-    feeFrozen: balanceToNumber(response.feeFrozen),
-  };
-  return balances;
+>("blockchain/changeNetwork", async (network: Network, thunkApi) => {
+  await safeDisconnect();
+  await initializeApi(network.blockchainUrl);
+  return network;
 });
+
+export const connect = createAsyncThunk<void, undefined, { state: RootState }>(
+  "blockchain/connect",
+  async (_p, thunkApi) => {
+    const endpoint =
+      thunkApi.getState().blockchain.currentNetwork.blockchainUrl;
+    
+    await initializeApi(endpoint);
+  }
+);

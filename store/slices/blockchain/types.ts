@@ -1,13 +1,8 @@
+import { Network } from "../../../types";
+
 export type BlockchainState = {
-  isLoadingBalances: boolean;
-  balances?: Balances;
+  isConnecting: boolean;
   address?: string;
   isConnected: boolean;
-};
-
-export type Balances = {
-  free: string;
-  reserved: string;
-  miscFrozen: string;
-  feeFrozen: string;
+  currentNetwork: Network;
 };

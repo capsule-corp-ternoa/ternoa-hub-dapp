@@ -30,7 +30,7 @@ const AccountNftsTemplate: React.FC<IAccountNftsTemplate> = ({
   const filtersArray = Object.values(Filter);
 
   return (
-    <div className="flex flex-col justify-center bg-gray-500 rounded-xl pb-s32 md:pb-s56">
+    <div className="flex flex-col justify-center bg-gray-100 rounded-xl pb-s32 md:pb-s56">
       <div className="flex flex-col sm:flex-row sm:justify-between mb-s32">
         <Text
           text="My NFTs"
@@ -44,7 +44,7 @@ const AccountNftsTemplate: React.FC<IAccountNftsTemplate> = ({
           selectedIndex={filtersArray.findIndex((f) => f === selectedFilter)}
         />
       </div>
-      <div className="bg-gray-500 grid grid-cols-nftList md:grid-cols-nftListDesktop md:gap-s24 gap-s16">
+      <div className="bg-gray-100 grid grid-cols-nftList md:grid-cols-nftListDesktop md:gap-s24 gap-s16">
         {nfts.map((nftCard, i) => (
           <div key={i} className="w-full">
             <NftCard {...nftCard} className="w-full" />

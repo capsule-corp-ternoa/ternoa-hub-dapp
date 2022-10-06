@@ -59,7 +59,7 @@ const NftCard: React.FC<INftCard> = ({
       className={`bg-gray-500 border-gray-200 border border-solid rounded-2xl p-[10px] md:p-s20 inline-block ${className}`}
     >
       <NftPreview {...preview} isLoading={isLoading} />
-      <div className="mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden">
+      <div className="h-[50px] mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden">
         {renderData()}
       </div>
     </div>
