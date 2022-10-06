@@ -4,9 +4,19 @@ import GridWrapper from "../components/atoms/GridWrapper";
 import Text from "../components/atoms/Text";
 import ActionCard from "../components/molecules/ActionCard";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
+import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const { account, connect } = useWalletConnectClient();
+
+  const onClickAction = (route: string) => {
+    if (account) {
+      router.push(route);
+    } else {
+      connect();
+    }
+  };
 
   return (
     <BaseTemplate>
@@ -28,10 +38,10 @@ const Home: NextPage = () => {
                 width: 97,
                 height: 148,
               }}
-              title="Basic NTFs"
+              title="Basic NFTs"
               body={`Allows you to create a \n unique NFT`}
               action="Create NFTs"
-              onClickAction={() => router.push('/createnft')}
+              onClickAction={() => onClickAction("/createnft")}
               className="w-full lg:w-[332px] lg:mr-s24 mb-s16"
             />
             <ActionCard
@@ -58,7 +68,7 @@ const Home: NextPage = () => {
               body={`Allows you to create a place \nto sell your NFTs`}
               action="Set a Marketplace"
               onClickAction={() => {}}
-              className="w-full lg:w-[332px] mb-s16"
+              className="w-full lg:w-[332px] mb-s16 !pt-[32px]"
             />
           </div>
         </GridWrapper>
