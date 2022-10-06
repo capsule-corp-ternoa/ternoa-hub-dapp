@@ -10,11 +10,12 @@ const Home: NextPage = () => {
   const router = useRouter();
   const { account, connect } = useWalletConnectClient();
 
-  const onClickAction = (route: string) => {
+  const onClickAction = async (route: string) => {
     if (account) {
       router.push(route);
     } else {
-      connect();
+      await connect();
+      router.push(route);
     }
   };
 
