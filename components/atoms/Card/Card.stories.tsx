@@ -1,8 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Card, { ICard } from '.';
+import Card from '.';
 import { mockCardProps } from './Card.mocks'
+import { ICard } from './types';
 
 export default {
   title: 'atoms/Card',
