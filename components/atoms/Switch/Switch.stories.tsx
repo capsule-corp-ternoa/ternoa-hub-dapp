@@ -5,15 +5,21 @@ import Switch from ".";
 import { mockSwitchProps } from "./Switch.mocks";
 import { ISwitch } from "./types";
 
+const BaseSwitch: React.FC<ISwitch> = (props) => (
+  <Switch {...props} ref={undefined} />
+);
+
 export default {
   title: "atoms/Switch",
-  component: Switch,
+  component: BaseSwitch,
   argTypes: {
     type: { table: { disable: true } },
   },
-} as ComponentMeta<typeof Switch>;
+} as ComponentMeta<typeof BaseSwitch>;
 
-const Template: ComponentStory<typeof Switch> = (args) => <Switch {...args} />;
+const Template: ComponentStory<typeof BaseSwitch> = (args) => (
+  <BaseSwitch {...args} />
+);
 
 export const Primary = Template.bind({});
 export const Secondary = Template.bind({});

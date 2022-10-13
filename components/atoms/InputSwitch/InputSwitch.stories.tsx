@@ -5,19 +5,23 @@ import InputSwitch from "./index";
 import { mockInputSwitchProps } from "./InputSwitch.mocks";
 import { IInputSwitch } from "./types";
 
+const BaseInputSwitch: React.FC<IInputSwitch> = (props) => (
+  <InputSwitch {...props} ref={undefined} />
+);
+
 export default {
   title: "atoms/InputSwitch",
-  component: InputSwitch,
+  component: BaseInputSwitch,
   argTypes: {
     type: { table: { disable: true } },
     required: {
       control: "boolean",
     },
   },
-} as ComponentMeta<typeof InputSwitch>;
+} as ComponentMeta<typeof BaseInputSwitch>;
 
-const Template: ComponentStory<typeof InputSwitch> = (args) => (
-  <InputSwitch {...args} />
+const Template: ComponentStory<typeof BaseInputSwitch> = (args) => (
+  <BaseInputSwitch {...args} />
 );
 
 export const Primary = Template.bind({});
