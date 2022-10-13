@@ -55,7 +55,7 @@ const Home: NextPage = () => {
               title="Create Collection"
               body={`Allows you to group several NFTs \ntogether`}
               action="Create Collection"
-              onClickAction={() => {}}
+              onClickAction={() => onClickAction('/createcollection')}
               className="w-full lg:w-[332px] lg:mr-s24 mb-s16"
             />
             <ActionCard

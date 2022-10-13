@@ -208,6 +208,15 @@ const Icon: React.FC<IIcon> = ({
           className={className}
         />
       );
+    case "WarningCircle":
+      return (
+        <Phosphor.WarningCircle
+          size={size}
+          color={color}
+          weight={weight}
+          className={className}
+        />
+      );
     case "File":
       return (
         <Phosphor.File

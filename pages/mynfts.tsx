@@ -15,7 +15,7 @@ import { jsonDataSelector } from "../store/slices/nftsData";
 
 const Account: NextPage = () => {
   const router = useRouter();
-  const { account } = useWalletConnectClient();
+  const { account, client } = useWalletConnectClient();
   const [trigger, indexerNfts] = nftApi.useLazyGetNftsByAdressQuery();
   const currentNetwork = useSelector(
     (state: RootState) => state.blockchain.currentNetwork
@@ -50,10 +50,10 @@ const Account: NextPage = () => {
   }, [selectedFilter, account, currentNetwork]);
 
   useEffect(() => {
-    if (!account) {
+    if (client && !account) {
       router.push("/");
     }
-  }, [account, router]);
+  }, [client, account, router]);
 
   useEffect(() => {
     const data = indexerNfts.data?.nfts;

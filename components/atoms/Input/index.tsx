@@ -38,6 +38,7 @@ export const getColorsClassesByType = (type: TInputType) => {
 const Input = React.forwardRef<HTMLInputElement, IInput>(
   (
     {
+      className = "",
       placeholder,
       label,
       error,
@@ -132,11 +133,11 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             style={parseDynamicStyles()}
             className={`w-full border-2 border-solid rounded-xl px-s16 py-[10px] text-fs18 font-AirbnbCerealMedium ${getColorsClassesByType(
               type
-            )}`}
+            )} ${className}`}
             placeholder={placeholder}
             disabled={type === "disabled"}
           />
-          <div className="text-fs12 font-AirbnbCerealMedium text-red-300 mt-s4 pl-s2">
+          <div className="text-fs12 font-AirbnbCerealMedium text-red-300 mt-s4 pl-s2 absolute mb-s4">
             {error}
           </div>
           {hasRightComponent && renderRightComponent()}

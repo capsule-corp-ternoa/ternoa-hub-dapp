@@ -1,18 +1,17 @@
 import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useCreateNft } from "../hooks/useCreateNft";
-import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
-import { onSubmitParams } from "../components/templates/CreateNftTemplate/types";
-import CreateNftTemplate from "../components/templates/CreateNftTemplate";
-import TxModal from "../components/organisms/modals/TxModal";
-import NtfCreationSuccessModal from "../components/organisms/modals/NftCreationSuccessModal";
+import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
 import IconModal from "../components/molecules/IconModal";
+import TxModal from "../components/organisms/modals/TxModal";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
+import CreateCollectionTemplate from "../components/templates/CreateCollectionTemplate";
+import { onSubmitParams } from "../components/templates/CreateCollectionTemplate/types";
+import { useCreateCollection } from "../hooks/useCreateCollection";
+import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 import { RootState } from "../store";
 import { WalletConnectRejectedRequest } from "../types";
-import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
 
 const CreateNft: NextPage = () => {
   const router = useRouter();
@@ -21,19 +20,20 @@ const CreateNft: NextPage = () => {
     (state: RootState) => state.blockchain.isConnecting
   );
   const {
-    createNft,
-    createNftLoadingState,
-    mintNftLoadingState,
-    isMintNtfSuccess,
-    mintNftError,
+    createCollection,
+    createCollectionLoadingState,
+    collectionTxLoadingState,
+    isCollectionTxSuccess,
+    collectionTxError,
     ipfsError,
     txId,
-  } = useCreateNft();
+  } = useCreateCollection();
+
   const [isSucessModalVisible, setIsSucessModalVisible] =
     useState<boolean>(false);
   const [isIpfsErrorModalVisible, setIsIpfsErrorModalVisible] =
     useState<boolean>(false);
-  const [isMintNFTErrorModalVisible, setIsMintNFTErrorModalVisible] =
+  const [isTxErrorModalVisible, setIsTxErrorModalVisible] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -43,56 +43,58 @@ const CreateNft: NextPage = () => {
   }, [client, account, router]);
 
   useEffect(() => {
-    setIsSucessModalVisible(isMintNtfSuccess);
-  }, [isMintNtfSuccess]);
+    setIsSucessModalVisible(isCollectionTxSuccess);
+  }, [isCollectionTxSuccess]);
 
   useEffect(() => {
     setIsIpfsErrorModalVisible(Boolean(ipfsError));
   }, [ipfsError]);
 
   useEffect(() => {
-    setIsMintNFTErrorModalVisible(Boolean(mintNftError));
-  }, [mintNftError]);
+    setIsTxErrorModalVisible(Boolean(collectionTxError));
+  }, [collectionTxError]);
 
-  const parseMintNftError = () => {
-    if (mintNftError instanceof WalletConnectRejectedRequest) {
+  const parseCreateCollectionTxError = () => {
+    if (collectionTxError instanceof WalletConnectRejectedRequest) {
       return "The request has been rejected";
     } else {
-      return "There was an error trying to mint the NFT";
+      return "There was an error trying to create the collection";
     }
   };
 
   const onSubmit = async ({ result, formData }: onSubmitParams) => {
-    await createNft({
-      title: result.name,
-      ...result,
-    });
+    await createCollection(result);
     formData.reset();
   };
 
   return (
     <BaseTemplate>
       <IconModal
-        title="NFT creation is processing..."
+        title="Collection creation is processing..."
         iconComponent={<LoaderEllipsis />}
         body="It should by confirmed on the blockchain shortly..."
-        isOpened={createNftLoadingState === "loading"}
+        isOpened={createCollectionLoadingState === "loading"}
       />
       <TxModal
-        isOpened={mintNftLoadingState === "loading"}
+        isOpened={collectionTxLoadingState === "loading"}
         txId={txId || "Loading..."}
-        body={"An NFT minting proposal has been sent to your Ternoa Wallet App"}
-        title="Minting request sent!"
+        body={
+          "A collection creation proposal has been sent to your Ternoa Wallet App"
+        }
+        title="Create collection request sent!"
       />
-      <NtfCreationSuccessModal
+      <IconModal
+        iconName="CheckCircle"
+        title="Creation complete!"
+        body="You have created your collection with success!"
         isOpened={isSucessModalVisible}
         onClose={() => setIsSucessModalVisible(false)}
       />
       <IconModal
         iconName="Warning"
-        isOpened={isMintNFTErrorModalVisible}
-        onClose={() => setIsMintNFTErrorModalVisible(false)}
-        title={parseMintNftError()}
+        isOpened={isTxErrorModalVisible}
+        onClose={() => setIsTxErrorModalVisible(false)}
+        title={parseCreateCollectionTxError()}
       />
       <IconModal
         iconName="Warning"
@@ -101,7 +103,7 @@ const CreateNft: NextPage = () => {
         title="There was an error trying to create the NFT"
       />
       <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
-        <CreateNftTemplate
+        <CreateCollectionTemplate
           onSubmit={onSubmit}
           disabled={isConnectingBlockchain}
         />
