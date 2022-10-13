@@ -8,6 +8,10 @@ export interface IInput extends React.ComponentProps<"input"> {
    */
   type?: TInputType;
   /**
+   * Input custom classes
+   */
+  className?: string;
+  /**
    * Placeholder & label text
    */
   placeholder?: string;

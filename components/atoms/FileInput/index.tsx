@@ -10,7 +10,11 @@ const FileInput: React.FC<IFileInput> = ({
   labelIcon,
   required,
   className = "",
+  previewClassName = "",
+  labelClassName = "",
+  previewProps,
   dropzoneRef,
+  dropzoneIcon,
   onSelectFile,
   accept,
   description,
@@ -41,7 +45,7 @@ const FileInput: React.FC<IFileInput> = ({
       if (hasImageFiles()) {
         const preview = getPreview(currentFile);
         return (
-          <div className="w-[210px] h-[190px] relative">
+          <div className={`w-[210px] h-[190px] relative ${previewClassName}`}>
             <Image
               src={preview}
               alt="file-preview"
@@ -50,6 +54,7 @@ const FileInput: React.FC<IFileInput> = ({
               onLoad={() => {
                 URL.revokeObjectURL(preview);
               }}
+              {...previewProps}
             />
           </div>
         );
@@ -62,10 +67,12 @@ const FileInput: React.FC<IFileInput> = ({
               color="#94A3B8"
               className="block m-auto mb-s16"
             />
-            <p className="overflow-hidden text-ellipsis">{currentFile.name}</p>
+            <p className="overflow-hidden text-ellipsis leading-loose">{currentFile.name}</p>
           </React.Fragment>
         );
       }
+    } else if (dropzoneIcon) {
+      return dropzoneIcon;
     } else {
       return (
         <Icon
@@ -113,7 +120,7 @@ const FileInput: React.FC<IFileInput> = ({
         return (
           <div {...getRootProps()}>
             {label && (
-              <div className="flex flex-row items-center">
+              <div className={`flex flex-row items-center ${labelClassName}`}>
                 {labelIcon && (
                   <div className="mr-s8">
                     <Icon name={labelIcon} size={24} />
@@ -125,10 +132,9 @@ const FileInput: React.FC<IFileInput> = ({
             <input {...props} {...getInputProps({})} />
             <div
               className={`bg-gray-100 border-[3px] border-dashed border-gray-200 rounded-xl w-full h-[296px] md:w-[240px] md:h-[200px] 
-              ${getContainerClasses()}
-            }${className} flex items-center justify-center cursor-pointer`}
+              ${getContainerClasses()} flex items-center justify-center cursor-pointer ${className}`}
             >
-              <div className="text-gray-400 font-AirbnbCerealMedium text-fs16 overflow-hidden whitespace-nowrap px-s4">
+              <div className="text-gray-400 font-AirbnbCerealMedium text-fs16 overflow-hidden whitespace-nowrap px-s4 flex">
                 {renderContent(isDragActive)}
               </div>
             </div>

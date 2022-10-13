@@ -13,6 +13,14 @@ export interface NftJsonData {
   };
 }
 
+export interface CollectionJsonData {
+  name: string;
+  description: string;
+  profile_image: string;
+  banner_image: string;
+  isSensitive: boolean;
+}
+
 export type Network = {
   name: string;
   indexerUrl: string;
@@ -21,3 +29,10 @@ export type Network = {
   ipfsUrl: string;
   ipfsKey: string;
 };
+
+export class WalletConnectRejectedRequest extends Error {
+  constructor(message: string) {
+    super(message);
+    Object.setPrototypeOf(this, WalletConnectRejectedRequest.prototype);
+  }
+}

@@ -1,11 +1,12 @@
 import React from "react";
+import { middleEllipsis } from "../../../../utils/strings";
 import Icon from "../../../atoms/Icon";
 import LoaderEllipsis from "../../../atoms/LoaderEllipsis";
 import Modal from "../../../atoms/Modal";
 import Text from "../../../atoms/Text";
-import { INftMintingModal } from "./types";
+import { ITxModal } from "./types";
 
-const NftMintingModal: React.FC<INftMintingModal> = ({ txId, ...props }) => {
+const TxModal: React.FC<ITxModal> = ({ txId, title, body, ...props }) => {
   return (
     <Modal {...props}>
       <div className="w-[340px] h-[340px] md:w-[450px] md:h-[450px] flex flex-col justify-between items-center p-s16 md:p-s24 text-center">
@@ -20,16 +21,18 @@ const NftMintingModal: React.FC<INftMintingModal> = ({ txId, ...props }) => {
           </div>
         </div>
         <div>
-          <Text type="h5" weight="bold" text="Minting request sent!" />
+          <Text type="h5" weight="bold" text={title} />
         </div>
-        <div>
-          <Text
-            type="p2"
-            weight="light"
-            text="An NFT minting proposal has been sent to your Ternoa Wallet App"
-            color="text-gray-400"
-          />
-        </div>
+        {body && (
+          <div>
+            <Text
+              type="p2"
+              weight="light"
+              text={body}
+              color="text-gray-400"
+            />
+          </div>
+        )}
         <div className="flex justify-center">
           <Text
             type="p2"
@@ -40,9 +43,9 @@ const NftMintingModal: React.FC<INftMintingModal> = ({ txId, ...props }) => {
           <Text
             type="p2"
             weight="medium"
-            text={txId}
+            text={middleEllipsis(txId)}
             color="text-gray-800"
-            className="ml-s8 max-w-[30%] text-ellipsis overflow-hidden"
+            className="ml-s8"
           />
         </div>
       </div>
@@ -50,4 +53,4 @@ const NftMintingModal: React.FC<INftMintingModal> = ({ txId, ...props }) => {
   );
 };
 
-export default NftMintingModal;
+export default TxModal;

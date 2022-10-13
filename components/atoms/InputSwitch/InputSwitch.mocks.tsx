@@ -1,19 +1,19 @@
 import { IInputSwitch } from "./types";
 
 const primary: IInputSwitch = {
-  value: "Hello World!",
+  placeholder: "Hello World!",
   type: "primary",
   id: "id"
 };
 
 const error: IInputSwitch = {
-  value: "Hello World!",
+  placeholder: "Hello World!",
   type: "error",
   id: "id"
 };
 
 const disabled: IInputSwitch = {
-  value: "Hello World!",
+  placeholder: "Hello World!",
   type: "disabled",
   id: "id"
 };

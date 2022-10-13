@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  KeyValuePair,
-  ResolvableTo,
-  ScreensConfig,
-} from "tailwindcss/types/config";
+import { ResolvableTo, ScreensConfig } from "tailwindcss/types/config";
 import tailwindConfig from "../tailwind.config";
 
 export const useWindowBreakpoint = () => {

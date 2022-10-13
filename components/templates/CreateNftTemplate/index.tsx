@@ -68,15 +68,26 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
   };
 
   const acceptedFileTypes: Accept = {
-    "image/*": [".png", ".jpg", ".gif", ".svg"],
-    "video/*": [".mp4", ".webm", ".mov", ".avi", ".ogg"],
-    "audio/*": [".mp3", ".wav"],
+    "image/jpeg": [".jpg"],
+    "image/png": [".png"],
+    "image/gif": [".gif"],
+    "image/svg+xml": [".svg"],
+    "video/mp4": [".mp4"],
+    "video/webm": [".webm"],
+    "video/quicktime": [".mov"],
+    "video/x-msvideo": [".avi"],
+    "video/ogg": [".ogg"],
+    "audio/mpeg": [".mp3"],
+    "audio/wav": [".wav"],
     "application/pdf": [".pdf"],
     "application/zip": [".zip"],
   };
 
   const acceptedPreviewTypes: Accept = {
-    "image/*": [".png", ".jpg", ".gif", ".svg"],
+    "image/jpeg": [".jpg"],
+    "image/png": [".png"],
+    "image/gif": [".gif"],
+    "image/svg+xml": [".svg"],
   };
 
   const onClickSubmit = () => {

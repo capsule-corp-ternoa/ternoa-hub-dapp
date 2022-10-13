@@ -16,9 +16,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 const DEFAULT_APP_METADATA = {
-  name: "TernoArt",
-  description: "TernoArt dApp",
-  url: "https://ternoa.com",
+  name: "Ternoa HUB",
+  description: "Ternoa HUB dApp",
+  url: "https://hub.ternoa.network/",
   icons: ["https://www.ternoa.com/favicon.ico"],
 };
 
@@ -205,7 +205,7 @@ export const WalletConnectClientContextProvider = ({
             request: {
               nonce: 1,
               validity: null,
-              submit: true,
+              submit: false,
               hash,
             },
           },

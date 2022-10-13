@@ -24,6 +24,7 @@ export type IconNamesType =
   | "Heart"
   | "Info"
   | "Warning"
+  | "WarningCircle"
   | "File"
   | "FileSearch"
   | "ArrowFatLineDown"
