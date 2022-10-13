@@ -21,7 +21,7 @@ const WalletConnectModal: React.FC<IWalletConnectModal> = ({
           <Text
             type="p1"
             weight="light"
-            text="Flash the QR Code on your mobile wallet to create the NFT"
+            text="Flash the QR Code on your mobile wallet to connect on ternoa HUB"
             color="text-gray-300 mt-s16"
           />
         </div>

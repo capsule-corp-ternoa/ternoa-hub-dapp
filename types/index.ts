@@ -12,3 +12,12 @@ export interface NftJsonData {
     };
   };
 }
+
+export type Network = {
+  name: string;
+  indexerUrl: string;
+  blockchainUrl: string;
+  ternoaChain: string;
+  ipfsUrl: string;
+  ipfsKey: string;
+};

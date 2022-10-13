@@ -1,9 +1,7 @@
-import { ICard } from '.'
+import { ICard } from "./types";
 
-const base: ICard = {
-  sampleTestProp: 'Hello World!'
-}
+const base: ICard = {};
 
 export const mockCardProps = {
-  base
-}
+  base,
+};

@@ -10,7 +10,10 @@ import Textarea from "../../atoms/Textarea";
 import { ICreateNftTemplate, INftFormResult } from "./types";
 import FileForm from "../../molecules/FileForm";
 
-const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
+const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
+  onSubmit,
+  disabled,
+}) => {
   const [isPreviewVisible, setIsPreviewVisible] = useState<boolean>();
 
   const schema = yup
@@ -167,6 +170,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
               size="medium"
               className="mt-s20 md:mt-s32"
               onClick={onClickSubmit}
+              disabled={disabled}
             />
           </div>
         </form>

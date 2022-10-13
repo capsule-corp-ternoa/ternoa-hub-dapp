@@ -8,6 +8,7 @@ import { INftCard } from "../components/molecules/NftCard/types";
 import AccountNftsTemplate from "../components/templates/AccountNftsTemplate";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
 import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
+import { RootState } from "../store";
 import { nftApi } from "../store/slices/nfts";
 import { Filter, Nft } from "../store/slices/nfts/types";
 import { jsonDataSelector } from "../store/slices/nftsData";
@@ -16,6 +17,9 @@ const Account: NextPage = () => {
   const router = useRouter();
   const { account } = useWalletConnectClient();
   const [trigger, indexerNfts] = nftApi.useLazyGetNftsByAdressQuery();
+  const currentNetwork = useSelector(
+    (state: RootState) => state.blockchain.currentNetwork
+  );
   const nftsData = useSelector(jsonDataSelector);
   const [results, setResults] = useState<Nft[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -43,7 +47,13 @@ const Account: NextPage = () => {
     setResults([]);
     fetchPage(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedFilter, account]);
+  }, [selectedFilter, account, currentNetwork]);
+
+  useEffect(() => {
+    if (!account) {
+      router.push("/");
+    }
+  }, [account, router]);
 
   useEffect(() => {
     const data = indexerNfts.data?.nfts;
@@ -83,7 +93,7 @@ const Account: NextPage = () => {
 
   return (
     <BaseTemplate>
-      <div className="flex justify-center bg-gray-500 py-s40 flex flex-1">
+      <div className="flex justify-center bg-gray-100 py-s40 flex flex-1">
         <GridWrapper>
           {account && (
             <AccountNftsTemplate
@@ -98,7 +108,7 @@ const Account: NextPage = () => {
               }}
               selectedFilter={selectedFilter}
               onSelectFilter={setSelectedFilter}
-              onClickCreateNft={() => router.push("/")}
+              onClickCreateNft={() => router.push("/createnft")}
             />
           )}
         </GridWrapper>

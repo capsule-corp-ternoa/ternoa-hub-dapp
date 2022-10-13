@@ -49,7 +49,10 @@ export const fetchJsonData = createAsyncThunk<
   const response = await axios.request<NftJsonData>({
     method: "GET",
     url: getJsonDataUrl(source),
-    timeout: 1000 * 30,
+    timeout: 1000 * 10,
+    headers: {
+      Accept: 'application/json',
+    }
   });
   const jsonData = response.data;
   return { data: jsonData };

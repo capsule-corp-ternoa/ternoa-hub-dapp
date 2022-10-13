@@ -19,7 +19,7 @@ const Logo: React.FC<ILogo> = ({ width, height, className = "" }) => {
       className={`w-s24 h-s24 md:w-s40 md:h-s40 relative ${className}`}
       style={parseDynamicStyles()}
     >
-      <Image src="/logo.svg" alt="Ternoart Logo" layout="fill" />
+      <Image src="/logo.svg" alt="Ternoa HUB Logo" layout="fill" />
     </div>
   );
 };

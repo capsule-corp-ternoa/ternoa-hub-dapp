@@ -7,9 +7,10 @@ import { useWalletConnectClient } from "../../../hooks/useWalletConnectClient";
 import { RootState, AppDispatch } from "../../../store";
 import {
   blockchain,
-  getBalances,
+  changeNetwork,
 } from "../../../store/slices/blockchain/blockchain";
 import Footer from "../../organisms/Footer";
+import { Network } from "../../../types";
 
 export interface IBaseTemplate {
   children: React.ReactNode | React.ReactNode[];
@@ -25,7 +26,7 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
     account,
     disconnect,
   } = useWalletConnectClient();
-  const { balances, isLoadingBalances } = useSelector(
+  const { currentNetwork, isConnecting: isConnectingBlockchain } = useSelector(
     (state: RootState) => state.blockchain
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -40,10 +41,14 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
     router.push("/");
   };
 
+  const onSelectNetwork = (network: Network) => {
+    dispatch(changeNetwork(network));
+  };
+
   return (
     <React.Fragment>
       <Head>
-        <title>TernoArt</title>
+        <title>Ternoa HUB</title>
         <meta name="description" content="TernoArt dApp" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
@@ -73,13 +78,13 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
           onClickAddress={() => {}}
           onClickMyNfts={() => router.push("/mynfts")}
           onClickLogout={onClickLogout}
-          caps={balances?.free.replace("CAPS", "")}
-          isLoadingCaps={isLoadingBalances}
-          avatarTheme="polkadot"
           isConnected={isConnected}
           onClickConnect={connect}
           isLoading={isConnecting || isInitializing}
           pubKey={account}
+          currentNetwork={currentNetwork}
+          onSelectNetwork={onSelectNetwork}
+          isLoadingNetwork={isConnectingBlockchain}
         />
         {children}
         <Footer />
