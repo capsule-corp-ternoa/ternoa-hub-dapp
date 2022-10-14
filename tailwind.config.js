@@ -171,6 +171,10 @@ module.exports = {
           default: "#2454FF",
         },
       },
+      gridTemplateColumns: {
+        nftListDesktop: "repeat(auto-fill, minmax(290px,1fr))",
+        nftList: "repeat(auto-fill, minmax(144px,1fr))",
+      },
     },
   },
   plugins: [],

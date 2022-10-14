@@ -10,7 +10,10 @@ import Textarea from "../../atoms/Textarea";
 import { ICreateNftTemplate, INftFormResult } from "./types";
 import FileForm from "../../molecules/FileForm";
 
-const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
+const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
+  onSubmit,
+  disabled,
+}) => {
   const [isPreviewVisible, setIsPreviewVisible] = useState<boolean>();
 
   const schema = yup
@@ -65,15 +68,26 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
   };
 
   const acceptedFileTypes: Accept = {
-    "image/*": [".png", ".jpg", ".gif", ".svg"],
-    "video/*": [".mp4", ".webm", ".mov", ".avi", ".ogg"],
-    "audio/*": [".mp3", ".wav"],
+    "image/jpeg": [".jpg"],
+    "image/png": [".png"],
+    "image/gif": [".gif"],
+    "image/svg+xml": [".svg"],
+    "video/mp4": [".mp4"],
+    "video/webm": [".webm"],
+    "video/quicktime": [".mov"],
+    "video/x-msvideo": [".avi"],
+    "video/ogg": [".ogg"],
+    "audio/mpeg": [".mp3"],
+    "audio/wav": [".wav"],
     "application/pdf": [".pdf"],
     "application/zip": [".zip"],
   };
 
   const acceptedPreviewTypes: Accept = {
-    "image/*": [".png", ".jpg", ".gif", ".svg"],
+    "image/jpeg": [".jpg"],
+    "image/png": [".png"],
+    "image/gif": [".gif"],
+    "image/svg+xml": [".svg"],
   };
 
   const onClickSubmit = () => {
@@ -83,7 +97,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row-reverse justify-center">
+    <div className="flex flex-col md:flex-row-reverse justify-center h-[max-content]">
       <div className="md:ml-s24 md:mb-[0px] flex flex-col justify-between">
         <Controller
           control={control}
@@ -167,6 +181,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({ onSubmit }) => {
               size="medium"
               className="mt-s20 md:mt-s32"
               onClick={onClickSubmit}
+              disabled={disabled}
             />
           </div>
         </form>

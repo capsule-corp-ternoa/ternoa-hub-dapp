@@ -16,4 +16,5 @@ export interface onSubmitParams {
 
 export interface ICreateNftTemplate {
   onSubmit: (params: onSubmitParams) => void;
+  disabled?: boolean;
 }

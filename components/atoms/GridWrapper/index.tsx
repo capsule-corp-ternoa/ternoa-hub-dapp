@@ -3,7 +3,7 @@ import { IGridWarapper } from "./types";
 
 const GridWrapper: React.FC<IGridWarapper> = ({ children, className = "" }) => {
   return (
-    <div className={`w-[73vw] sm:w-[83vw] md:w-[89vw] lg:w-[77vw] xl:w-[58vw] ${className}`}>
+    <div className={`w-[92vw] sm:w-[92vw] md:w-[85vw] lg:w-[70vw] xl:w-[60vw] ${className}`}>
       {children}
     </div>
   );

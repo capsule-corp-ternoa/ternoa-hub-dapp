@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { initializeApi } from "ternoa-js";
-import * as yup from "../../../utils/yup";
+import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import Navbar from "../../organisms/Navbar";
 import { useWalletConnectClient } from "../../../hooks/useWalletConnectClient";
-import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../../store";
-import { getBalances } from "../../../store/slices/blockchain";
+import {
+  blockchain,
+  changeNetwork,
+} from "../../../store/slices/blockchain/blockchain";
 import Footer from "../../organisms/Footer";
+import { Network } from "../../../types";
 
 export interface IBaseTemplate {
   children: React.ReactNode | React.ReactNode[];
 }
 
 const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
+  const router = useRouter();
   const {
     connect,
     isInitializing,
@@ -22,30 +25,30 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
     isConnecting,
     account,
     disconnect,
-    isDisconnecting,
   } = useWalletConnectClient();
-  const { balances, isLoadingBalances } = useSelector(
+  const { currentNetwork, isConnecting: isConnectingBlockchain } = useSelector(
     (state: RootState) => state.blockchain
   );
-  const [isConnectedToBlockchain, setIsConnectedToBlockchain] =
-    useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (isConnectedToBlockchain && account) {
-      dispatch(getBalances(account));
-    }
-  }, [isConnectedToBlockchain, account, dispatch]);
+    dispatch(blockchain.actions.setAddress(account));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
 
-  useEffect(() => {
-    yup.init();
-    initializeApi().then(() => setIsConnectedToBlockchain(true));
-  }, []);
+  const onClickLogout = () => {
+    disconnect();
+    router.push("/");
+  };
+
+  const onSelectNetwork = (network: Network) => {
+    dispatch(changeNetwork(network));
+  };
 
   return (
     <React.Fragment>
       <Head>
-        <title>TernoArt</title>
+        <title>Ternoa HUB</title>
         <meta name="description" content="TernoArt dApp" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
@@ -70,16 +73,18 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <main className="bg-gray-100">
+      <main className="bg-gray-100 min-h-screen flex flex-col">
         <Navbar
-          caps={balances?.free.replace("CAPS", "")}
-          isLoadingCaps={isLoadingBalances}
-          avatarTheme="polkadot"
+          onClickAddress={() => {}}
+          onClickMyNfts={() => router.push("/mynfts")}
+          onClickLogout={onClickLogout}
           isConnected={isConnected}
           onClickConnect={connect}
           isLoading={isConnecting || isInitializing}
-          onClickDisconnect={disconnect}
-          isDisconnecting={isDisconnecting}
+          pubKey={account}
+          currentNetwork={currentNetwork}
+          onSelectNetwork={onSelectNetwork}
+          isLoadingNetwork={isConnectingBlockchain}
         />
         {children}
         <Footer />

@@ -1,21 +1,24 @@
 import { IInputSwitch } from "./types";
 
 const primary: IInputSwitch = {
-  value: "Hello World!",
+  placeholder: "Hello World!",
   type: "primary",
-  id: "id"
+  id: "id",
+  ref: undefined
 };
 
 const error: IInputSwitch = {
-  value: "Hello World!",
+  placeholder: "Hello World!",
   type: "error",
-  id: "id"
+  id: "id",
+  ref: undefined
 };
 
 const disabled: IInputSwitch = {
-  value: "Hello World!",
+  placeholder: "Hello World!",
   type: "disabled",
-  id: "id"
+  id: "id",
+  ref: undefined
 };
 
 export const mockInputSwitchProps = {

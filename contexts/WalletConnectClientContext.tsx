@@ -4,19 +4,21 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useRef,
 } from "react";
 import Client from "@walletconnect/sign-client";
-import QRCodeModal from "@walletconnect/legacy-modal";
 import { isMobile as checkIsMobile } from "@walletconnect/legacy-utils";
 import { ERROR } from "@walletconnect/utils";
 import { IContext } from "./types";
 import { PairingTypes, SessionTypes } from "@walletconnect/types";
 import WalletConnectModal from "../components/organisms/modals/WalletConnectModal";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const DEFAULT_APP_METADATA = {
-  name: "TernoArt",
-  description: "TernoArt dApp",
-  url: "https://ternoa.com",
+  name: "Ternoa HUB",
+  description: "Ternoa HUB dApp",
+  url: "https://hub.ternoa.network/",
   icons: ["https://www.ternoa.com/favicon.ico"],
 };
 
@@ -29,6 +31,7 @@ export const WalletConnectClientContextProvider = ({
 }: {
   children: ReactNode | ReactNode[];
 }) => {
+  const initialized = useRef<boolean>();
   const [client, setClient] = useState<Client>();
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
@@ -39,6 +42,9 @@ export const WalletConnectClientContextProvider = ({
   const [walletConnectModalUri, setWalletConnectModalUri] =
     useState<string | undefined>(undefined);
   const isMobile = checkIsMobile();
+  const currentNetwork = useSelector(
+    (state: RootState) => state.blockchain.currentNetwork
+  );
 
   const isConnected = !!session;
 
@@ -47,6 +53,7 @@ export const WalletConnectClientContextProvider = ({
     setSession(undefined);
     setAccount(undefined);
   };
+
 
   const onSessionConnected = useCallback((_session: SessionTypes.Struct) => {
     const account = Object.values(_session.namespaces)
@@ -67,7 +74,7 @@ export const WalletConnectClientContextProvider = ({
         setIsConnecting(true);
         const requiredNamespaces = {
           ternoa: {
-            chains: [process.env.NEXT_PUBLIC_TERNOA_CHAIN!],
+            chains: [currentNetwork.ternoaChain],
             events: ["polkadot_event_test"],
             methods: ["sign_message"],
           },
@@ -99,7 +106,7 @@ export const WalletConnectClientContextProvider = ({
         }
       }
     },
-    [client, onSessionConnected, isMobile]
+    [client, currentNetwork.ternoaChain, onSessionConnected, isMobile]
   );
 
   const disconnect = useCallback(async () => {
@@ -189,7 +196,7 @@ export const WalletConnectClientContextProvider = ({
   const request = async (hash: string) => {
     if (client) {
       return client.request<string>({
-        chainId: process.env.NEXT_PUBLIC_TERNOA_CHAIN!,
+        chainId: currentNetwork.ternoaChain,
         topic: session!.topic,
         request: {
           method: "sign_message",
@@ -198,7 +205,7 @@ export const WalletConnectClientContextProvider = ({
             request: {
               nonce: 1,
               validity: null,
-              submit: true,
+              submit: false,
               hash,
             },
           },
@@ -210,10 +217,18 @@ export const WalletConnectClientContextProvider = ({
   };
 
   useEffect(() => {
-    if (!client) {
+    if (!client && !initialized.current) {
+      initialized.current = true;
       createClient();
     }
   }, [client, createClient]);
+  
+  useEffect(() => {
+    if (currentNetwork && isConnected) {
+      disconnect();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[currentNetwork])
 
   return (
     <WalletConnectClientContext.Provider

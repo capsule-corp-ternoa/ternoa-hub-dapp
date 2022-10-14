@@ -1,105 +1,78 @@
 import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
-import {
-  useCreateNft,
-  WalletConnectRejectedRequest,
-} from "../hooks/useCreateNft";
-import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
-import { onSubmitParams } from "../components/templates/CreateNftTemplate/types";
-import CreateNftTemplate from "../components/templates/CreateNftTemplate";
-import NftCreationModal from "../components/organisms/modals/NftCreationModal";
-import NftMintingModal from "../components/organisms/modals/NftMintingModal";
-import NtfCreationSuccessModal from "../components/organisms/modals/NftCreationSuccessModal";
-import AlertModal from "../components/molecules/AlertModal";
+import { useRouter } from "next/router";
+import GridWrapper from "../components/atoms/GridWrapper";
+import Text from "../components/atoms/Text";
+import ActionCard from "../components/molecules/ActionCard";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
+import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 
 const Home: NextPage = () => {
-  const { isConnected, connect } = useWalletConnectClient();
-  const {
-    createNft,
-    createNftLoadingState,
-    mintNftLoadingState,
-    isMintNtfSuccess,
-    mintNftError,
-    ipfsError,
-    txId,
-  } = useCreateNft();
-  const [isSucessModalVisible, setIsSucessModalVisible] =
-    useState<boolean>(false);
-  const [isIpfsErrorModalVisible, setIsIpfsErrorModalVisible] =
-    useState<boolean>(false);
-  const [isMintNFTErrorModalVisible, setIsMintNFTErrorModalVisible] =
-    useState<boolean>(false);
-  const [onSubmitResponse, setSubmitResponse] = useState<onSubmitParams>();
+  const router = useRouter();
+  const { account, connect } = useWalletConnectClient();
 
-  useEffect(() => {
-    setIsSucessModalVisible(isMintNtfSuccess);
-  }, [isMintNtfSuccess]);
-
-  useEffect(() => {
-    setIsIpfsErrorModalVisible(Boolean(ipfsError));
-  }, [ipfsError]);
-
-  useEffect(() => {
-    setIsMintNFTErrorModalVisible(Boolean(mintNftError));
-  }, [mintNftError]);
-
-  useEffect(() => {
-    const _createNft = async (onSubmitResponse: onSubmitParams) => {
-      await createNft({
-        title: onSubmitResponse.result.name,
-        ...onSubmitResponse.result,
-      });
-      onSubmitResponse.formData.reset();
-    };
-    if (onSubmitResponse && isConnected) {
-      setSubmitResponse(undefined);
-      _createNft(onSubmitResponse);
-    }
-  }, [onSubmitResponse, createNft, isConnected]);
-
-  const parseMintNftError = () => {
-    if (mintNftError instanceof WalletConnectRejectedRequest) {
-      return "The request has been rejected";
+  const onClickAction = async (route: string) => {
+    if (account) {
+      router.push(route);
     } else {
-      return "There was an error trying to mint the NFT";
-    }
-  };
-
-  const onSubmit = async ({ result, formData }: onSubmitParams) => {
-    if (!isConnected) {
-      const session = await connect();
-      if (session) {
-        setSubmitResponse({ result, formData });
-      }
-    } else {
-      setSubmitResponse({ result, formData });
+      await connect();
+      router.push(route);
     }
   };
 
   return (
     <BaseTemplate>
-      <NftCreationModal isOpened={createNftLoadingState === "loading"} />
-      <NftMintingModal
-        isOpened={mintNftLoadingState === "loading"}
-        txId={txId || "Loading..."}
-      />
-      <NtfCreationSuccessModal
-        isOpened={isSucessModalVisible}
-        onClose={() => setIsSucessModalVisible(false)}
-      />
-      <AlertModal
-        isOpened={isMintNFTErrorModalVisible}
-        onClose={() => setIsMintNFTErrorModalVisible(false)}
-        title={parseMintNftError()}
-      />
-      <AlertModal
-        isOpened={isIpfsErrorModalVisible}
-        onClose={() => setIsIpfsErrorModalVisible(false)}
-        title="There was an error trying to create the NFT"
-      />
-      <div className="flex justify-center bg-gray-100 py-s40">
-        <CreateNftTemplate onSubmit={onSubmit} />
+      <div className="flex flex-1 md:pt-[100px] pt-s24 justify-center">
+        <GridWrapper className="flex items-center flex-col mb-s136">
+          <Text text="Ternoa HUB" type="h1" weight="medium" />
+          <Text
+            text="We help creator to make their idea come to life."
+            type="h4"
+            weight="medium"
+            color="text-gray-600"
+            className="md:mt-s20 mt-s16 md:mb-[80px] mb-s40 text-center"
+          />
+          <div className="flex flex-col lg:flex-row w-full lg:w-auto">
+            <ActionCard
+              imgProps={{
+                src: "/nft-frame.svg",
+                alt: "Create NFTs",
+                width: 97,
+                height: 148,
+              }}
+              title="Basic NFTs"
+              body={`Allows you to create a \n unique NFT`}
+              action="Create NFTs"
+              onClickAction={() => onClickAction("/createnft")}
+              className="w-full lg:w-[332px] lg:mr-s24 mb-s16"
+            />
+            <ActionCard
+              imgProps={{
+                src: "/collection-frame.svg",
+                alt: "Create Collection",
+                width: 97,
+                height: 148,
+              }}
+              title="Create Collection"
+              body={`Allows you to group several NFTs \ntogether`}
+              action="Create Collection"
+              onClickAction={() => onClickAction('/createcollection')}
+              className="w-full lg:w-[332px] lg:mr-s24 mb-s16"
+            />
+            <ActionCard
+              imgProps={{
+                src: "/marketplace-frame.svg",
+                alt: "Set a Marketplace",
+                width: 204,
+                height: 156,
+              }}
+              title="Marketplace"
+              body={`Allows you to create a place \nto sell your NFTs`}
+              action="Set a Marketplace"
+              onClickAction={() => {}}
+              className="w-full lg:w-[332px] mb-s16 !pt-[32px]"
+            />
+          </div>
+        </GridWrapper>
       </div>
     </BaseTemplate>
   );
