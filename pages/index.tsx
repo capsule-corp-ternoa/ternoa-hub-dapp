@@ -25,7 +25,7 @@ const Home: NextPage = () => {
         <GridWrapper className="flex items-center flex-col mb-s136">
           <Text text="Ternoa HUB" type="h1" weight="medium" />
           <Text
-            text="We help creator to make their idea come to life."
+            text="We help creators make their ideas come to life."
             type="h4"
             weight="medium"
             color="text-gray-600"
