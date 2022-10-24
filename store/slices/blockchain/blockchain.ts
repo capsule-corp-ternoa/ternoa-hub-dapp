@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { safeDisconnect, initializeApi } from "ternoa-js";
 import { RootState } from "../..";
-import { ALPHANET_NETWORK } from "../../../constants/network";
+import { MAINNET_NETWORK } from "../../../constants/network";
 import { Network } from "../../../types";
-import { indexerApi } from "../../services/indexerApi";
 import type { BlockchainState } from "./types";
 
 const initialState: BlockchainState = {
   isConnecting: false,
   isConnected: false,
   address: undefined,
-  currentNetwork: ALPHANET_NETWORK,
+  currentNetwork: MAINNET_NETWORK,
 };
 
 export const blockchain = createSlice({
