@@ -125,7 +125,7 @@ const CreateCollectionFilesForm: React.FC<ICreateCollectionFilesForm> = ({
                 size="small"
                 className="px-s28 mt-s20"
                 autoWidth
-                onClick={() => dropzoneRefLogo.current?.open()}
+                onClick={() => dropzoneRefBanner.current?.open()}
               />
             </div>
           </div>

@@ -7,6 +7,7 @@ export interface INftFormResult {
   royalty: number;
   file: File;
   preview?: File;
+  collectionId?: number;
 }
 
 export interface onSubmitParams {
