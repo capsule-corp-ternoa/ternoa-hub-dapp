@@ -72,7 +72,7 @@ const Home: NextPage = () => {
               title="Marketplace"
               body={`Allows you to create a place \nto sell your NFTs`}
               action="Set a Marketplace"
-              onClickAction={() => {}}
+              onClickAction={() => onClickAction("/createmarketplace")}
             />
             <ActionCard
               imgComponent={renderQuestionCard()}
