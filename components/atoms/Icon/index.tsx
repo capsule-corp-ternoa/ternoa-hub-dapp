@@ -307,6 +307,15 @@ const Icon: React.FC<IIcon> = ({
           className={className}
         />
       );
+    case "Lock":
+      return (
+        <Phosphor.Lock
+          size={size}
+          color={color}
+          weight={weight}
+          className={className}
+        />
+      );
     default:
       return (
         <Phosphor.Question
