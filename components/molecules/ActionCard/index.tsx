@@ -5,18 +5,22 @@ import Text from "../../atoms/Text";
 import { IActionCard } from "./types";
 
 const ActionCard: React.FC<IActionCard> = ({
+  imgComponent,
   imgProps,
   title,
   body,
   action,
-  onClickAction,
+  onClickAction = () => {},
+  disabled,
   className = "",
 }) => {
   return (
     <Card
       className={`justify-center flex flex-col items-center !py-s40 ${className}`}
     >
-      <Image alt={title} {...imgProps} />
+      {imgComponent
+        ? imgComponent
+        : imgProps && <Image alt={title} {...imgProps} />}
       <Text text={title} type="p1" weight="medium" className="my-[18px]" />
       {!!body && (
         <Text
@@ -33,6 +37,7 @@ const ActionCard: React.FC<IActionCard> = ({
         size="medium"
         autoWidth
         onClick={onClickAction}
+        disabled={disabled}
         className={"md:w-[188px] md:px-[0px]"}
       />
     </Card>

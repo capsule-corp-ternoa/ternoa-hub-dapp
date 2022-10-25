@@ -25,29 +25,26 @@ const TxModal: React.FC<ITxModal> = ({ txId, title, body, ...props }) => {
         </div>
         {body && (
           <div>
+            <Text type="p2" weight="light" text={body} color="text-gray-400" />
+          </div>
+        )}
+        {txId && (
+          <div className="flex justify-center">
             <Text
               type="p2"
               weight="light"
-              text={body}
+              text="Transaction ID:"
               color="text-gray-400"
+            />
+            <Text
+              type="p2"
+              weight="medium"
+              text={middleEllipsis(txId)}
+              color="text-gray-800"
+              className="ml-s8"
             />
           </div>
         )}
-        <div className="flex justify-center">
-          <Text
-            type="p2"
-            weight="light"
-            text="Transaction ID:"
-            color="text-gray-400"
-          />
-          <Text
-            type="p2"
-            weight="medium"
-            text={middleEllipsis(txId)}
-            color="text-gray-800"
-            className="ml-s8"
-          />
-        </div>
       </div>
     </Modal>
   );
