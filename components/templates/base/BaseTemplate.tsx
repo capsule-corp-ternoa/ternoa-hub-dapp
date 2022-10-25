@@ -48,7 +48,7 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
   return (
     <React.Fragment>
       <Head>
-        <title>Ternoa HUB</title>
+        <title>Ternoa Hub - Explore All Chain Features</title>
         <meta name="description" content="TernoArt dApp" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
