@@ -5,8 +5,9 @@ import "../components/atoms/Switch/styles.css";
 import "../components/atoms/LoaderEllipsis/styles.css";
 import type { AppProps } from "next/app";
 import { Provider, useDispatch } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { WalletConnectClientContextProvider } from "../contexts/WalletConnectClientContext";
-import { AppDispatch, store } from "../store";
+import { AppDispatch, persistor, store } from "../store";
 import { useRef, useEffect } from "react";
 import * as yup from "../utils/yup";
 import { connect } from "../store/slices/blockchain/blockchain";
@@ -30,10 +31,12 @@ const Initialize = () => {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <WalletConnectClientContextProvider>
-        <Initialize />
-        <Component {...pageProps} />
-      </WalletConnectClientContextProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <WalletConnectClientContextProvider>
+          <Initialize />
+          <Component {...pageProps} />
+        </WalletConnectClientContextProvider>
+      </PersistGate>
     </Provider>
   );
 }
