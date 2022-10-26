@@ -75,6 +75,18 @@ const Home: NextPage = () => {
               onClickAction={() => onClickAction("/createmarketplace")}
             />
             <ActionCard
+              imgProps={{
+                src: "/marketplace-frame.svg",
+                alt: "Set Marketplace Configuration",
+                width: 204,
+                height: 156,
+              }}
+              title="Set Marketplace Configuration"
+              body={`Allows you configure your marketplaces`}
+              action="Configure Marketplace"
+              onClickAction={() => onClickAction("/configuremarketplace")}
+            />
+            <ActionCard
               imgComponent={renderQuestionCard()}
               title="In-app Token"
               body={`Little description of the feature on two lines maximum.`}
