@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
 import IconModal from "../components/molecules/IconModal";
+import MarketplaceCreationSuccessModal from "../components/organisms/modals/MarketplaceCreationSuccessModal";
 import TxModal from "../components/organisms/modals/TxModal";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
 import CreateMarketplaceTemplate from "../components/templates/CreateMarketplaceTemplate";
@@ -26,6 +27,7 @@ const CreateNft: NextPage = () => {
     createMarketplaceLoadingState,
     blockchainError,
     isCreateMarketplaceTxSuccess,
+    marketplaceId,
   } = useCreateMarketplace();
 
   const [isSucessModalVisible, setIsSucessModalVisible] =
@@ -82,13 +84,19 @@ const CreateNft: NextPage = () => {
         }
         title="Create Marketplace request sent!"
       />
-      <IconModal
-        iconName="CheckCircle"
-        title="Creation complete!"
-        body="You have created your Marketplace with success!"
-        isOpened={isSucessModalVisible}
-        onClose={() => setIsSucessModalVisible(false)}
-      />
+      {marketplaceId && (
+        <MarketplaceCreationSuccessModal
+          isOpened={isSucessModalVisible}
+          onClose={() => setIsSucessModalVisible(false)}
+          marketplaceId={marketplaceId.toString()}
+          onClickSetMarketplaceConfiguration={() =>
+            router.push({
+              pathname: "/configuremarketplace",
+              query: { marketplaceId },
+            })
+          }
+        />
+      )}
       <IconModal
         iconName="Warning"
         isOpened={isTxErrorModalVisible}

@@ -41,7 +41,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgProps={{
                 src: "/nft-frame.svg",
-                alt: "Create NFTs",
+                alt: "Create an NFT",
                 width: 97,
                 height: 148,
               }}
@@ -53,11 +53,11 @@ const Home: NextPage = () => {
             <ActionCard
               imgProps={{
                 src: "/collection-frame.svg",
-                alt: "Create Collection",
+                alt: "Collection",
                 width: 97,
                 height: 148,
               }}
-              title="Create Collection"
+              title="Collection"
               body={`Create a Collection,\n to group your NFTs`}
               action="Create"
               onClickAction={() => onClickAction("/createcollection")}
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgProps={{
                 src: "/marketplace-frame.svg",
-                alt: "Set a Marketplace",
+                alt: "Create a Marketplace",
                 width: 204,
                 height: 156,
               }}
@@ -77,11 +77,11 @@ const Home: NextPage = () => {
             <ActionCard
               imgProps={{
                 src: "/marketplace-frame.svg",
-                alt: "Set Marketplace Configuration",
+                alt: "Marketplace Configuration",
                 width: 204,
                 height: 156,
               }}
-              title="Set Marketplace Configuration"
+              title="Marketplace Configuration"
               body={`Configure your marketplace\n `}
               action="Configure"
               onClickAction={() => onClickAction("/configuremarketplace")}

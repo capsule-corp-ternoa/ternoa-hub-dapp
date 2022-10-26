@@ -15,6 +15,12 @@ import { WalletConnectRejectedRequest } from "../types";
 
 const CreateNft: NextPage = () => {
   const router = useRouter();
+  const { marketplaceId } = router.query;
+  console.log(
+    marketplaceId,
+    parseInt(marketplaceId as string),
+    marketplaceId as string
+  );
   const { account, client } = useWalletConnectClient();
   const isConnectingBlockchain = useSelector(
     (state: RootState) => state.blockchain.isConnecting
@@ -102,12 +108,15 @@ const CreateNft: NextPage = () => {
         onClose={() => setIsIpfsErrorModalVisible(false)}
         title="There was an error trying to set marketplace's configuration"
       />
-      <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
-        <SetMarketplaceConfigurationTemplate
-          onSubmit={onSubmit}
-          disabled={isConnectingBlockchain}
-        />
-      </div>
+      {router.isReady && (
+        <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
+          <SetMarketplaceConfigurationTemplate
+            onSubmit={onSubmit}
+            disabled={isConnectingBlockchain}
+            defaultMarketplaceId={parseInt(marketplaceId as string)}
+          />
+        </div>
+      )}
     </BaseTemplate>
   );
 };

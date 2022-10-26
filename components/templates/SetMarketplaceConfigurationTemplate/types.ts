@@ -16,4 +16,5 @@ export interface onSubmitParams {
 export interface ISetMarketplaceConfigurationTemplate {
   onSubmit: (params: onSubmitParams) => void;
   disabled?: boolean;
+  defaultMarketplaceId?: number;
 }
