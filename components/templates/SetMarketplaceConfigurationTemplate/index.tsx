@@ -12,7 +12,7 @@ import {
 import CreateMarketplaceFilesForm from "../../molecules/SetMarketplaceConfigurationFilesForm";
 
 const SetMarketplaceConfigurationTemplate: React.FC<ISetMarketplaceConfigurationTemplate> =
-  ({ onSubmit, disabled }) => {
+  ({ onSubmit, disabled, defaultMarketplaceId }) => {
     const schema = yup
       .object({
         name: yup.string().required().label("Name"),
@@ -42,6 +42,9 @@ const SetMarketplaceConfigurationTemplate: React.FC<ISetMarketplaceConfiguration
 
     const formData = useForm<IMarketplaceConfigurationFormResult>({
       resolver: yupResolver(schema),
+      defaultValues: {
+        marketplaceId: defaultMarketplaceId,
+      },
     });
 
     const {
@@ -77,14 +80,6 @@ const SetMarketplaceConfigurationTemplate: React.FC<ISetMarketplaceConfiguration
           <Text text="Set Marketplace Configuration" type="h3" weight="bold" />
           <form className="mt-s4 md:mt-s8 flex flex-col flex-1">
             <Input
-              id="name"
-              label="Name"
-              placeholder="Marketplace's name"
-              required={true}
-              error={errors.name?.message}
-              {...register("name")}
-            />
-            <Input
               id="marketplaceId"
               label="Marketplace ID"
               placeholder="Id of the marketplace to configure"
@@ -92,6 +87,14 @@ const SetMarketplaceConfigurationTemplate: React.FC<ISetMarketplaceConfiguration
               inputType="number"
               error={errors.marketplaceId?.message}
               {...register("marketplaceId")}
+            />
+            <Input
+              id="name"
+              label="Name"
+              placeholder="Marketplace's name"
+              required={true}
+              error={errors.name?.message}
+              {...register("name")}
             />
             <Input
               id="comissionFee"

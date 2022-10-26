@@ -9,12 +9,13 @@ export interface CreatMarketplaceParams {
 }
 
 export const useCreateMarketplace = () => {
-  const { request: walletConnectRequest } = useWalletConnectClient();
+  const { request: walletConnectRequest, account } = useWalletConnectClient();
 
   const [createMarketplaceTxLoadingState, setCreateMarketplaceTxLoadingState] =
     useState<LoadingState>("idle");
   const [createMarketplaceLoadingState, setCreateMarketplaceLoadingState] =
     useState<LoadingState>("idle");
+  const [marketplaceId, setMarketplaceId] = useState<string>();
   const [createMarketplaceError, setCreateMarketplaceError] = useState<Error>();
   const [blockchainError, setBlockchainError] = useState<Error>();
 
@@ -23,11 +24,25 @@ export const useCreateMarketplace = () => {
   const isCreateMarketplaceSuccess =
     createMarketplaceLoadingState === "finished" && !blockchainError;
 
+  const submitTx = async (signedHash: `0x${string}`): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      submitTxHex(signedHash, (result) => {
+        const marketplaceCreatedEvent = result.events.find(
+          (event) => event.event.method === "MarketplaceCreated"
+        );
+        if (marketplaceCreatedEvent) {
+          resolve(marketplaceCreatedEvent.event.data[0].toString());
+        }
+      }).catch(reject);
+    });
+  };
+
   const createMarketplace = async ({ isPrivate }: CreatMarketplaceParams) => {
     setCreateMarketplaceLoadingState("loading");
     setCreateMarketplaceTxLoadingState("idle");
     setBlockchainError(undefined);
     setCreateMarketplaceError(undefined);
+    setMarketplaceId(undefined);
     let txHash: string = "";
     try {
       txHash = await createMarketplaceTx(
@@ -44,7 +59,8 @@ export const useCreateMarketplace = () => {
       try {
         setCreateMarketplaceTxLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
-        await submitTxHex(JSON.parse(signedHash).signedTxHash);
+        const _marketplaceId = await submitTx(JSON.parse(signedHash).signedTxHash);
+        setMarketplaceId(_marketplaceId);
       } catch (err) {
         if (err && (err as any).code === -32000) {
           setCreateMarketplaceError(
@@ -69,5 +85,6 @@ export const useCreateMarketplace = () => {
     createMarketplaceLoadingState,
     blockchainError,
     isCreateMarketplaceSuccess,
+    marketplaceId
   };
 };

@@ -1,6 +1,5 @@
 import { CheckCircle } from "phosphor-react";
 import React from "react";
-import LoaderEllipsis from "../../../atoms/LoaderEllipsis";
 import Modal from "../../../atoms/Modal";
 import Text from "../../../atoms/Text";
 import { INtfCreationSuccessModal } from "./types";
