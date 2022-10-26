@@ -21,6 +21,11 @@ export interface CollectionJsonData {
   isSensitive: boolean;
 }
 
+export interface MarketplaceJsonData {
+  name: string;
+  logo: string;
+}
+
 export type Network = {
   name: string;
   indexerUrl: string;

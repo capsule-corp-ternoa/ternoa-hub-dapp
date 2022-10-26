@@ -21,14 +21,14 @@ const ActionCard: React.FC<IActionCard> = ({
       {imgComponent
         ? imgComponent
         : imgProps && <Image alt={title} {...imgProps} />}
-      <Text text={title} type="p1" weight="medium" className="my-[18px]" />
+      <Text text={title} type="p1" weight="medium" className="my-[18px] text-center" />
       {!!body && (
         <Text
           text={body}
           type="p4"
           weight="light"
-          color="text-gray-400 text-center"
-          className="mb-[18px] whitespace-pre-wrap"
+          color="text-gray-400"
+          className="mb-[18px] whitespace-pre-wrap text-center"
         />
       )}
       <Button
