@@ -21,6 +21,13 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
       name: yup.string().required().label("Name"),
       description: yup.string().required().label("Description"),
       quantity: yup.number().truncate().positive().required().label("Quantity"),
+      collectionId: yup
+        .number()
+        .truncate()
+        .positive()
+        .nullable(true)
+        .transform((_, val) => (val !== "" ? Number(val) : null))
+        .label("Collection ID"),
       royalty: yup
         .number()
         .typeError("You must specify a royalty number")
@@ -98,7 +105,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
 
   return (
     <div className="flex flex-col md:flex-row-reverse justify-center h-[max-content]">
-      <div className="md:ml-s24 md:mb-[0px] flex flex-col justify-between">
+      <div className="md:ml-s24 md:mb-[0px] flex flex-col justify-start">
         <Controller
           control={control}
           name="file"
@@ -173,6 +180,15 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
             defaultValue={undefined}
             inputType="number"
             {...register("royalty")}
+          />
+          <Input
+            id="collectionId"
+            label="Collection ID"
+            placeholder="Id of the collection"
+            error={errors.collectionId?.message}
+            defaultValue={undefined}
+            inputType="number"
+            {...register("collectionId")}
           />
           <div className="flex flex-1 items-end">
             <Button

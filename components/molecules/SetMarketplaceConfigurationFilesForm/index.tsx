@@ -4,21 +4,17 @@ import { Accept, DropzoneRef } from "react-dropzone";
 import { Controller } from "react-hook-form";
 import Button from "../../atoms/Button";
 import FileInput from "../../atoms/FileInput";
-import Icon from "../../atoms/Icon";
 import Text from "../../atoms/Text";
-import { ICreateCollectionFilesForm } from "./types";
+import { ISetMarketplaceConfigFilesForm } from "./types";
 
-const CreateCollectionFilesForm: React.FC<ICreateCollectionFilesForm> = ({
-  onSelectBanner,
+const SetMarketplaceConfigFilesForm: React.FC<ISetMarketplaceConfigFilesForm> = ({
   onSelectLogo,
   control,
   className = "",
   logoError,
-  bannerError,
   ...props
 }) => {
   const dropzoneRefLogo = useRef<DropzoneRef>(null);
-  const dropzoneRefBanner = useRef<DropzoneRef>(null);
 
   const acceptedTypes: Accept = {
     "image/jpeg": [".jpg"],
@@ -90,49 +86,8 @@ const CreateCollectionFilesForm: React.FC<ICreateCollectionFilesForm> = ({
           </React.Fragment>
         )}
       />
-      <Controller
-        control={control}
-        name="banner"
-        render={({ field: { ref, ...fieldProps } }) => (
-          <div className="mt-s40">
-            <FileInput
-              className="!w-[237px] !h-[137px] rounded-xl m-auto md:m-[0px]"
-              previewClassName="!w-[237px] !h-[137px] rounded-xl"
-              labelClassName="justify-center md:justify-start"
-              label="Banner image"
-              required={true}
-              onSelectFile={onSelectBanner}
-              dropzoneRef={dropzoneRefBanner}
-              description={renderDescription(
-                `The dimensions change on\ndifferent devices.\n600 x 400px recommended.`
-              )}
-              dropzoneIcon={
-                <Image
-                  src="/image.svg"
-                  alt="Select logo"
-                  width={59}
-                  height={47}
-                />
-              }
-              accept={acceptedTypes}
-              error={bannerError}
-              {...fieldProps}
-            />
-            <div>
-              <Button
-                text="Choose File"
-                type="tertiary"
-                size="small"
-                className="px-s28 mt-s20"
-                autoWidth
-                onClick={() => dropzoneRefBanner.current?.open()}
-              />
-            </div>
-          </div>
-        )}
-      />
     </div>
   );
 };
 
-export default CreateCollectionFilesForm;
+export default SetMarketplaceConfigFilesForm;

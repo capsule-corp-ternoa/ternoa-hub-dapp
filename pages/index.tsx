@@ -31,7 +31,7 @@ const Home: NextPage = () => {
         <GridWrapper className="flex items-center flex-col mb-s136">
           <Text text="Ternoa HUB" type="h1" weight="medium" />
           <Text
-            text="We help creator to make their idea come to life."
+            text="We help creators make their ideas come to life."
             type="h4"
             weight="medium"
             color="text-gray-600"
@@ -72,7 +72,19 @@ const Home: NextPage = () => {
               title="Marketplace"
               body={`Allows you to create a place \nto sell your NFTs`}
               action="Set a Marketplace"
-              onClickAction={() => {}}
+              onClickAction={() => onClickAction("/createmarketplace")}
+            />
+            <ActionCard
+              imgProps={{
+                src: "/marketplace-frame.svg",
+                alt: "Set Marketplace Configuration",
+                width: 204,
+                height: 156,
+              }}
+              title="Set Marketplace Configuration"
+              body={`Allows you configure your marketplaces`}
+              action="Configure Marketplace"
+              onClickAction={() => onClickAction("/configuremarketplace")}
             />
             <ActionCard
               imgComponent={renderQuestionCard()}

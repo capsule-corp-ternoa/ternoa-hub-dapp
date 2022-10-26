@@ -19,6 +19,7 @@ export interface CreatNftParams {
   description: string;
   royalty: number;
   quantity: number;
+  collectionId?: number;
 }
 
 export const useCreateNft = () => {
@@ -73,11 +74,16 @@ export const useCreateNft = () => {
     return await IpfsService.uploadFile(blob, currentNetwork);
   };
 
-  const createTx = async (hash: string, royalty: number, quantity: number) => {
+  const createTx = async (
+    hash: string,
+    royalty: number,
+    collectionId: number | undefined,
+    quantity: number
+  ) => {
     const txHash = await createTxHex("nft", "createNft", [
       hash,
       `000${royalty * 10000}`,
-      undefined,
+      collectionId,
       false,
     ]);
     if (quantity === 1) {
@@ -95,6 +101,7 @@ export const useCreateNft = () => {
     description,
     royalty,
     quantity,
+    collectionId,
   }: CreatNftParams) => {
     setCreateNftLoadingState("loading");
     setNftMintLoadingState("idle");
@@ -108,7 +115,12 @@ export const useCreateNft = () => {
         title,
         description,
       });
-      txHash = await createTx(ipfsJsonResponse.Hash, royalty, quantity);
+      txHash = await createTx(
+        ipfsJsonResponse.Hash,
+        royalty,
+        collectionId,
+        quantity
+      );
       await setTxId(ipfsJsonResponse.Hash);
     } catch (err) {
       if (err instanceof Error) {

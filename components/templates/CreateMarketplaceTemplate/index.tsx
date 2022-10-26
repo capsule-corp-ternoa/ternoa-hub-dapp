@@ -46,7 +46,7 @@ const CreateMarketplaceTemplate: React.FC<ICreateMarketplaceTemplate> = ({
             label="Visibility"
             placeholder={`${
               isCurrentBreakpoint("md")
-                ? `Tick to set marketplace as privarte`
+                ? `Tick to set marketplace as private`
                 : "Private"
             }`}
             leftIcon="Lock"
