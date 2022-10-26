@@ -46,8 +46,8 @@ const Home: NextPage = () => {
                 height: 148,
               }}
               title="Basic NFTs"
-              body={`Allows you to create a \n unique NFT`}
-              action="Create NFTs"
+              body={`Create a single NFT\n `}
+              action="Create"
               onClickAction={() => onClickAction("/createnft")}
             />
             <ActionCard
@@ -58,8 +58,8 @@ const Home: NextPage = () => {
                 height: 148,
               }}
               title="Create Collection"
-              body={`Allows you to group several NFTs \ntogether`}
-              action="Create Collection"
+              body={`Create a Collection,\n to group your NFTs`}
+              action="Create"
               onClickAction={() => onClickAction("/createcollection")}
             />
             <ActionCard
@@ -70,8 +70,8 @@ const Home: NextPage = () => {
                 height: 156,
               }}
               title="Marketplace"
-              body={`Allows you to create a place \nto sell your NFTs`}
-              action="Set a Marketplace"
+              body={`Create a Marketplace \nto list and sell NFTs`}
+              action="Create"
               onClickAction={() => onClickAction("/createmarketplace")}
             />
             <ActionCard
@@ -82,14 +82,14 @@ const Home: NextPage = () => {
                 height: 156,
               }}
               title="Set Marketplace Configuration"
-              body={`Allows you configure your marketplaces`}
-              action="Configure Marketplace"
+              body={`Configure your marketplace\n `}
+              action="Configure"
               onClickAction={() => onClickAction("/configuremarketplace")}
             />
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="In-app Token"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`Create your own token\n to be associated with a dApp`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -97,7 +97,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Royalties"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`Update the royalties value\n on the NFTs you created`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -105,7 +105,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Delegation"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`Delegate your NFT to allow someone\n else to benefit from it's utility`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -113,7 +113,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Soulbound Token"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`Create a single NFT\n that is not transferable`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -121,7 +121,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Auction"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`List your NFT for auction\n `}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Rental NFT"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`Monetize your NFT by renting it`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -137,7 +137,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Secret NFT"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`Create a single encrypted NFT that only the owner can decrypt`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -145,15 +145,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="NFT Dealing"
-              body={`Little description of the feature on two lines maximum.`}
-              action="Coming soon..."
-              disabled={true}
-              className="border-dashed border-[2px]"
-            />
-            <ActionCard
-              imgComponent={renderQuestionCard()}
-              title="TEE enclave"
-              body={`Little description of the feature on two lines maximum.`}
+              body={`Trade NFTs directly with another party\n `}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
