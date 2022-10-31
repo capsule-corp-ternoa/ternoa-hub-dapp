@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { safeDisconnect, initializeApi } from "ternoa-js";
+import { safeDisconnect, initializeApi, getRawApi } from "ternoa-js";
 import { RootState } from "../..";
 import { MAINNET_NETWORK } from "../../../constants/network";
 import { Network } from "../../../types";
@@ -18,6 +18,9 @@ export const blockchain = createSlice({
   reducers: {
     setAddress: (state, action: PayloadAction<string | undefined>) => {
       state.address = action.payload;
+    },
+    setStatus: (state, action: PayloadAction<boolean>) => {
+      state.isConnected = action.payload;
     },
   },
   extraReducers(builder) {
@@ -54,6 +57,7 @@ export const changeNetwork = createAsyncThunk<
 >("blockchain/changeNetwork", async (network: Network, thunkApi) => {
   await safeDisconnect();
   await initializeApi(network.blockchainUrl);
+  thunkApi.dispatch(subscribe());
   return network;
 });
 
@@ -62,7 +66,20 @@ export const connect = createAsyncThunk<void, undefined, { state: RootState }>(
   async (_p, thunkApi) => {
     const endpoint =
       thunkApi.getState().blockchain.currentNetwork.blockchainUrl;
-    
     await initializeApi(endpoint);
+    thunkApi.dispatch(subscribe());
+  }
+);
+
+export const subscribe = createAsyncThunk<void, undefined>(
+  "blockchain/subscribe",
+  async (_p, thunkApi) => {
+    const api = getRawApi();
+    api.on("connected", () => {
+      thunkApi.dispatch(blockchain.actions.setStatus(true));
+    });
+    api.on("disconnected", () => {
+      thunkApi.dispatch(blockchain.actions.setStatus(false));
+    });
   }
 );

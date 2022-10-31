@@ -3,6 +3,7 @@ import { submitTxHex, createMarketplaceTx } from "ternoa-js";
 import { useWalletConnectClient } from "./useWalletConnectClient";
 import { LoadingState, WalletConnectRejectedRequest } from "../types";
 import { MarketplaceKind } from "ternoa-js/marketplace/enum";
+import { retry } from "../utils/retry";
 
 export interface CreatMarketplaceParams {
   isPrivate: boolean;
@@ -59,7 +60,9 @@ export const useCreateMarketplace = () => {
       try {
         setCreateMarketplaceTxLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
-        const _marketplaceId = await submitTx(JSON.parse(signedHash).signedTxHash);
+        const _marketplaceId = await retry(submitTx, [
+          JSON.parse(signedHash).signedTxHash,
+        ]);
         setMarketplaceId(_marketplaceId);
       } catch (err) {
         if (err && (err as any).code === -32000) {
@@ -85,6 +88,6 @@ export const useCreateMarketplace = () => {
     createMarketplaceLoadingState,
     blockchainError,
     isCreateMarketplaceSuccess,
-    marketplaceId
+    marketplaceId,
   };
 };

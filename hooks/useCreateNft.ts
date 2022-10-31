@@ -11,6 +11,7 @@ import {
 } from "../types";
 import { nftApi } from "../store/slices/nfts";
 import { RootState } from "../store";
+import { retry } from "../utils/retry";
 
 export interface CreatNftParams {
   file: File;
@@ -133,7 +134,7 @@ export const useCreateNft = () => {
       try {
         setNftMintLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
-        await submitTxHex(JSON.parse(signedHash).signedTxHash);
+        await retry(submitTxHex, [JSON.parse(signedHash).signedTxHash]);
         dispatch(nftApi.util.invalidateTags(["Nfts"]));
       } catch (err) {
         if (err && (err as any).code === -32000) {

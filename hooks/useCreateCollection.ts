@@ -9,6 +9,7 @@ import {
   WalletConnectRejectedRequest,
 } from "../types";
 import { RootState } from "../store";
+import { retry } from "../utils/retry";
 
 export interface CreateCollectionParams {
   name: string;
@@ -78,7 +79,6 @@ export const useCreateCollection = () => {
       txHash = await createTx(ipfsJsonResponse.Hash, collectionData.limit);
       await setTxId(ipfsJsonResponse.Hash);
     } catch (err) {
-      console.log(err);
       if (err instanceof Error) {
         setIpfsError(err);
       }
@@ -89,9 +89,8 @@ export const useCreateCollection = () => {
       try {
         setCollectionTxLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
-        await submitTxHex(JSON.parse(signedHash).signedTxHash);
+        await retry(submitTxHex, [JSON.parse(signedHash).signedTxHash]);
       } catch (err) {
-        console.log(err);
         if (err && (err as any).code === -32000) {
           setCollectionTxError(
             new WalletConnectRejectedRequest("The request has been rejected")
