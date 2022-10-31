@@ -16,11 +16,6 @@ import { WalletConnectRejectedRequest } from "../types";
 const CreateNft: NextPage = () => {
   const router = useRouter();
   const { marketplaceId } = router.query;
-  console.log(
-    marketplaceId,
-    parseInt(marketplaceId as string),
-    marketplaceId as string
-  );
   const { account, client } = useWalletConnectClient();
   const isConnectingBlockchain = useSelector(
     (state: RootState) => state.blockchain.isConnecting
