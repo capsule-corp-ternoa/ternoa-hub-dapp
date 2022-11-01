@@ -11,6 +11,7 @@ import {
 import { RootState } from "../store";
 import { MarketplaceConfigAction } from "ternoa-js/marketplace/enum";
 import { retry } from "../utils/retry";
+import { IpfsUploadFileResponse } from "../pages/api/ipfs";
 
 export interface SetMarketplaceConfigurationParams {
   marketplaceId: number;
@@ -43,7 +44,7 @@ export const useSetMarketplaceConfiguration = () => {
 
   const uploadJsonToIpfs = async (
     marketplaceConfigData: SetMarketplaceConfigurationParams
-  ): Promise<IpfsService.IpfsUploadFileResponse> => {
+  ): Promise<IpfsUploadFileResponse> => {
     const ipfsLogoResponse = await IpfsService.uploadFile(
       marketplaceConfigData.logo,
       currentNetwork

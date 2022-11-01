@@ -12,6 +12,7 @@ import {
 import { nftApi } from "../store/slices/nfts";
 import { RootState } from "../store";
 import { retry } from "../utils/retry";
+import { IpfsUploadFileResponse } from "../pages/api/ipfs";
 
 export interface CreatNftParams {
   file: File;
@@ -51,7 +52,7 @@ export const useCreateNft = () => {
     preview?: File;
     title: string;
     description: string;
-  }): Promise<IpfsService.IpfsUploadFileResponse> => {
+  }): Promise<IpfsUploadFileResponse> => {
     const ipfsFileResponse = await IpfsService.uploadFile(file, currentNetwork);
     const ipfsPreviewResonse =
       preview && (await IpfsService.uploadFile(preview, currentNetwork));

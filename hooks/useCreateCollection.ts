@@ -10,6 +10,7 @@ import {
 } from "../types";
 import { RootState } from "../store";
 import { retry } from "../utils/retry";
+import { IpfsUploadFileResponse } from "../pages/api/ipfs";
 
 export interface CreateCollectionParams {
   name: string;
@@ -41,7 +42,7 @@ export const useCreateCollection = () => {
 
   const uploadJsonToIpfs = async (
     collectionData: CreateCollectionParams
-  ): Promise<IpfsService.IpfsUploadFileResponse> => {
+  ): Promise<IpfsUploadFileResponse> => {
     const ipfsLogoResponse = await IpfsService.uploadFile(
       collectionData.logo,
       currentNetwork

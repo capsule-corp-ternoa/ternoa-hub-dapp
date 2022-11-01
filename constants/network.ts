@@ -6,7 +6,6 @@ export const ALPHANET_NETWORK: Network = {
   blockchainUrl: process.env.NEXT_PUBLIC_ALPHANET_BLOCKCHAIN_URL!,
   ternoaChain: process.env.NEXT_PUBLIC_ALPHANET_TERNOA_CHAIN!,
   ipfsUrl: process.env.NEXT_PUBLIC_ALPHANET_IPFS_GATEWAY_BASE_URL!,
-  ipfsKey: process.env.NEXT_PUBLIC_ALPHANET_IPFS_GATEWAY_KEY!,
 };
 
 export const MAINNET_NETWORK: Network = {
@@ -15,5 +14,4 @@ export const MAINNET_NETWORK: Network = {
   blockchainUrl: process.env.NEXT_PUBLIC_MAINNET_BLOCKCHAIN_URL!,
   ternoaChain: process.env.NEXT_PUBLIC_MAINNET_TERNOA_CHAIN!,
   ipfsUrl: process.env.NEXT_PUBLIC_MAINNET_IPFS_GATEWAY_BASE_URL!,
-  ipfsKey: process.env.NEXT_PUBLIC_MAINNET_IPFS_GATEWAY_KEY!,
 };
