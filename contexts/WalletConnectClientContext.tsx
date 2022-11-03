@@ -179,7 +179,7 @@ export const WalletConnectClientContextProvider = ({
       const _client = await Client.init({
         logger: "debug",
         relayUrl: "wss://wallet-connectrelay.ternoa.network/",
-        projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
         metadata: DEFAULT_APP_METADATA,
       });
       console.log("CREATED CLIENT: ", _client);
