@@ -10,6 +10,8 @@ import {
 } from "../types";
 import { RootState } from "../store";
 import { MarketplaceConfigAction } from "ternoa-js/marketplace/enum";
+import { retry } from "../utils/retry";
+import { IpfsUploadFileResponse } from "../pages/api/ipfs";
 
 export interface SetMarketplaceConfigurationParams {
   marketplaceId: number;
@@ -42,7 +44,7 @@ export const useSetMarketplaceConfiguration = () => {
 
   const uploadJsonToIpfs = async (
     marketplaceConfigData: SetMarketplaceConfigurationParams
-  ): Promise<IpfsService.IpfsUploadFileResponse> => {
+  ): Promise<IpfsUploadFileResponse> => {
     const ipfsLogoResponse = await IpfsService.uploadFile(
       marketplaceConfigData.logo,
       currentNetwork
@@ -100,7 +102,6 @@ export const useSetMarketplaceConfiguration = () => {
       );
       await setTxId(ipfsJsonResponse.Hash);
     } catch (err) {
-      console.log(err);
       if (err instanceof Error) {
         setIpfsError(err);
       }
@@ -111,9 +112,8 @@ export const useSetMarketplaceConfiguration = () => {
       try {
         setMarketplaceTxLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
-        await submitTxHex(JSON.parse(signedHash).signedTxHash);
+        await retry(submitTxHex, [JSON.parse(signedHash).signedTxHash]);
       } catch (err) {
-        console.log(err);
         if (err && (err as any).code === -32000) {
           setMarketplaceTxError(
             new WalletConnectRejectedRequest("The request has been rejected")

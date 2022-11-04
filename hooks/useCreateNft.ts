@@ -11,6 +11,8 @@ import {
 } from "../types";
 import { nftApi } from "../store/slices/nfts";
 import { RootState } from "../store";
+import { retry } from "../utils/retry";
+import { IpfsUploadFileResponse } from "../pages/api/ipfs";
 
 export interface CreatNftParams {
   file: File;
@@ -50,7 +52,7 @@ export const useCreateNft = () => {
     preview?: File;
     title: string;
     description: string;
-  }): Promise<IpfsService.IpfsUploadFileResponse> => {
+  }): Promise<IpfsUploadFileResponse> => {
     const ipfsFileResponse = await IpfsService.uploadFile(file, currentNetwork);
     const ipfsPreviewResonse =
       preview && (await IpfsService.uploadFile(preview, currentNetwork));
@@ -133,7 +135,7 @@ export const useCreateNft = () => {
       try {
         setNftMintLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
-        await submitTxHex(JSON.parse(signedHash).signedTxHash);
+        await retry(submitTxHex, [JSON.parse(signedHash).signedTxHash]);
         dispatch(nftApi.util.invalidateTags(["Nfts"]));
       } catch (err) {
         if (err && (err as any).code === -32000) {
