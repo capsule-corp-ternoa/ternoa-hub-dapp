@@ -32,12 +32,23 @@ export type Network = {
   blockchainUrl: string;
   ternoaChain: string;
   ipfsUrl: string;
-  ipfsKey: string;
+};
+
+export type IpfsServiceData = {
+  url: string;
+  key: string;
 };
 
 export class WalletConnectRejectedRequest extends Error {
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, WalletConnectRejectedRequest.prototype);
+  }
+}
+
+export class InvalidNetworkName extends Error {
+  constructor(message: string) {
+    super(message);
+    Object.setPrototypeOf(this, InvalidNetworkName.prototype);
   }
 }
