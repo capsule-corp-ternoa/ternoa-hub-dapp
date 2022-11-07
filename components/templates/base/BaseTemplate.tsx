@@ -25,6 +25,7 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
     isConnecting,
     account,
     disconnect,
+    isCreatingUri,
   } = useWalletConnectClient();
   const { currentNetwork, isConnecting: isConnectingBlockchain } = useSelector(
     (state: RootState) => state.blockchain
@@ -80,7 +81,7 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
           onClickLogout={onClickLogout}
           isConnected={isConnected}
           onClickConnect={connect}
-          isLoading={isConnecting || isInitializing}
+          isLoading={isConnecting || isInitializing || isCreatingUri}
           pubKey={account}
           currentNetwork={currentNetwork}
           onSelectNetwork={onSelectNetwork}

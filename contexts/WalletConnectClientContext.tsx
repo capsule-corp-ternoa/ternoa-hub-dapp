@@ -38,6 +38,7 @@ export const WalletConnectClientContextProvider = ({
   const [isInitializing, setIsInitializing] = useState<boolean>(false);
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
   const [isDisconnecting, setIsDisconnecting] = useState<boolean>(false);
+  const [isCreatingUri, setIsCreatingUri] = useState<boolean>(false);
   const [account, setAccount] = useState<string>();
   const [walletConnectModalUri, setWalletConnectModalUri] =
     useState<string | undefined>(undefined);
@@ -53,7 +54,6 @@ export const WalletConnectClientContextProvider = ({
     setSession(undefined);
     setAccount(undefined);
   };
-
 
   const onSessionConnected = useCallback((_session: SessionTypes.Struct) => {
     const account = Object.values(_session.namespaces)
@@ -71,7 +71,7 @@ export const WalletConnectClientContextProvider = ({
         throw new Error("WalletConnect is not initialized");
       }
       try {
-        setIsConnecting(true);
+        setIsCreatingUri(true);
         const requiredNamespaces = {
           ternoa: {
             chains: [currentNetwork.ternoaChain],
@@ -83,10 +83,12 @@ export const WalletConnectClientContextProvider = ({
           pairingTopic: pairing?.topic,
           requiredNamespaces: requiredNamespaces,
         });
+        setIsCreatingUri(false);
         if (uri) {
           if (!isMobile) {
             console.log("URI:", uri);
             setWalletConnectModalUri(uri);
+            setIsConnecting(true);
           } else {
             window.location.replace(`ternoa-wallet://wc?uri=${uri}`);
           }
@@ -101,6 +103,7 @@ export const WalletConnectClientContextProvider = ({
         // ignore rejection
       } finally {
         setIsConnecting(false);
+        setIsCreatingUri(false);
         if (!isMobile) {
           setWalletConnectModalUri(undefined);
         }
@@ -222,13 +225,13 @@ export const WalletConnectClientContextProvider = ({
       createClient();
     }
   }, [client, createClient]);
-  
+
   useEffect(() => {
     if (currentNetwork && isConnected) {
       disconnect();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[currentNetwork])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentNetwork]);
 
   return (
     <WalletConnectClientContext.Provider
@@ -244,6 +247,7 @@ export const WalletConnectClientContextProvider = ({
         connect,
         disconnect,
         request,
+        isCreatingUri,
       }}
     >
       <WalletConnectModal
