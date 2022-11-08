@@ -11,6 +11,7 @@ export interface IContext {
   isConnecting: boolean;
   isDisconnecting: boolean;
   isConnected: boolean;
+  isCreatingUri: boolean;
   account?: string;
   request: (hash: string) => Promise<string>;
 }
