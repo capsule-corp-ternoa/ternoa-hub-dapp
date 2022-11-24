@@ -10,7 +10,7 @@ export interface CreatMarketplaceParams {
 }
 
 export const useCreateMarketplace = () => {
-  const { request: walletConnectRequest, account } = useWalletConnectClient();
+  const { request: walletConnectRequest } = useWalletConnectClient();
 
   const [createMarketplaceTxLoadingState, setCreateMarketplaceTxLoadingState] =
     useState<LoadingState>("idle");

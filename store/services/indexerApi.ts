@@ -2,7 +2,7 @@ import { BaseQueryFn, createApi, retry } from "@reduxjs/toolkit/query/react";
 import { request, ClientError } from "graphql-request";
 import { RootState } from "..";
 
-const graphqlBaseQuery: BaseQueryFn<{ body: string }, unknown> = async (
+export const graphqlBaseQuery: BaseQueryFn<{ body: string }, unknown> = async (
   { body },
   api
 ) => {

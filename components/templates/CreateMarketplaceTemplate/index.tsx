@@ -1,70 +1,76 @@
-import React, { useEffect, useState } from "react";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
 import Button from "../../atoms/Button";
 import Text from "../../atoms/Text";
-import { ICreateMarketplaceTemplate, IMarketplaceFormResult } from "./types";
-import InputSwitch from "../../atoms/InputSwitch";
-import { useWindowBreakpoint } from "../../../hooks/useWindowBreakpoint";
+import { ICreateMarketplaceTemplate } from "./types";
+import Image from "next/image";
+import ButtonToggle from "../../atoms/ButtonToggle";
 
 const CreateMarketplaceTemplate: React.FC<ICreateMarketplaceTemplate> = ({
   onSubmit,
   disabled,
 }) => {
-  const { isCurrentBreakpoint } = useWindowBreakpoint();
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
-  const schema = yup
-    .object({ isPrivate: yup.bool().required().label("Visibility") })
-    .required();
+  const options = [
+    { label: "Private", value: true },
+    { label: "Public", value: false },
+  ];
 
-  const formData = useForm<IMarketplaceFormResult>({
-    resolver: yupResolver(schema),
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-  } = formData;
+  const isPrivateSelected = options[selectedIndex].value;
 
   const onClickSubmit = () => {
-    handleSubmit((formResponse) => {
-      onSubmit({ result: formResponse, formData });
-    })();
+    onSubmit({ result: { isPrivate: isPrivateSelected } });
   };
 
   return (
     <div className="flex flex-col md:flex-row-reverse justify-center h-[max-content]">
-      <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto">
-        <Text text="Create Marketplace" type="h3" weight="bold" />
-        <form className="mt-s4 md:mt-s8 flex flex-col flex-1">
-          <InputSwitch
-            id="isPrivate"
-            label="Visibility"
-            placeholder={`${
-              isCurrentBreakpoint("md")
-                ? `Tick to set marketplace as private`
-                : "Private"
-            }`}
-            leftIcon="Lock"
-            error={errors.isPrivate?.message}
-            onClickInput={() => setValue("isPrivate", !getValues("isPrivate"))}
-            {...register("isPrivate")}
+      <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto items-center">
+        <Text
+          text="Create Marketplace"
+          type="h3"
+          weight="bold"
+          className="text-center"
+        />
+        <Text
+          text={`Become the creator of your own marketplace,\nsell and exhibit your NFTs with the Ternoa ecosystem`}
+          type="p2"
+          weight="light"
+          color="text-gray-400"
+          className="whitespace-pre-wrap text-center my-s20"
+        />
+        <Image
+          alt="Create Marketplace"
+          src="/marketplace-frame.svg"
+          width={204}
+          height={156}
+        />
+        <ButtonToggle
+          className="mt-s32 mb-s24"
+          options={options}
+          selectedIndex={selectedIndex}
+          onChange={(_value, index) => setSelectedIndex(index)}
+        />
+        <Text
+          text={
+            isPrivateSelected
+              ? "Private: Only whitelisted account can list on the marketplace"
+              : `Public : Any user has permission to sell their NFTs\non your marketplace`
+          }
+          type="p3"
+          weight="light"
+          color="text-gray-400"
+          className="text-center whitespace-pre-wrap"
+        />
+        <div className="flex flex-1 items-end">
+          <Button
+            text="Continue"
+            type="primary"
+            size="medium"
+            className="mt-s20 md:mt-s32"
+            onClick={onClickSubmit}
+            disabled={disabled}
           />
-          <div className="flex flex-1 items-end">
-            <Button
-              text="Create Marketplace"
-              type="primary"
-              size="medium"
-              className="mt-s20 md:mt-s32"
-              onClick={onClickSubmit}
-              disabled={disabled}
-            />
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );

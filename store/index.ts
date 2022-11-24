@@ -14,6 +14,7 @@ import { listenerMiddleware } from "./middlewares/listenerMiddleware";
 import { indexerApi } from "./services/indexerApi";
 import { blockchain } from "./slices/blockchain/blockchain";
 import { nftsData } from "./slices/nftsData";
+import { outdated } from "./slices/outdated";
 
 const rootReducer = {
   [indexerApi.reducerPath]: indexerApi.reducer,
@@ -26,6 +27,13 @@ const rootReducer = {
     blockchain.reducer
   ),
   [nftsData.name]: nftsData.reducer,
+  [outdated.name]: persistReducer(
+    {
+      key: outdated.name,
+      storage: storage,
+    },
+    outdated.reducer
+  ),
 };
 
 const middlewares = [listenerMiddleware.middleware, indexerApi.middleware];
