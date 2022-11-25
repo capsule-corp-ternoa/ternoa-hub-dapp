@@ -45,7 +45,7 @@ const ipfsApi = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       res.status(200).send(response.data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       if (err instanceof AxiosError) {
         res
           .status(err.response?.status || 500)

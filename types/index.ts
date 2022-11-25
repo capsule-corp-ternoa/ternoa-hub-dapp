@@ -1,5 +1,9 @@
 export type LoadingState = "idle" | "loading" | "finished";
 
+export enum FeeType {
+  Percentage = "Percentage",
+  Flat = "Flat",
+}
 export interface NftJsonData {
   title: string;
   description: string;
@@ -24,6 +28,7 @@ export interface CollectionJsonData {
 export interface MarketplaceJsonData {
   name: string;
   logo: string;
+  mainColor?: string;
 }
 
 export type Network = {

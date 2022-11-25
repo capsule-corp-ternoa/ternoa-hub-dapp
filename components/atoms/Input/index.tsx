@@ -39,6 +39,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (
     {
       className = "",
+      inputContainerClassName = "",
       placeholder,
       label,
       error,
@@ -125,7 +126,9 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         {label && (
           <Label text={label} htmlFor={props.id} required={props.required} />
         )}
-        <div className="group relative w-full md:w-[504px]">
+        <div
+          className={`group relative w-full md:w-[504px] ${inputContainerClassName}`}
+        >
           <input
             ref={ref}
             {...props}
