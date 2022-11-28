@@ -4,4 +4,5 @@ export interface IFileForm extends IFileInput {
   onSelectFile: (file: File) => void;
   ref?: React.Ref<HTMLInputElement>;
   className?: string;
+  isBackButtonHidden?: boolean;
 }

@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { DropzoneRef } from "react-dropzone";
 import Button from "../../atoms/Button";
 import FileInput from "../../atoms/FileInput";
+import FormCard from "../FormCard";
 import { IFileForm } from "./types";
 
 const FileForm: React.FC<IFileForm> = ({
@@ -9,21 +10,23 @@ const FileForm: React.FC<IFileForm> = ({
   onSelectFile,
   accept,
   className = "",
+  isBackButtonHidden,
   ...props
 }) => {
   const dropzoneRef = useRef<DropzoneRef>(null);
 
   const getPaddingTop = () => {
     if (props.label) {
-      return "pt-s8";
+      return "!pt-s16";
     } else {
-      return "pt-s28 md:pt-s32";
+      return "!pt-s28 !md:pt-s32";
     }
   };
 
   return (
-    <div
-      className={`bg-gray-500 px-s16 md:px-s32 pb-s28 md:pb-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto ${getPaddingTop()} ${className}`}
+    <FormCard
+      isBackButtonHidden={isBackButtonHidden}
+      className={`${getPaddingTop()} ${className}`}
     >
       <FileInput
         {...props}
@@ -40,7 +43,7 @@ const FileForm: React.FC<IFileForm> = ({
           onClick={() => dropzoneRef.current?.open()}
         />
       </div>
-    </div>
+    </FormCard>
   );
 };
 

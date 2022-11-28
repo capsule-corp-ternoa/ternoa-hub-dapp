@@ -1,5 +1,4 @@
 import Link from "next/link";
-import GridWrapper from "../../atoms/GridWrapper";
 import Logo from "../../atoms/Logo";
 import Text from "../../atoms/Text";
 import AddressMenuButton from "../../molecules/AddressMenuButton";
@@ -40,6 +39,7 @@ const Navbar: React.FC<INavbar> = ({
             onClick={() => setNetworkSelectorMenuOpen(true)}
             isLoading={isLoadingNetwork}
             ref={NetworkSelectorButtonRef}
+            isOpened={isNetworkSelectorMenuOpen}
           />
           <AddressMenuButton
             {...props}
@@ -47,6 +47,7 @@ const Navbar: React.FC<INavbar> = ({
             onClickConnected={() => setNavBarMenuOpen(true)}
             className="md:ml-s16 ml-s8"
             disabled={isLoadingNetwork}
+            isOpened={isNavBarMenuOpen}
           />
         </div>
         {props.pubKey && (

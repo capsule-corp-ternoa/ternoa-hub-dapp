@@ -8,4 +8,5 @@ export interface IAddressMenuButton {
   pubKey?: string;
   className?: string;
   disabled?: boolean;
+  isOpened?: boolean;
 }

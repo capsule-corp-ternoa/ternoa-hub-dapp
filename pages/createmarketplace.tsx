@@ -92,7 +92,6 @@ const CreateNft: NextPage = () => {
         <MarketplaceCreationSuccessModal
           isOpened={isSucessModalVisible}
           onClose={() => setIsSucessModalVisible(false)}
-          marketplaceId={marketplaceId.toString()}
           onClickSetMarketplaceConfiguration={() =>
             router.push({
               pathname: "/configuremarketplace",
