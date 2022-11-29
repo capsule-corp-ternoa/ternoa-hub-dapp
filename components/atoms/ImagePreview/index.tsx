@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { INftPreview } from "./types";
+import { IImagePreview } from "./types";
 import Image from "next/image";
 import NftLoader from "../NftLoader";
 import Text from "../Text";
 
-const NftPreview: React.FC<INftPreview> = ({ isLoading, src, alt }) => {
+const ImagePreview: React.FC<IImagePreview> = ({
+  isLoading,
+  src,
+  alt,
+  loader,
+  className = "",
+}) => {
   const [imgLoaded, setImgLoaded] = useState<boolean>(false);
+
 
   const renderImage = () => {
     if (isLoading) {
-      return <NftLoader text="Loading" />;
+      return loader;
     } else {
       if (src) {
         return (
@@ -25,7 +32,7 @@ const NftPreview: React.FC<INftPreview> = ({ isLoading, src, alt }) => {
                 onLoad={() => setImgLoaded(true)}
               />
             }
-            {!imgLoaded && <NftLoader text="Loading" />}
+            {!imgLoaded && loader}
           </React.Fragment>
         );
       } else {
@@ -51,11 +58,11 @@ const NftPreview: React.FC<INftPreview> = ({ isLoading, src, alt }) => {
     <div
       className={`h-s144 md:h-[290px] rounded-xl flex justify-center items-center ${
         isLoading || !imgLoaded || !src ? "bg-gray-100" : "bg-[tranparent]"
-      }`}
+      } ${className}`}
     >
       {renderImage()}
     </div>
   );
 };
 
-export default NftPreview;
+export default ImagePreview;

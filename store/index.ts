@@ -13,6 +13,7 @@ import storage from "redux-persist/lib/storage";
 import { listenerMiddleware } from "./middlewares/listenerMiddleware";
 import { indexerApi } from "./services/indexerApi";
 import { blockchain } from "./slices/blockchain/blockchain";
+import { marketplacesData } from "./slices/marketplacesData";
 import { nftsData } from "./slices/nftsData";
 import { outdated } from "./slices/outdated";
 
@@ -27,6 +28,7 @@ const rootReducer = {
     blockchain.reducer
   ),
   [nftsData.name]: nftsData.reducer,
+  [marketplacesData.name]: marketplacesData.reducer,
   [outdated.name]: persistReducer(
     {
       key: outdated.name,

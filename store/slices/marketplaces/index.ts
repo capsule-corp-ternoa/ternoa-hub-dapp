@@ -2,11 +2,13 @@ import { gql } from "graphql-request";
 import { RootState } from "../..";
 import { FeeType } from "../../../types";
 import { indexerApi } from "../../services/indexerApi";
-import type {
+import {
   Marketplace,
   MarketplaceQueryParams,
   MarketplaceQueryResponse,
   MarketplaceReducerState,
+  MarketplacesReducerState,
+  MarketplacesQueryParams,
 } from "./types";
 
 const checkOutdatedData = (marketplaceData: Marketplace, state: RootState) => {
@@ -27,12 +29,12 @@ const transformResponse = (
       ? (
           parseInt(marketplaceData.commissionFee) / 1000000000000000000
         ).toString()
-      : marketplaceData.commissionFee.toString();
+      : marketplaceData.commissionFee?.toString();
   const listingFee =
     marketplaceData.listingFee &&
     marketplaceData.listingFeeType === FeeType.Flat
       ? (parseInt(marketplaceData.listingFee) / 1000000000000000000).toString()
-      : marketplaceData.listingFee.toString();
+      : marketplaceData.listingFee?.toString();
   return {
     marketplace: { ...marketplaceData, commissionFee, listingFee },
   };
@@ -88,6 +90,42 @@ export const marketplaceApi = indexerApi.injectEndpoints({
         const fetchResponse = await fetch();
         return { data: fetchResponse };
       },
+    }),
+    getMarketplacesByOwner: builder.query<
+      MarketplacesReducerState,
+      MarketplacesQueryParams
+    >({
+      query: ({ owner }) => ({
+        body: gql`
+                query Query {
+                  marketplaceEntities (
+                    filter: { 
+                      and: [
+                        {owner: { equalTo: "${owner}" }},
+                      ]
+                    }
+                    orderBy: TIMESTAMP_CREATE_DESC
+                  ){
+                    nodes {
+                      id
+                      owner
+                      kind
+                      offchainData
+                      createdAt
+                      updatedAt
+                      commissionFee
+                      commissionFeeType
+                      listingFee
+                      listingFeeType
+                      accountList
+                    }
+                  }
+                }
+              `,
+      }),
+      transformResponse: (response: MarketplaceQueryResponse) => ({
+        marketplaces: response.marketplaceEntities.nodes,
+      }),
     }),
   }),
 });

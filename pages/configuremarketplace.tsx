@@ -15,11 +15,8 @@ import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 import { fetchFromIpfs } from "../services/ipfs";
 import { RootState } from "../store";
 import { marketplaceApi } from "../store/slices/marketplaces";
-import {
-  LoadingState,
-  MarketplaceJsonData,
-  WalletConnectRejectedRequest,
-} from "../types";
+import { jsonDataSelector } from "../store/slices/marketplacesData";
+import { LoadingState, WalletConnectRejectedRequest } from "../types";
 
 const ConfigureMarketplace: NextPage = () => {
   const router = useRouter();
@@ -32,6 +29,7 @@ const ConfigureMarketplace: NextPage = () => {
   const isConnectingBlockchain = useSelector(
     (state: RootState) => state.blockchain.isConnecting
   );
+  const marketplacesData = useSelector(jsonDataSelector);
   const {
     setMarketplaceConfiguration,
     marketplaceTxLoadingState,
@@ -43,6 +41,9 @@ const ConfigureMarketplace: NextPage = () => {
   } = useSetMarketplaceConfiguration();
   const [trigger, indexerMarketplaceData] =
     marketplaceApi.useLazyGetMarketplaceByIdQuery();
+  const marketplaceData =
+    indexerMarketplaceData.data &&
+    marketplacesData[indexerMarketplaceData.data?.marketplace.id];
 
   const [isSucessModalVisible, setIsSucessModalVisible] =
     useState<boolean>(false);
@@ -50,9 +51,7 @@ const ConfigureMarketplace: NextPage = () => {
     useState<boolean>(false);
   const [isTxErrorModalVisible, setIsTxErrorModalVisible] =
     useState<boolean>(false);
-  const [isFetchingIpfsData, setIsFetchingIpfsData] =
-    useState<LoadingState>("idle");
-  const [ipfsData, setIpfsData] = useState<MarketplaceJsonData>();
+  const [isLoadingLogo, setIsLoadingLogo] = useState<LoadingState>("idle");
   const [logo, setLogo] = useState<File>();
 
   useEffect(() => {
@@ -68,24 +67,22 @@ const ConfigureMarketplace: NextPage = () => {
   }, [router.isReady, parsedMarketplaceId, trigger, parsedIsRecentlyCreated]);
 
   useEffect(() => {
-    const fetchIpfsData = async () => {
-      if (indexerMarketplaceData.data?.marketplace.offchainData) {
-        setIsFetchingIpfsData("loading");
-        const marketplaceOffchainData =
-          await fetchFromIpfs<MarketplaceJsonData>(
-            indexerMarketplaceData.data?.marketplace.offchainData
-          );
-        const logo = await fetchFromIpfs<File>(marketplaceOffchainData.logo, {
-          responseType: "blob",
-        });
-        setIpfsData(marketplaceOffchainData);
-        setLogo(logo);
-        setIsFetchingIpfsData("finished");
+    const fetchLogo = async () => {
+      const marketplaceId = indexerMarketplaceData.data?.marketplace.id;
+      if (marketplaceId) {
+        setIsLoadingLogo("loading");
+        const logoUrl = marketplacesData[marketplaceId]?.jsonData?.logo;
+        if (logoUrl) {
+          const logo = await fetchFromIpfs<File>(logoUrl, {
+            responseType: "blob",
+          });
+          setLogo(logo);
+          setIsLoadingLogo("finished");
+        }
       }
     };
-    fetchIpfsData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [indexerMarketplaceData.data?.marketplace.offchainData]);
+    fetchLogo();
+  }, [marketplacesData, indexerMarketplaceData.data?.marketplace.id]);
 
   useEffect(() => {
     setIsSucessModalVisible(isMarketplaceTxSuccess);
@@ -149,16 +146,18 @@ const ConfigureMarketplace: NextPage = () => {
         onClose={() => setIsIpfsErrorModalVisible(false)}
         title="There was an error trying to set marketplace's configuration"
       />
-      {(indexerMarketplaceData.isLoading ||
-        isFetchingIpfsData === "loading") && (
+      {indexerMarketplaceData.isLoading && (
         <div className="flex flex-1 justify-center items-center">
           <NftLoader text="Loading Marketplace Data" />
         </div>
       )}
       {router.isReady &&
-        isFetchingIpfsData !== "loading" &&
         (parsedIsRecentlyCreated ||
-          (indexerMarketplaceData.isSuccess &&
+          (logo &&
+            indexerMarketplaceData.data &&
+            marketplaceData &&
+            !marketplaceData?.state.isLoading &&
+            indexerMarketplaceData.isSuccess &&
             indexerMarketplaceData.data.marketplace)) && (
           <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
             <SetMarketplaceConfigurationTemplate
@@ -166,7 +165,7 @@ const ConfigureMarketplace: NextPage = () => {
               disabled={isConnectingBlockchain}
               defaultMarketplaceId={parseInt(marketplaceId as string)}
               defaultKind={parsedKind}
-              ipfsData={ipfsData}
+              ipfsData={marketplaceData?.jsonData}
               logo={logo}
               data={indexerMarketplaceData.data?.marketplace}
             />

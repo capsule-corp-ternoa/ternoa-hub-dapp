@@ -25,7 +25,7 @@ const FileForm: React.FC<IFileForm> = ({
 
   return (
     <FormCard
-      isBackButtonHidden={isBackButtonHidden}
+      isBackButtonHidden={true}
       className={`${getPaddingTop()} ${className}`}
     >
       <FileInput
