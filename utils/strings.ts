@@ -47,3 +47,11 @@ export const parseCommissionFee = (comissionFee: string) => {
     return undefined;
   }
 };
+
+export const parseOffchainDataImage = (urlOrHash: string) => {
+  if (isValidUrl(urlOrHash)) {
+    return urlOrHash;
+  } else {
+    return `${process.env.NEXT_PUBLIC_ALPHANET_IPFS_GATEWAY_BASE_URL}/ipfs/${urlOrHash}`;
+  }
+};

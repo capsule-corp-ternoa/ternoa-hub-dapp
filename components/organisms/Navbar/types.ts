@@ -4,6 +4,7 @@ import { IAddressMenuButton } from "../../molecules/AddressMenuButton/types";
 export interface INavbar extends Omit<IAddressMenuButton, "onClickConnected"> {
   onClickAddress: () => void;
   onClickMyNfts: () => void;
+  onClickMyMarketplaces: () => void;
   onClickLogout: () => void;
   isLoadingNetwork: boolean;
   currentNetwork: Network;

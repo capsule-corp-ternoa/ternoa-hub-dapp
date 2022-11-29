@@ -6,6 +6,7 @@ const base: INavbar = {
   onClickConnect: () => {},
   onClickAddress: () => {},
   onClickMyNfts: () => {},
+  onClickMyMarketplaces: () => {},
   onClickLogout: () => {},
   isConnected: true,
   currentNetwork: ALPHANET_NETWORK,

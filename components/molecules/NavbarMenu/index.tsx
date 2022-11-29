@@ -16,6 +16,7 @@ const NavbarMenu: React.FC<INavbarMenu> = ({
   pubKey,
   onClickAddress = () => {},
   onClickMyNfts,
+  onClickMyMarketplaces,
   onClickLogout,
   ...props
 }) => {
@@ -56,7 +57,9 @@ const NavbarMenu: React.FC<INavbarMenu> = ({
           weight="light"
           type="p3"
           text={
-            copied ? "Address copied to clipboard!" : middleEllipsis(pubKey || "", 18)
+            copied
+              ? "Address copied to clipboard!"
+              : middleEllipsis(pubKey || "", 18)
           }
           className="ml-s16"
         />
@@ -79,6 +82,22 @@ const NavbarMenu: React.FC<INavbarMenu> = ({
           />
         </div>
         <Text weight="light" type="p3" text="My NFTs" className="ml-s20" />
+      </MenuItem>
+      <MenuItem className="" onClick={onClickMyMarketplaces}>
+        <div className="w-s20 h-s20 relative">
+          <Image
+            src="/marketplaces.svg"
+            alt="My Marketplaces"
+            layout="fill"
+            color="white"
+          />
+        </div>
+        <Text
+          weight="light"
+          type="p3"
+          text="My Marketplaces"
+          className="ml-s20"
+        />
       </MenuItem>
       <MenuItem onClick={onClickLogout} className="!border-none">
         <Icon name="SignOut" size={24} color="white" />

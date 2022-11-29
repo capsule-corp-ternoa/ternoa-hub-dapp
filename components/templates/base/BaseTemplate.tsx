@@ -78,6 +78,7 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
         <Navbar
           onClickAddress={() => {}}
           onClickMyNfts={() => router.push("/mynfts")}
+          onClickMyMarketplaces={() => router.push("/mymarketplaces")}
           onClickLogout={onClickLogout}
           isConnected={isConnected}
           onClickConnect={connect}

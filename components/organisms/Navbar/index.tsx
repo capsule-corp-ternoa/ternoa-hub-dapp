@@ -12,6 +12,7 @@ import { ALPHANET_NETWORK, MAINNET_NETWORK } from "../../../constants/network";
 const Navbar: React.FC<INavbar> = ({
   onClickAddress,
   onClickMyNfts,
+  onClickMyMarketplaces,
   onClickLogout,
   currentNetwork,
   onSelectNetwork,
@@ -54,6 +55,7 @@ const Navbar: React.FC<INavbar> = ({
           <NavbarMenu
             onClickAddress={onClickAddress}
             onClickMyNfts={onClickMyNfts}
+            onClickMyMarketplaces={onClickMyMarketplaces}
             onClickLogout={onClickLogout}
             pubKey={props.pubKey}
             state={isNavBarMenuOpen ? "open" : "closed"}

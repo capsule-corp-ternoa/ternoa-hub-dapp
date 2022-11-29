@@ -1,7 +1,7 @@
-import { INftPreview } from "../../atoms/NftPreview/types";
+import { IImagePreview } from "../../atoms/ImagePreview/types";
 
 export interface INftCard {
-  preview?: Omit<INftPreview, "isLoading">;
+  preview?: Omit<IImagePreview, "isLoading" | "loader">;
   isLoading?: boolean;
   creator?: string;
   name?: string;

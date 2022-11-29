@@ -1,3 +1,4 @@
+import { Marketplace } from "ternoa-js";
 import { MarketplaceKind } from "ternoa-js/marketplace/enum";
 import { FeeType } from "../../../types";
 
@@ -32,4 +33,12 @@ export type MarketplaceQueryParams = {
 
 export type MarketplaceReducerState = {
   marketplace: Marketplace;
+};
+
+export type MarketplacesReducerState = {
+  marketplaces: Marketplace[];
+};
+
+export type MarketplacesQueryParams = {
+  owner: string;
 };
