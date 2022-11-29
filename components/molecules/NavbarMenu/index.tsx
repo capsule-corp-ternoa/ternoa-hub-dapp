@@ -38,7 +38,7 @@ const NavbarMenu: React.FC<INavbarMenu> = ({
       {...props}
       align="end"
       className="!absolute"
-      menuClassName="bg-gray-800 text-gray-500 !top-[30px]"
+      menuClassName="bg-gray-800 text-gray-500 !top-[30px] rounded-xl"
       onClose={(e) => {
         props.onClose && props.onClose(e);
         setCopied(false);

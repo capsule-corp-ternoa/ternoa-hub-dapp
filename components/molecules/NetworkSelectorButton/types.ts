@@ -5,4 +5,5 @@ export interface INetworkSelectorButton {
   onClick: () => void;
   isLoading: boolean;
   className?: string;
+  isOpened?: boolean;
 }

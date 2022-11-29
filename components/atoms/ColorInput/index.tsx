@@ -17,7 +17,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, IColorInput>(
           props.onChange && props.onChange(e);
         }}
         maxLength={7}
-        leftComponentClassname="top-[17%]"
+        leftComponentClassname="top-[16%]"
         leftPadding={65}
         leftComponent={
           <div
