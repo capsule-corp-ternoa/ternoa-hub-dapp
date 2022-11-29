@@ -6,4 +6,5 @@ export interface IMarketplaceListItem {
   className?: string;
   preview?: Omit<IImagePreview, "isLoading" | "loader">;
   onClickManage?: () => void;
+  onClickPreview?: () => void;
 }

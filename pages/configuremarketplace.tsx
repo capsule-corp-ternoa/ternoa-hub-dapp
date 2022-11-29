@@ -146,12 +146,12 @@ const ConfigureMarketplace: NextPage = () => {
         onClose={() => setIsIpfsErrorModalVisible(false)}
         title="There was an error trying to set marketplace's configuration"
       />
-      {indexerMarketplaceData.isLoading && (
+      {indexerMarketplaceData.isFetching || marketplaceData?.state.isLoading ? (
         <div className="flex flex-1 justify-center items-center">
           <NftLoader text="Loading Marketplace Data" />
         </div>
-      )}
-      {router.isReady &&
+      ) : (
+        router.isReady &&
         (parsedIsRecentlyCreated ||
           (logo &&
             indexerMarketplaceData.data &&
@@ -170,7 +170,8 @@ const ConfigureMarketplace: NextPage = () => {
               data={indexerMarketplaceData.data?.marketplace}
             />
           </div>
-        )}
+        )
+      )}
     </BaseTemplate>
   );
 };

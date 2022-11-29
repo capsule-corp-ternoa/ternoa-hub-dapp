@@ -136,6 +136,15 @@ const Icon: React.FC<IIcon> = ({
           className={className}
         />
       );
+    case "PencilSimple":
+      return (
+        <Phosphor.PencilSimple
+          size={size}
+          color={color}
+          weight={weight}
+          className={className}
+        />
+      );
     case "Check":
       return (
         <Phosphor.Check

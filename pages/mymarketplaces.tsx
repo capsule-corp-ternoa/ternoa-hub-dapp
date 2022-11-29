@@ -32,12 +32,16 @@ const MyMarketplaces: NextPage = () => {
           return {
             isLoading: marketplaceData.state.isLoading,
             name: marketplaceData.jsonData?.name,
-            logo: marketplaceData.jsonData?.logo,
             onClickManage: () =>
               router.push({
                 pathname: "/configuremarketplace",
                 query: { marketplaceId: indexerMarketplaceData.id },
               }),
+            onClickPreview: () => {
+              router.push({
+                pathname: `/marketplace/${indexerMarketplaceData.id}`,
+              });
+            },
             preview: {
               src:
                 marketplaceData.jsonData?.logo &&
@@ -53,7 +57,12 @@ const MyMarketplaces: NextPage = () => {
                 pathname: "/configuremarketplace",
                 query: { marketplaceId: indexerMarketplaceData.id },
               }),
-            name: "Unnamed Marketplace",
+            onClickPreview: () => {
+              router.push({
+                pathname: `/marketplace/${indexerMarketplaceData.id}`,
+              });
+            },
+            name: "Not configured yet",
           };
         }
       });

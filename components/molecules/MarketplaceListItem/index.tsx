@@ -11,6 +11,7 @@ const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
   className = "",
   preview,
   onClickManage,
+  onClickPreview,
 }) => {
   return (
     <div
@@ -35,21 +36,26 @@ const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
               <Text type="p2" weight="medium" text={name} />
             </div>
             <div className="flex flex-row items-center">
-              <Button
-                type="secondary"
-                size="small"
-                text="Preview"
-                autoWidth={true}
-                className="md:px-s16 mr-s16"
-              />
-              <Button
-                type="primary"
-                size="small"
-                text="Manage"
-                autoWidth={true}
-                className="md:px-s16"
-                onClick={onClickManage}
-              />
+              {!!onClickPreview && (
+                <Button
+                  type="secondary"
+                  size="small"
+                  text="Preview"
+                  autoWidth={true}
+                  className="md:px-s16 mr-s16"
+                  onClick={onClickPreview}
+                />
+              )}
+              {!!onClickManage && (
+                <Button
+                  type="primary"
+                  size="small"
+                  text="Manage"
+                  autoWidth={true}
+                  className="md:px-s16"
+                  onClick={onClickManage}
+                />
+              )}
             </div>
           </div>
         )

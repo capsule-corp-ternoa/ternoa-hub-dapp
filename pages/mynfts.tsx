@@ -1,4 +1,3 @@
-import { isValidUrl } from "@walletconnect/utils";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,11 +11,12 @@ import { RootState } from "../store";
 import { nftApi } from "../store/slices/nfts";
 import { Filter, Nft } from "../store/slices/nfts/types";
 import { jsonDataSelector } from "../store/slices/nftsData";
+import { parseNft } from "../utils/nft";
 
 const Account: NextPage = () => {
   const router = useRouter();
   const { account, client } = useWalletConnectClient();
-  const [trigger, indexerNfts] = nftApi.useLazyGetNftsByAdressQuery();
+  const [trigger, indexerNfts] = nftApi.useLazyGetNftsByAddressQuery();
   const currentNetwork = useSelector(
     (state: RootState) => state.blockchain.currentNetwork
   );
@@ -62,34 +62,9 @@ const Account: NextPage = () => {
     }
   }, [indexerNfts.data?.nfts]);
 
-  const parseImage = (urlOrHash: string) => {
-    if (isValidUrl(urlOrHash)) {
-      return urlOrHash;
-    } else {
-      return `${process.env.NEXT_PUBLIC_ALPHANET_IPFS_GATEWAY_BASE_URL}/ipfs/${urlOrHash}`;
-    }
-  };
-
-  const parseNft = (nft: Nft): INftCard => {
-    const nftData = nftsData[nft.id];
-    if (nftData && !nftData.state.error) {
-      return {
-        preview: {
-          src: nftData.jsonData?.image && parseImage(nftData.jsonData.image),
-          alt: nftData.jsonData?.title,
-        },
-        isLoading: nftData.state.isLoading,
-        name: nftData.jsonData?.title,
-        creator: nft.creator,
-      };
-    } else {
-      return {
-        creator: nft.creator,
-      };
-    }
-  };
-
-  const nftListData: INftCard[] = results.map(parseNft);
+  const nftListData: INftCard[] = results.map((nfts) =>
+    parseNft(nfts, nftsData)
+  );
 
   return (
     <BaseTemplate>
