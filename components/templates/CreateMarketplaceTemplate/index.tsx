@@ -24,7 +24,7 @@ const CreateMarketplaceTemplate: React.FC<ICreateMarketplaceTemplate> = ({
 
   return (
     <div className="flex flex-col md:flex-row-reverse justify-center h-[max-content]">
-      <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto items-center">
+      <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full flex flex-col md:w-auto items-center">
         <Text
           text="Create Marketplace"
           type="h3"

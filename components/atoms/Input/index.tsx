@@ -81,7 +81,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         return (
           <div
             onClick={onPressLeftComponent}
-            className={`absolute z-10 top-[23%] ${
+            className={`absolute top-[23%] ${
               leftButtonLabel ? "left-s8" : "left-s16"
             } ${getBackgroundByType(type)} ${leftComponentClassname}`}
           >
@@ -98,7 +98,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         return (
           <div
             onClick={onPressRightComponent}
-            className={`absolute z-10 top-[23%] ${
+            className={`absolute top-[23%] ${
               leftButtonLabel ? "right-s8" : "right-s16"
             } ${rightComponentClassname}`}
           >
