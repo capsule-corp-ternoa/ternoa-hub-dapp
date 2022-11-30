@@ -11,19 +11,26 @@ import { AppDispatch, persistor, store } from "../store";
 import { useRef, useEffect } from "react";
 import * as yup from "../utils/yup";
 import { connect } from "../store/slices/blockchain/blockchain";
+import { useRouter } from "next/router";
 
 const Initialize = () => {
   const initialized = useRef<boolean>();
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
   useEffect(() => {
     if (!initialized.current) {
       initialized.current = true;
       yup.init();
-      dispatch(connect());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (router.isReady) {
+      dispatch(connect(router.query.network as string));
+    }
+  }, [dispatch, router.isReady, router.query.network]);
 
   return null;
 };

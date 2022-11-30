@@ -16,6 +16,7 @@ export type IconNamesType =
   | "EyeSlash"
   | "ArrowCounterClockwise"
   | "NotePencil"
+  | "PencilSimple"
   | "Check"
   | "ArrowsOut"
   | "FadersHorizontal"

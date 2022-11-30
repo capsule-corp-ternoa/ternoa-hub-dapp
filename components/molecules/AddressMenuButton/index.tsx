@@ -16,6 +16,7 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
       className = "",
       disabled,
       isOpened,
+      color,
     },
     ref
   ) => {
@@ -28,7 +29,7 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
         if (!isConnected) {
           onClickConnect();
         } else {
-          onClickConnected();
+          onClickConnected && onClickConnected();
         }
       }
     };
@@ -40,15 +41,19 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
         if (isConnected && pubKey) {
           return (
             <div className="flex flex-row justify-between items-center w-full">
-              <Avatar pubKey={pubKey} size={25} theme="polkadot" />
+              <div className="md:block hidden">
+                <Avatar pubKey={pubKey} size={25} theme="polkadot" />
+              </div>
               <div className="text-ellipsis overflow-hidden mx-s8">
                 {middleEllipsis(pubKey, isCurrentBreakpoint("md") ? 10 : 8)}
               </div>
-              <Icon
-                name={isOpened ? "CaretUp" : "CaretDown"}
-                size={16}
-                color="white"
-              />
+              {onClickConnected && (
+                <Icon
+                  name={isOpened ? "CaretUp" : "CaretDown"}
+                  size={16}
+                  color="white"
+                />
+              )}
             </div>
           );
         } else {
@@ -69,6 +74,7 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
           disabled ? "bg-gray-400" : ""
         }`}
         onClick={onClick}
+        style={color ? { backgroundColor: color } : {}}
         ref={ref}
       >
         {renderContent()}

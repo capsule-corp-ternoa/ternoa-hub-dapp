@@ -26,7 +26,7 @@ const MarketplaceCreationSuccessModal: React.FC<IMarketplaceCreationSuccessModal
               text="You have create a marketplace with success! Now you can set-up it!"
               color="text-gray-400 mt-s16"
             />
-            <div>
+            <div className="flex items-center justify-center">
               <Button
                 text="Set-up my Marketplace"
                 autoWidth={true}
