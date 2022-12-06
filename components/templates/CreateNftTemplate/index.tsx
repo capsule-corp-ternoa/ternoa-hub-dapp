@@ -20,10 +20,10 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
     .object({
       name: yup.string().required().label("Name"),
       description: yup.string().required().label("Description"),
-      quantity: yup.number().truncate().positive().required().label("Quantity"),
+      quantity: yup.number().integer().positive().required().label("Quantity"),
       collectionId: yup
         .number()
-        .truncate()
+        .integer()
         .positive()
         .nullable(true)
         .transform((_, val) => (val !== "" ? Number(val) : null))
@@ -32,6 +32,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
         .number()
         .typeError("You must specify a royalty number")
         .min(0)
+        .max(100)
         .label("Royalty"),
       file: yup.mixed().required().label("File"),
       preview: yup.lazy(() => {
