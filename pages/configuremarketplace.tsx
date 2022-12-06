@@ -116,7 +116,7 @@ const ConfigureMarketplace: NextPage = () => {
       <IconModal
         title="Marketplace configuration is processing..."
         iconComponent={<LoaderEllipsis />}
-        body="It should by confirmed on the blockchain shortly..."
+        body="it should be confirmed on the blockchain shortly..."
         isOpened={configureMarketplaceLoadingState === "loading"}
       />
       <TxModal
