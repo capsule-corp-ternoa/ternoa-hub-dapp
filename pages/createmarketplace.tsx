@@ -77,7 +77,7 @@ const CreateNft: NextPage = () => {
       <IconModal
         title="Marketplace creation is processing..."
         iconComponent={<LoaderEllipsis />}
-        body="It should by confirmed on the blockchain shortly..."
+        body="it should be confirmed on the blockchain shortly..."
         isOpened={createMarketplaceLoadingState === "loading"}
       />
       <TxModal
