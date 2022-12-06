@@ -139,6 +139,13 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             )} ${className}`}
             placeholder={placeholder}
             disabled={type === "disabled"}
+            onKeyDown={(e) => {
+              props.onKeyDown && props.onKeyDown(e);
+              if (inputType === "number" && e.key.toLowerCase() === "e") {
+                console.log("hasdasd");
+                e.preventDefault();
+              }
+            }}
           />
           <div className="text-fs12 font-AirbnbCerealMedium text-red-300 mt-s4 pl-s2 absolute mb-s4">
             {error}
