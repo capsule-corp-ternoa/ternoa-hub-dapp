@@ -1,3 +1,5 @@
+import React from "react";
+
 export type TButtonSize = "large" | "medium" | "small";
 export type TButtonType = "primary" | "secondary" | "tertiary" | "danger";
 
@@ -8,4 +10,5 @@ export interface IButton extends Omit<React.ComponentProps<"button">, "type"> {
   autoWidth?: boolean;
   disabled?: boolean;
   className?: string;
+  leftComponent?: React.ReactNode | React.ReactNode[];
 }

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import GridWrapper from "../../atoms/GridWrapper";
 import Logo from "../../atoms/Logo";
 import Text from "../../atoms/Text";
 import AddressMenuButton from "../../molecules/AddressMenuButton";
@@ -13,6 +12,7 @@ import { ALPHANET_NETWORK, MAINNET_NETWORK } from "../../../constants/network";
 const Navbar: React.FC<INavbar> = ({
   onClickAddress,
   onClickMyNfts,
+  onClickMyMarketplaces,
   onClickLogout,
   currentNetwork,
   onSelectNetwork,
@@ -40,6 +40,7 @@ const Navbar: React.FC<INavbar> = ({
             onClick={() => setNetworkSelectorMenuOpen(true)}
             isLoading={isLoadingNetwork}
             ref={NetworkSelectorButtonRef}
+            isOpened={isNetworkSelectorMenuOpen}
           />
           <AddressMenuButton
             {...props}
@@ -47,12 +48,14 @@ const Navbar: React.FC<INavbar> = ({
             onClickConnected={() => setNavBarMenuOpen(true)}
             className="md:ml-s16 ml-s8"
             disabled={isLoadingNetwork}
+            isOpened={isNavBarMenuOpen}
           />
         </div>
         {props.pubKey && (
           <NavbarMenu
             onClickAddress={onClickAddress}
             onClickMyNfts={onClickMyNfts}
+            onClickMyMarketplaces={onClickMyMarketplaces}
             onClickLogout={onClickLogout}
             pubKey={props.pubKey}
             state={isNavBarMenuOpen ? "open" : "closed"}

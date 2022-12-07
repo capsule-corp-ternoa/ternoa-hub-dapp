@@ -1,7 +1,9 @@
 import React from "react";
 import { IAddressMenuButton } from "./types";
+import Avatar from "../../atoms/Avatar";
 import { middleEllipsis } from "../../../utils/strings";
 import { useWindowBreakpoint } from "../../../hooks/useWindowBreakpoint";
+import Icon from "../../atoms/Icon";
 
 const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
   (
@@ -13,6 +15,8 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
       onClickConnected,
       className = "",
       disabled,
+      isOpened,
+      color,
     },
     ref
   ) => {
@@ -25,7 +29,7 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
         if (!isConnected) {
           onClickConnect();
         } else {
-          onClickConnected();
+          onClickConnected && onClickConnected();
         }
       }
     };
@@ -34,14 +38,23 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
       if (isLoading) {
         return <span className="font-AirbnbCerealMedium">Connecting...</span>;
       } else {
-        if (isConnected) {
+        if (isConnected && pubKey) {
           return (
-            <React.Fragment>
-              <div className="text-ellipsis overflow-hidden">
-                {pubKey &&
-                  middleEllipsis(pubKey, isCurrentBreakpoint("md") ? 10 : 8)}
+            <div className="flex flex-row justify-between items-center w-full">
+              <div className="md:block hidden">
+                <Avatar pubKey={pubKey} size={25} theme="polkadot" />
               </div>
-            </React.Fragment>
+              <div className="text-ellipsis overflow-hidden mx-s8">
+                {middleEllipsis(pubKey, isCurrentBreakpoint("md") ? 10 : 8)}
+              </div>
+              {onClickConnected && (
+                <Icon
+                  name={isOpened ? "CaretUp" : "CaretDown"}
+                  size={16}
+                  color="white"
+                />
+              )}
+            </div>
           );
         } else {
           if (!isConnected) {
@@ -57,10 +70,11 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
 
     return (
       <div
-        className={`h-s40 bg-black-default py-s8 px-s8 md:px-s40 rounded-[7px] text-fs12 text-white-default font-AirbnbCerealBold inline-flex items-center justify-around overflow-hidden ${connectClasses} ${className} ${
+        className={`h-s40 bg-black-default py-s8 px-s8 md:px-s20 rounded-[7px] text-fs12 text-white-default font-AirbnbCerealBold inline-flex items-center justify-around overflow-hidden ${connectClasses} ${className} ${
           disabled ? "bg-gray-400" : ""
         }`}
         onClick={onClick}
+        style={color ? { backgroundColor: color } : {}}
         ref={ref}
       >
         {renderContent()}

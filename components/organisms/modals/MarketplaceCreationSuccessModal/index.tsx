@@ -1,11 +1,12 @@
 import { CheckCircle } from "phosphor-react";
 import React from "react";
+import Button from "../../../atoms/Button";
 import Modal from "../../../atoms/Modal";
 import Text from "../../../atoms/Text";
 import { IMarketplaceCreationSuccessModal } from "./types";
 
 const MarketplaceCreationSuccessModal: React.FC<IMarketplaceCreationSuccessModal> =
-  ({ marketplaceId, onClickSetMarketplaceConfiguration, ...props }) => {
+  ({ onClickSetMarketplaceConfiguration, ...props }) => {
     return (
       <Modal {...props}>
         <div className="w-[340px] h-[340px] md:w-[450px] md:h-[450px] flex flex-col justify-center items-center p-s16 md:p-s24 text-center">
@@ -22,25 +23,17 @@ const MarketplaceCreationSuccessModal: React.FC<IMarketplaceCreationSuccessModal
             <Text
               type="p1"
               weight="light"
-              text="You have created your Marketplace with success!"
+              text="You have create a marketplace with success! Now you can set-up it!"
               color="text-gray-400 mt-s16"
             />
-            <div>
-              <Text
-                type="p2"
-                weight="light"
-                text={`Marketplace ID: ${marketplaceId}`}
-                color="text-gray-400 mt-s16"
+            <div className="flex items-center justify-center">
+              <Button
+                text="Set-up my Marketplace"
+                autoWidth={true}
+                type="primary"
+                size="medium"
+                onClick={onClickSetMarketplaceConfiguration}
               />
-              <div onClick={onClickSetMarketplaceConfiguration}>
-                <Text
-                  type="p2"
-                  weight="medium"
-                  text="Set Marketplace Configuration"
-                  color="text-gray-800"
-                  className="mt-s16 underline cursor-pointer"
-                />
-              </div>
             </div>
           </div>
         </div>

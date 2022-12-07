@@ -1,16 +1,17 @@
 import React from "react";
 import { INftCard } from "./types";
-import NftPreview from "../../atoms/NftPreview";
+import ImagePreview from "../../atoms/ImagePreview";
 import Text from "../../atoms/Text";
 import { middleEllipsis } from "../../../utils/strings";
 import Avatar from "../../atoms/Avatar";
+import NftLoader from "../../atoms/NftLoader";
 
 const NftCard: React.FC<INftCard> = ({
   creator,
   name,
   isLoading,
   preview,
-  className = '',
+  className = "",
 }) => {
   const renderData = () => {
     if (isLoading) {
@@ -58,7 +59,11 @@ const NftCard: React.FC<INftCard> = ({
     <div
       className={`bg-gray-500 border-gray-200 border border-solid rounded-2xl p-[10px] md:p-s20 inline-block ${className}`}
     >
-      <NftPreview {...preview} isLoading={isLoading} />
+      <ImagePreview
+        {...preview}
+        isLoading={isLoading}
+        loader={<NftLoader text="Loading" />}
+      />
       <div className="h-[55px] mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden">
         {renderData()}
       </div>

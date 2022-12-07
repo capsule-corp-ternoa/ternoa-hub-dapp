@@ -5,6 +5,7 @@ const base: INavbarMenu = {
   onClickAddress: () => {},
   onClickMyNfts: () => {},
   onClickLogout: () => {},
+  onClickMyMarketplaces: () => {},
 };
 
 export const mockNavbarMenuProps = {

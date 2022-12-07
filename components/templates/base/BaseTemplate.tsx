@@ -11,12 +11,12 @@ import {
 } from "../../../store/slices/blockchain/blockchain";
 import Footer from "../../organisms/Footer";
 import { Network } from "../../../types";
+import { IBaseTemplate } from "./types";
 
-export interface IBaseTemplate {
-  children: React.ReactNode | React.ReactNode[];
-}
-
-const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
+const BaseTemplate: React.FC<IBaseTemplate> = ({
+  children,
+  renderCustomNavbar,
+}) => {
   const router = useRouter();
   const {
     connect,
@@ -25,6 +25,7 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
     isConnecting,
     account,
     disconnect,
+    isCreatingUri,
   } = useWalletConnectClient();
   const { currentNetwork, isConnecting: isConnectingBlockchain } = useSelector(
     (state: RootState) => state.blockchain
@@ -74,18 +75,35 @@ const BaseTemplate: React.FC<IBaseTemplate> = ({ children }) => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <main className="bg-gray-100 min-h-screen flex flex-col">
-        <Navbar
-          onClickAddress={() => {}}
-          onClickMyNfts={() => router.push("/mynfts")}
-          onClickLogout={onClickLogout}
-          isConnected={isConnected}
-          onClickConnect={connect}
-          isLoading={isConnecting || isInitializing}
-          pubKey={account}
-          currentNetwork={currentNetwork}
-          onSelectNetwork={onSelectNetwork}
-          isLoadingNetwork={isConnectingBlockchain}
-        />
+        {renderCustomNavbar ? (
+          renderCustomNavbar({
+            onClickAddress: () => {},
+            onClickMyNfts: () => router.push("/mynfts"),
+            onClickMyMarketplaces: () => router.push("/mymarketplaces"),
+            onClickLogout: onClickLogout,
+            isConnected: isConnected,
+            onClickConnect: connect,
+            isLoading: isConnecting || isInitializing || isCreatingUri,
+            pubKey: account,
+            currentNetwork: currentNetwork,
+            onSelectNetwork: onSelectNetwork,
+            isLoadingNetwork: isConnectingBlockchain,
+          })
+        ) : (
+          <Navbar
+            onClickAddress={() => {}}
+            onClickMyNfts={() => router.push("/mynfts")}
+            onClickMyMarketplaces={() => router.push("/mymarketplaces")}
+            onClickLogout={onClickLogout}
+            isConnected={isConnected}
+            onClickConnect={connect}
+            isLoading={isConnecting || isInitializing || isCreatingUri}
+            pubKey={account}
+            currentNetwork={currentNetwork}
+            onSelectNetwork={onSelectNetwork}
+            isLoadingNetwork={isConnectingBlockchain}
+          />
+        )}
         {children}
         <Footer />
       </main>

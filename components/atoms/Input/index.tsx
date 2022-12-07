@@ -39,6 +39,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (
     {
       className = "",
+      inputContainerClassName = "",
       placeholder,
       label,
       error,
@@ -80,7 +81,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         return (
           <div
             onClick={onPressLeftComponent}
-            className={`absolute z-10 top-[23%] ${
+            className={`absolute top-[23%] ${
               leftButtonLabel ? "left-s8" : "left-s16"
             } ${getBackgroundByType(type)} ${leftComponentClassname}`}
           >
@@ -97,7 +98,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         return (
           <div
             onClick={onPressRightComponent}
-            className={`absolute z-10 top-[23%] ${
+            className={`absolute top-[23%] ${
               leftButtonLabel ? "right-s8" : "right-s16"
             } ${rightComponentClassname}`}
           >
@@ -125,7 +126,9 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         {label && (
           <Label text={label} htmlFor={props.id} required={props.required} />
         )}
-        <div className="group relative w-full md:w-[504px]">
+        <div
+          className={`group relative w-full md:w-[504px] ${inputContainerClassName}`}
+        >
           <input
             ref={ref}
             {...props}
@@ -136,6 +139,13 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             )} ${className}`}
             placeholder={placeholder}
             disabled={type === "disabled"}
+            onKeyDown={(e) => {
+              props.onKeyDown && props.onKeyDown(e);
+              if (inputType === "number" && e.key.toLowerCase() === "e") {
+                console.log("hasdasd");
+                e.preventDefault();
+              }
+            }}
           />
           <div className="text-fs12 font-AirbnbCerealMedium text-red-300 mt-s4 pl-s2 absolute mb-s4">
             {error}

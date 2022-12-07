@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { MarketplaceKind } from "ternoa-js/marketplace/enum";
 import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
 import IconModal from "../components/molecules/IconModal";
 import MarketplaceCreationSuccessModal from "../components/organisms/modals/MarketplaceCreationSuccessModal";
@@ -36,6 +37,7 @@ const CreateNft: NextPage = () => {
     useState<boolean>(false);
   const [isTxErrorModalVisible, setIsTxErrorModalVisible] =
     useState<boolean>(false);
+  const [kind, setKind] = useState<MarketplaceKind>();
 
   useEffect(() => {
     if (client && !account) {
@@ -63,9 +65,11 @@ const CreateNft: NextPage = () => {
     }
   };
 
-  const onSubmit = async ({ result, formData }: onSubmitParams) => {
+  const onSubmit = async ({ result }: onSubmitParams) => {
+    setKind(
+      result.isPrivate ? MarketplaceKind.Private : MarketplaceKind.Public
+    );
     await createMarketplace(result);
-    formData.reset();
   };
 
   return (
@@ -73,7 +77,7 @@ const CreateNft: NextPage = () => {
       <IconModal
         title="Marketplace creation is processing..."
         iconComponent={<LoaderEllipsis />}
-        body="It should by confirmed on the blockchain shortly..."
+        body="it should be confirmed on the blockchain shortly..."
         isOpened={createMarketplaceLoadingState === "loading"}
       />
       <TxModal
@@ -88,11 +92,10 @@ const CreateNft: NextPage = () => {
         <MarketplaceCreationSuccessModal
           isOpened={isSucessModalVisible}
           onClose={() => setIsSucessModalVisible(false)}
-          marketplaceId={marketplaceId.toString()}
           onClickSetMarketplaceConfiguration={() =>
             router.push({
               pathname: "/configuremarketplace",
-              query: { marketplaceId },
+              query: { marketplaceId, isRecentlyCreated: true, kind },
             })
           }
         />

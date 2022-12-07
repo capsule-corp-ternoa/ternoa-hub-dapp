@@ -1,6 +1,7 @@
 import { gql } from "graphql-request";
 import { indexerApi } from "../../services/indexerApi";
 import type {
+  NftByMarketplaceQueryParams,
   NftQueryParams,
   NftQueryResponse,
   NftReducerState,
@@ -22,7 +23,7 @@ const getQueryFilter = (filter: Filter, value: string) => {
 
 export const nftApi = indexerApi.injectEndpoints({
   endpoints: (builder) => ({
-    getNftsByAdress: builder.query<NftReducerState, NftQueryParams>({
+    getNftsByAddress: builder.query<NftReducerState, NftQueryParams>({
       query: ({ address, pagination, filter }) => ({
         body: gql`
                 query Query {
@@ -54,6 +55,45 @@ export const nftApi = indexerApi.injectEndpoints({
               `,
       }),
       providesTags: ["Nfts"],
+      transformResponse: (response: NftQueryResponse) => ({
+        nfts: response.nftEntities.nodes,
+        hasNextPage: response.nftEntities.pageInfo.hasNextPage,
+      }),
+    }),
+    getNftsByMarketplace: builder.query<
+      NftReducerState,
+      NftByMarketplaceQueryParams
+    >({
+      query: ({ marketplaceId, pagination }) => ({
+        body: gql`
+        query Query {
+          nftEntities (
+            first: ${pagination.first},
+            offset: ${pagination.offset}, 
+            filter: { 
+              and: [
+                { marketplaceId: {equalTo: "${marketplaceId}"} },
+                { timestampBurn:{isNull:true} }
+              ]
+            }
+            orderBy: TIMESTAMP_CREATE_DESC
+          ){
+            pageInfo {
+              hasNextPage
+            }
+            nodes {
+              nodeId
+              id
+              price
+              offchainData
+              owner
+              creator
+            }
+            totalCount
+          }
+        }
+      `,
+      }),
       transformResponse: (response: NftQueryResponse) => ({
         nfts: response.nftEntities.nodes,
         hasNextPage: response.nftEntities.pageInfo.hasNextPage,

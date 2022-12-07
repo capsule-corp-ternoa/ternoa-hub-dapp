@@ -1,23 +1,29 @@
 import { useState } from "react";
 import { setMarketplaceConfigurationTx, submitTxHex } from "ternoa-js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as IpfsService from "../services/ipfs";
 import { useWalletConnectClient } from "./useWalletConnectClient";
 import {
   MarketplaceJsonData,
   LoadingState,
   WalletConnectRejectedRequest,
+  FeeType,
 } from "../types";
-import { RootState } from "../store";
+import { AppDispatch, RootState } from "../store";
 import { MarketplaceConfigAction } from "ternoa-js/marketplace/enum";
 import { retry } from "../utils/retry";
 import { IpfsUploadFileResponse } from "../pages/api/ipfs";
+import { outdated } from "../store/slices/outdated";
 
 export interface SetMarketplaceConfigurationParams {
   marketplaceId: number;
   name: string;
-  comissionFee?: number;
-  listingFee?: number;
+  commissionFee?: string;
+  commissionFeeType?: FeeType;
+  listingFee?: string;
+  listingFeeType?: FeeType;
+  mainColor?: string;
+  accounts?: string[];
   logo: File;
 }
 
@@ -26,6 +32,7 @@ export const useSetMarketplaceConfiguration = () => {
   const currentNetwork = useSelector(
     (state: RootState) => state.blockchain.currentNetwork
   );
+  const dispatch = useDispatch<AppDispatch>();
 
   const [marketplaceTxLoadingState, setMarketplaceTxLoadingState] =
     useState<LoadingState>("idle");
@@ -51,6 +58,7 @@ export const useSetMarketplaceConfiguration = () => {
     );
     const json: MarketplaceJsonData = {
       name: marketplaceConfigData.name,
+      mainColor: marketplaceConfigData.mainColor,
       logo: ipfsLogoResponse.Hash,
     };
     const blob = new Blob([JSON.stringify(json)], {
@@ -59,33 +67,62 @@ export const useSetMarketplaceConfiguration = () => {
     return await IpfsService.uploadFile(blob, currentNetwork);
   };
 
+  const parseFee = (feeType: FeeType, value: string) => {
+    if (feeType === FeeType.Percentage) {
+      return { percentage: parseInt(value) };
+    } else if (feeType === FeeType.Flat) {
+      return { flat: parseInt(value) };
+    } else {
+      return { percentage: parseInt(value) };
+    }
+  };
+
   const createTx = async (
     id: number,
-    comissionFee?: number,
-    listingFee?: number,
+    commissionFee?: string,
+    commissionFeeType?: FeeType,
+    listingFee?: string,
+    listingFeeType?: FeeType,
+    accounts?: string[],
     offchainData?: string
   ) => {
-    const parsedComissionFee = comissionFee && {
-      [MarketplaceConfigAction.Set]: { percentage: comissionFee },
-    };
-    const parsedListingFee = listingFee && {
-      [MarketplaceConfigAction.Set]: { percentage: listingFee },
-    };
-    const parsedOffchainData = offchainData && {
-      [MarketplaceConfigAction.Set]: offchainData,
-    };
+    const parsedcommissionFee = commissionFee
+      ? {
+          [MarketplaceConfigAction.Set]: parseFee(
+            commissionFeeType!,
+            commissionFee
+          ),
+        }
+      : MarketplaceConfigAction.Remove;
+    const parsedListingFee = listingFee
+      ? {
+          [MarketplaceConfigAction.Set]: parseFee(listingFeeType!, listingFee),
+        }
+      : MarketplaceConfigAction.Remove;
+    const parsedOffchainData = offchainData
+      ? {
+          [MarketplaceConfigAction.Set]: offchainData,
+        }
+      : MarketplaceConfigAction.Remove;
+    const parsedAccountListData =
+      accounts && accounts.length
+        ? {
+            [MarketplaceConfigAction.Set]: accounts,
+          }
+        : MarketplaceConfigAction.Remove;
     const txHash = await setMarketplaceConfigurationTx(
       id,
-      parsedComissionFee || undefined,
-      parsedListingFee || undefined,
-      undefined,
-      parsedOffchainData || undefined
+      parsedcommissionFee,
+      parsedListingFee,
+      parsedAccountListData,
+      parsedOffchainData
     );
     return txHash;
   };
 
   const setMarketplaceConfiguration = async (
-    marketplaceConfigData: SetMarketplaceConfigurationParams
+    marketplaceConfigData: SetMarketplaceConfigurationParams,
+    lastUpdatedAt?: string
   ) => {
     setConfigureMarketplaceLoadingState("loading");
     setMarketplaceTxLoadingState("idle");
@@ -96,13 +133,17 @@ export const useSetMarketplaceConfiguration = () => {
       const ipfsJsonResponse = await uploadJsonToIpfs(marketplaceConfigData);
       txHash = await createTx(
         marketplaceConfigData.marketplaceId,
-        marketplaceConfigData.comissionFee,
+        marketplaceConfigData.commissionFee,
+        marketplaceConfigData.commissionFeeType,
         marketplaceConfigData.listingFee,
+        marketplaceConfigData.listingFeeType,
+        marketplaceConfigData.accounts,
         ipfsJsonResponse.Hash
       );
       await setTxId(ipfsJsonResponse.Hash);
     } catch (err) {
       if (err instanceof Error) {
+        console.error(err);
         setIpfsError(err);
       }
     } finally {
@@ -113,6 +154,12 @@ export const useSetMarketplaceConfiguration = () => {
         setMarketplaceTxLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
         await retry(submitTxHex, [JSON.parse(signedHash).signedTxHash]);
+        dispatch(
+          outdated.actions.setMarketplaceAsOutdated({
+            id: marketplaceConfigData.marketplaceId,
+            timestamp: lastUpdatedAt,
+          })
+        );
       } catch (err) {
         if (err && (err as any).code === -32000) {
           setMarketplaceTxError(
@@ -120,6 +167,7 @@ export const useSetMarketplaceConfiguration = () => {
           );
         } else {
           if (err instanceof Error) {
+            console.error(err);
             setMarketplaceTxError(err);
           }
         }

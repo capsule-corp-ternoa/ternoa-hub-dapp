@@ -22,6 +22,11 @@ export type NftQueryParams = {
   filter: Filter;
 };
 
+export type NftByMarketplaceQueryParams = {
+  marketplaceId: string;
+  pagination: PaginationFilter;
+}
+
 export type NftReducerState = {
   nfts: Nft[];
   hasNextPage: boolean;

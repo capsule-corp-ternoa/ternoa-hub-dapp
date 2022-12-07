@@ -6,7 +6,6 @@ export interface IMarketplaceFormResult {
 
 export interface onSubmitParams {
   result: IMarketplaceFormResult;
-  formData: UseFormReturn<IMarketplaceFormResult>;
 }
 
 export interface ICreateMarketplaceTemplate {

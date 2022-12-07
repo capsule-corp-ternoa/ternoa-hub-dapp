@@ -72,6 +72,8 @@ const Button: React.FC<IButton> = ({
   disabled = false,
   className = "",
   autoWidth,
+  leftComponent,
+  color,
   ...props
 }) => {
   return (
@@ -79,7 +81,7 @@ const Button: React.FC<IButton> = ({
       {...props}
       type="button"
       disabled={disabled}
-      className={`inline-block xs:min-w-[100%] sm:min-w-[100%] ${getButtonSize(
+      className={`flex flex-row items-center justify-center inline-block xs:min-w-[100%] sm:min-w-[100%] ${getButtonSize(
         size
       )} ${getButtonType(
         type,
@@ -88,6 +90,7 @@ const Button: React.FC<IButton> = ({
         autoWidth && "!min-w-[auto]"
       } ${className}`}
     >
+      {!!leftComponent && leftComponent}
       <Text {...getTextProps(type, size, text, disabled)} />
     </button>
   );

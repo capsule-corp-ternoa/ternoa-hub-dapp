@@ -8,4 +8,5 @@ export interface ISetMarketplaceConfigFilesForm {
   className?: string;
   control?: Control<IMarketplaceConfigurationFormResult, any>;
   logoError?: string;
+  isBackButtonHidden?: boolean;
 }

@@ -174,6 +174,8 @@ module.exports = {
       gridTemplateColumns: {
         nftListDesktop: "repeat(auto-fill, minmax(290px,1fr))",
         nftList: "repeat(auto-fill, minmax(144px,1fr))",
+        marketplaceNftListDesktop: "repeat(auto-fit, minmax(290px,1fr))",
+        marketplaceNftList: "repeat(auto-fit, minmax(144px,1fr))",
         homeCardsDesktop: "repeat(auto-fill, minmax(302px,1fr))",
         homeCards: "repeat(auto-fill, minmax(100%,1fr))",
       },
