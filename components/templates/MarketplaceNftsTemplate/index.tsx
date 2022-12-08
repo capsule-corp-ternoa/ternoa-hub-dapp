@@ -14,6 +14,7 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
   onEndReached,
   onClickCreateNft,
   mainColor,
+  isCreateNftVisible,
 }) => {
   const { ref: endReachRef, inView: isEndReached } = useInView();
 
@@ -23,7 +24,7 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEndReached]);
-  console.log(mainColor);
+
   return (
     <div className="flex flex-col bg-gray-100 rounded-xl pb-s32 md:pb-s56">
       <div className="bg-gray-100 grid grid-cols-marketplaceNftList md:grid-cols-marketplaceNftListDesktop md:gap-s24 gap-s16 place-items-center">
@@ -52,15 +53,17 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
                 weight="medium"
                 text={`We do not own your private keys and cannot access your funds \nwithout your confirmation.`}
               />
-              <Button
-                type="primary"
-                text="Create NFT"
-                autoWidth={true}
-                size="medium"
-                className={`bg-[${mainColor}]`}
-                style={mainColor ? { backgroundColor: mainColor } : {}}
-                onClick={onClickCreateNft}
-              />
+              {isCreateNftVisible && (
+                <Button
+                  type="primary"
+                  text="Create NFT"
+                  autoWidth={true}
+                  size="medium"
+                  className={`bg-[${mainColor}]`}
+                  style={mainColor ? { backgroundColor: mainColor } : {}}
+                  onClick={onClickCreateNft}
+                />
+              )}
             </Card>
           )}
         </div>
