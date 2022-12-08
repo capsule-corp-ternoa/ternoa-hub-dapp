@@ -42,7 +42,7 @@ const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
                   size="small"
                   text="Preview"
                   autoWidth={true}
-                  className="md:px-s16 mr-s16"
+                  className="md:px-s16 mr-s16 px-[0px] w-full"
                   onClick={onClickPreview}
                 />
               )}
@@ -52,7 +52,7 @@ const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
                   size="small"
                   text="Manage"
                   autoWidth={true}
-                  className="md:px-s16"
+                  className="md:px-s16 px-[0px] w-full"
                   onClick={onClickManage}
                 />
               )}

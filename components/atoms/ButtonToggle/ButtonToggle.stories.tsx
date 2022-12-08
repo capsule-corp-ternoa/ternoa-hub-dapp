@@ -16,6 +16,7 @@ const Template: ComponentStory<typeof ButtonToggle> = (args) => {
   return (
     <ButtonToggle
       {...args}
+      selectedIndex={selectedIndex}
       onChange={(value, index) => setSelectedIndex(index)}
     />
   );
