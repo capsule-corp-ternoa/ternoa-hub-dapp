@@ -38,7 +38,7 @@ export type PaginationFilter = {
 };
 
 export enum Filter {
-  "Created" = "Created",
   "Owned" = "Owned",
+  "Created" = "Created",
   "On Sale" = "On Sale",
 }

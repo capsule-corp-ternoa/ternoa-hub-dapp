@@ -23,7 +23,7 @@ const Account: NextPage = () => {
   const nftsData = useSelector(jsonDataSelector);
   const [results, setResults] = useState<Nft[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [selectedFilter, setSelectedFilter] = useState<Filter>(Filter.Created);
+  const [selectedFilter, setSelectedFilter] = useState<Filter>(Filter.Owned);
   const RESULTS_PER_PAGE = 12;
 
   const fetchPage = (page: number) => {
