@@ -15,7 +15,7 @@ const getQueryFilter = (filter: Filter, value: string) => {
     case Filter.Created:
       return `{creator: { equalTo: "${value}" }},`;
     case Filter["On Sale"]:
-      return `{or: [ {owner: { equalTo: "${value}" }}, {creator: {equalTo: "${value}"}}]}, {listedForSale: {equalTo: true}}`;
+      return `{or: [ {owner: { equalTo: "${value}" }}, {creator: {equalTo: "${value}"}}]}, {isListed: {equalTo: true}}`;
     default:
       return ``;
   }
