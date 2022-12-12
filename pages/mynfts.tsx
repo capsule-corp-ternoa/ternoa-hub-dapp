@@ -74,10 +74,12 @@ const Account: NextPage = () => {
             <AccountNftsTemplate
               nfts={nftListData}
               isLoaderVisible={
-                indexerNfts.data?.hasNextPage || indexerNfts.isFetching
+                !indexerNfts.isError &&
+                (indexerNfts.data?.hasNextPage || indexerNfts.isFetching)
               }
               onEndReached={() => {
-                indexerNfts.data?.hasNextPage &&
+                !indexerNfts.isError &&
+                  indexerNfts.data?.hasNextPage &&
                   !indexerNfts.isFetching &&
                   fetchPage(currentPage + 1);
               }}
