@@ -6,10 +6,10 @@ import "../components/atoms/LoaderEllipsis/styles.css";
 import type { AppProps } from "next/app";
 import { Provider, useDispatch } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { DefaultSeo } from 'next-seo';
+import { DefaultSeo } from "next-seo";
 import { WalletConnectClientContextProvider } from "../contexts/WalletConnectClientContext";
 import { AppDispatch, persistor, store } from "../store";
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import * as yup from "../utils/yup";
 import { connect } from "../store/slices/blockchain/blockchain";
 import { useRouter } from "next/router";
@@ -39,15 +39,17 @@ const Initialize = () => {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <WalletConnectClientContextProvider>
-          <Initialize />
-          <DefaultSeo {...SEO} />
-          <Component {...pageProps} />
-        </WalletConnectClientContextProvider>
-      </PersistGate>
-    </Provider>
+    <React.Fragment>
+      <DefaultSeo {...SEO} />
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <WalletConnectClientContextProvider>
+            <Initialize />
+            <Component {...pageProps} />
+          </WalletConnectClientContextProvider>
+        </PersistGate>
+      </Provider>
+    </React.Fragment>
   );
 }
 
