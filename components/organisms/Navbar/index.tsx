@@ -1,4 +1,5 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import Logo from "../../atoms/Logo";
 import Text from "../../atoms/Text";
 import AddressMenuButton from "../../molecules/AddressMenuButton";
@@ -77,4 +78,4 @@ const Navbar: React.FC<INavbar> = ({
   );
 };
 
-export default Navbar;
+export default dynamic(() => Promise.resolve(Navbar), { ssr: false });

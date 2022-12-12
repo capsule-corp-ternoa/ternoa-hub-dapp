@@ -1,4 +1,5 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import Icon from "../../atoms/Icon";
 import Text from "../../atoms/Text";
 import { INetworkSelectorButton } from "./types";
