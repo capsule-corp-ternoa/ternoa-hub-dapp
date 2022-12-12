@@ -6,12 +6,14 @@ import "../components/atoms/LoaderEllipsis/styles.css";
 import type { AppProps } from "next/app";
 import { Provider, useDispatch } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { DefaultSeo } from 'next-seo';
 import { WalletConnectClientContextProvider } from "../contexts/WalletConnectClientContext";
 import { AppDispatch, persistor, store } from "../store";
 import { useRef, useEffect } from "react";
 import * as yup from "../utils/yup";
 import { connect } from "../store/slices/blockchain/blockchain";
 import { useRouter } from "next/router";
+import SEO from "../constants/seo";
 
 const Initialize = () => {
   const initialized = useRef<boolean>();
@@ -41,6 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <PersistGate loading={null} persistor={persistor}>
         <WalletConnectClientContextProvider>
           <Initialize />
+          <DefaultSeo {...SEO} />
           <Component {...pageProps} />
         </WalletConnectClientContextProvider>
       </PersistGate>

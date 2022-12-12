@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { NextSeo } from "next-seo";
 import { useSelector } from "react-redux";
 import { MarketplaceKind } from "ternoa-js/marketplace/enum";
 import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
@@ -112,67 +113,71 @@ const ConfigureMarketplace: NextPage = () => {
   };
 
   return (
-    <BaseTemplate>
-      <IconModal
-        title="Marketplace configuration is processing..."
-        iconComponent={<LoaderEllipsis />}
-        body="it should be confirmed on the blockchain shortly..."
-        isOpened={configureMarketplaceLoadingState === "loading"}
-      />
-      <TxModal
-        isOpened={marketplaceTxLoadingState === "loading"}
-        txId={txId || "Loading..."}
-        body={
-          "A Marketplace configuration proposal has been sent to your Ternoa Wallet App"
-        }
-        title="Configure Marketplace request sent!"
-      />
-      <IconModal
-        iconName="CheckCircle"
-        title="Configuration complete!"
-        body="You have configured your Marketplace with success!"
-        isOpened={isSucessModalVisible}
-        onClose={() => setIsSucessModalVisible(false)}
-      />
-      <IconModal
-        iconName="Warning"
-        isOpened={isTxErrorModalVisible}
-        onClose={() => setIsTxErrorModalVisible(false)}
-        title={parseConfigureMarketplaceTxError()}
-      />
-      <IconModal
-        iconName="Warning"
-        isOpened={isIpfsErrorModalVisible}
-        onClose={() => setIsIpfsErrorModalVisible(false)}
-        title="There was an error trying to set marketplace's configuration"
-      />
-      {indexerMarketplaceData.isFetching || marketplaceData?.state.isLoading ? (
-        <div className="flex flex-1 justify-center items-center">
-          <NftLoader text="Loading Marketplace Data" />
-        </div>
-      ) : (
-        router.isReady &&
-        (parsedIsRecentlyCreated ||
-          (logo &&
-            indexerMarketplaceData.data &&
-            marketplaceData &&
-            !marketplaceData?.state.isLoading &&
-            indexerMarketplaceData.isSuccess &&
-            indexerMarketplaceData.data.marketplace)) && (
-          <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
-            <SetMarketplaceConfigurationTemplate
-              onSubmit={onSubmit}
-              disabled={isConnectingBlockchain}
-              defaultMarketplaceId={parseInt(marketplaceId as string)}
-              defaultKind={parsedKind}
-              ipfsData={marketplaceData?.jsonData}
-              logo={logo}
-              data={indexerMarketplaceData.data?.marketplace}
-            />
+    <React.Fragment>
+      <NextSeo title="Configure Marketplace" />
+      <BaseTemplate>
+        <IconModal
+          title="Marketplace configuration is processing..."
+          iconComponent={<LoaderEllipsis />}
+          body="it should be confirmed on the blockchain shortly..."
+          isOpened={configureMarketplaceLoadingState === "loading"}
+        />
+        <TxModal
+          isOpened={marketplaceTxLoadingState === "loading"}
+          txId={txId || "Loading..."}
+          body={
+            "A Marketplace configuration proposal has been sent to your Ternoa Wallet App"
+          }
+          title="Configure Marketplace request sent!"
+        />
+        <IconModal
+          iconName="CheckCircle"
+          title="Configuration complete!"
+          body="You have configured your Marketplace with success!"
+          isOpened={isSucessModalVisible}
+          onClose={() => setIsSucessModalVisible(false)}
+        />
+        <IconModal
+          iconName="Warning"
+          isOpened={isTxErrorModalVisible}
+          onClose={() => setIsTxErrorModalVisible(false)}
+          title={parseConfigureMarketplaceTxError()}
+        />
+        <IconModal
+          iconName="Warning"
+          isOpened={isIpfsErrorModalVisible}
+          onClose={() => setIsIpfsErrorModalVisible(false)}
+          title="There was an error trying to set marketplace's configuration"
+        />
+        {indexerMarketplaceData.isFetching ||
+        marketplaceData?.state.isLoading ? (
+          <div className="flex flex-1 justify-center items-center">
+            <NftLoader text="Loading Marketplace Data" />
           </div>
-        )
-      )}
-    </BaseTemplate>
+        ) : (
+          router.isReady &&
+          (parsedIsRecentlyCreated ||
+            (logo &&
+              indexerMarketplaceData.data &&
+              marketplaceData &&
+              !marketplaceData?.state.isLoading &&
+              indexerMarketplaceData.isSuccess &&
+              indexerMarketplaceData.data.marketplace)) && (
+            <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
+              <SetMarketplaceConfigurationTemplate
+                onSubmit={onSubmit}
+                disabled={isConnectingBlockchain}
+                defaultMarketplaceId={parseInt(marketplaceId as string)}
+                defaultKind={parsedKind}
+                ipfsData={marketplaceData?.jsonData}
+                logo={logo}
+                data={indexerMarketplaceData.data?.marketplace}
+              />
+            </div>
+          )
+        )}
+      </BaseTemplate>
+    </React.Fragment>
   );
 };
 

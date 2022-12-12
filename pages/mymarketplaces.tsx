@@ -1,6 +1,7 @@
+import React, { useEffect } from "react";
 import { NextPage } from "next";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import GridWrapper from "../components/atoms/GridWrapper";
 import { IMarketplaceListItem } from "../components/molecules/MarketplaceListItem/types";
@@ -94,17 +95,20 @@ const MyMarketplaces: NextPage = () => {
   };
 
   return (
-    <BaseTemplate>
-      <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
-        <GridWrapper>
-          <AccountMarketplacesTemplate
-            isLoading={marketplaces.isFetching}
-            marketplaces={parseMarketplacesListItems()}
-            onClickAddNew={() => router.push("/createmarketplace")}
-          />
-        </GridWrapper>
-      </div>
-    </BaseTemplate>
+    <React.Fragment>
+      <NextSeo title="My Marketplaces" />
+      <BaseTemplate>
+        <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
+          <GridWrapper>
+            <AccountMarketplacesTemplate
+              isLoading={marketplaces.isFetching}
+              marketplaces={parseMarketplacesListItems()}
+              onClickAddNew={() => router.push("/createmarketplace")}
+            />
+          </GridWrapper>
+        </div>
+      </BaseTemplate>
+    </React.Fragment>
   );
 };
 
