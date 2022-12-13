@@ -5,6 +5,7 @@ import Text from "../components/atoms/Text";
 import ActionCard from "../components/molecules/ActionCard";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
 import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
+import * as Features from "../constants/features";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -21,7 +22,9 @@ const Home: NextPage = () => {
 
   const renderQuestionCard = () => (
     <div className="w-[97px] h-[148px] bg-gray-300 flex items-center justify-center rounded-lg border-gray-200 border-[3px]">
-      <span className="font-AirbnbCerealMedium text-[70px] text-gray-500">?</span>
+      <span className="font-AirbnbCerealMedium text-[70px] text-gray-500">
+        ?
+      </span>
     </div>
   );
 
@@ -45,8 +48,8 @@ const Home: NextPage = () => {
                 width: 97,
                 height: 148,
               }}
-              title="Basic NFTs"
-              body={`Create a single NFT\n `}
+              title={Features.CREATE_BASIC_NFT.name}
+              body={Features.CREATE_BASIC_NFT.description}
               action="Create"
               onClickAction={() => onClickAction("/createnft")}
             />
@@ -57,8 +60,8 @@ const Home: NextPage = () => {
                 width: 97,
                 height: 148,
               }}
-              title="Collection"
-              body={`Create a Collection,\n to group your NFTs`}
+              title={Features.CREATE_COLLECTION.name}
+              body={Features.CREATE_COLLECTION.description}
               action="Create"
               onClickAction={() => onClickAction("/createcollection")}
             />
@@ -69,15 +72,15 @@ const Home: NextPage = () => {
                 width: 204,
                 height: 156,
               }}
-              title="Marketplace"
-              body={`Create a Marketplace \nto list and sell NFTs`}
+              title={Features.CREATE_MARKETPLACE.name}
+              body={Features.CREATE_MARKETPLACE.description}
               action="Create"
               onClickAction={() => onClickAction("/createmarketplace")}
             />
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="In-app Token"
-              body={`Create your own token\n to be associated with a dApp`}
+              body={`Create your own token to be associated with a dApp`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -85,7 +88,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Royalties"
-              body={`Update the royalties value\n on the NFTs you created`}
+              body={`Update the royalties value on the NFTs you created`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -101,7 +104,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Soulbound Token"
-              body={`Create a single NFT\n that is not transferable`}
+              body={`Create a single NFT that is not transferable`}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"
@@ -109,7 +112,7 @@ const Home: NextPage = () => {
             <ActionCard
               imgComponent={renderQuestionCard()}
               title="Auction"
-              body={`List your NFT for auction\n `}
+              body={`List your NFT for auction `}
               action="Coming soon..."
               disabled={true}
               className="border-dashed border-[2px]"

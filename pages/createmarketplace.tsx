@@ -1,6 +1,7 @@
-import { NextPage } from "next";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { NextPage } from "next";
+import { NextSeo } from 'next-seo';
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { MarketplaceKind } from "ternoa-js/marketplace/enum";
 import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
@@ -14,6 +15,7 @@ import { useCreateMarketplace } from "../hooks/useCreateMarketplace";
 import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 import { RootState } from "../store";
 import { WalletConnectRejectedRequest } from "../types";
+import { CREATE_MARKETPLACE } from "../constants/features";
 
 const CreateNft: NextPage = () => {
   const router = useRouter();
@@ -73,52 +75,55 @@ const CreateNft: NextPage = () => {
   };
 
   return (
-    <BaseTemplate>
-      <IconModal
-        title="Marketplace creation is processing..."
-        iconComponent={<LoaderEllipsis />}
-        body="it should be confirmed on the blockchain shortly..."
-        isOpened={createMarketplaceLoadingState === "loading"}
-      />
-      <TxModal
-        isOpened={createMarketplaceTxLoadingState === "loading"}
-        txId={""}
-        body={
-          "A Marketplace creation proposal has been sent to your Ternoa Wallet App"
-        }
-        title="Create Marketplace request sent!"
-      />
-      {marketplaceId && (
-        <MarketplaceCreationSuccessModal
-          isOpened={isSucessModalVisible}
-          onClose={() => setIsSucessModalVisible(false)}
-          onClickSetMarketplaceConfiguration={() =>
-            router.push({
-              pathname: "/configuremarketplace",
-              query: { marketplaceId, isRecentlyCreated: true, kind },
-            })
+    <React.Fragment>
+      <NextSeo title="Create Marketplace" description={CREATE_MARKETPLACE.description} />
+      <BaseTemplate>
+        <IconModal
+          title="Marketplace creation is processing..."
+          iconComponent={<LoaderEllipsis />}
+          body="it should be confirmed on the blockchain shortly..."
+          isOpened={createMarketplaceLoadingState === "loading"}
+        />
+        <TxModal
+          isOpened={createMarketplaceTxLoadingState === "loading"}
+          txId={""}
+          body={
+            "A Marketplace creation proposal has been sent to your Ternoa Wallet App"
           }
+          title="Create Marketplace request sent!"
         />
-      )}
-      <IconModal
-        iconName="Warning"
-        isOpened={isTxErrorModalVisible}
-        onClose={() => setIsTxErrorModalVisible(false)}
-        title={parseCreateMarketplaceError()}
-      />
-      <IconModal
-        iconName="Warning"
-        isOpened={isBlockchainErrorModalVisible}
-        onClose={() => setIsBlockchainErrorModalVisible(false)}
-        title="There was an error trying to create the Marketplace"
-      />
-      <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
-        <CreateMarketplaceTemplate
-          onSubmit={onSubmit}
-          disabled={isConnectingBlockchain}
+        {marketplaceId && (
+          <MarketplaceCreationSuccessModal
+            isOpened={isSucessModalVisible}
+            onClose={() => setIsSucessModalVisible(false)}
+            onClickSetMarketplaceConfiguration={() =>
+              router.push({
+                pathname: "/configuremarketplace",
+                query: { marketplaceId, isRecentlyCreated: true, kind },
+              })
+            }
+          />
+        )}
+        <IconModal
+          iconName="Warning"
+          isOpened={isTxErrorModalVisible}
+          onClose={() => setIsTxErrorModalVisible(false)}
+          title={parseCreateMarketplaceError()}
         />
-      </div>
-    </BaseTemplate>
+        <IconModal
+          iconName="Warning"
+          isOpened={isBlockchainErrorModalVisible}
+          onClose={() => setIsBlockchainErrorModalVisible(false)}
+          title="There was an error trying to create the Marketplace"
+        />
+        <div className="flex justify-center bg-gray-100 py-s40 px-s24 flex flex-1">
+          <CreateMarketplaceTemplate
+            onSubmit={onSubmit}
+            disabled={isConnectingBlockchain}
+          />
+        </div>
+      </BaseTemplate>
+    </React.Fragment>
   );
 };
 

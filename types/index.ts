@@ -44,6 +44,11 @@ export type IpfsServiceData = {
   key: string;
 };
 
+export type Feature = {
+  name: string;
+  description: string;
+}
+
 export class WalletConnectRejectedRequest extends Error {
   constructor(message: string) {
     super(message);

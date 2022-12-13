@@ -28,7 +28,7 @@ const ActionCard: React.FC<IActionCard> = ({
           type="p4"
           weight="light"
           color="text-gray-400"
-          className="mb-[18px] whitespace-pre-wrap text-center"
+          className="mb-[18px] whitespace-pre-wrap text-center md:w-[60%]"
         />
       )}
       <Button
