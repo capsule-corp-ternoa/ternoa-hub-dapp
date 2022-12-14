@@ -43,10 +43,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <DefaultSeo {...SEO} />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <WalletConnectClientContextProvider>
-            <Initialize />
-            <Component {...pageProps} />
-          </WalletConnectClientContextProvider>
+          {() => (
+            <WalletConnectClientContextProvider>
+              <Initialize />
+              <Component {...pageProps} />
+            </WalletConnectClientContextProvider>
+          )}
         </PersistGate>
       </Provider>
     </React.Fragment>
