@@ -7,6 +7,7 @@ import { IMarketplaceListItem } from "../components/molecules/MarketplaceListIte
 import AccountMarketplacesTemplate from "../components/templates/AccountMarketplacesTemplate";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
 import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
+import { RootState } from "../store";
 import { marketplaceApi } from "../store/slices/marketplaces";
 import { jsonDataSelector } from "../store/slices/marketplacesData";
 import { parseOffchainDataImage } from "../utils/strings";
@@ -16,6 +17,9 @@ const MyMarketplaces: NextPage = () => {
   const [trigger, marketplaces] =
     marketplaceApi.useLazyGetMarketplacesByOwnerQuery();
   const marketplacesData = useSelector(jsonDataSelector);
+  const outdated = useSelector(
+    (state: RootState) => state.outdated.marketplaces
+  );
   const { account } = useWalletConnectClient();
 
   useEffect(() => {
@@ -50,20 +54,40 @@ const MyMarketplaces: NextPage = () => {
             },
           };
         } else {
-          return {
-            isLoading: false,
-            onClickManage: () =>
-              router.push({
-                pathname: "/configuremarketplace",
-                query: { marketplaceId: indexerMarketplaceData.id },
-              }),
-            onClickPreview: () => {
-              router.push({
-                pathname: `/marketplace/${indexerMarketplaceData.id}`,
-              });
-            },
-            name: "Not configured yet",
-          };
+          const hasBeenConfigured = Object.keys(outdated).includes(
+            indexerMarketplaceData.id
+          );
+          if (hasBeenConfigured) {
+            return {
+              isLoading: false,
+              onClickManage: () =>
+                router.push({
+                  pathname: "/configuremarketplace",
+                  query: { marketplaceId: indexerMarketplaceData.id },
+                }),
+              onClickPreview: () => {
+                router.push({
+                  pathname: `/marketplace/${indexerMarketplaceData.id}`,
+                });
+              },
+              name: "Not indexed yet",
+            };
+          } else {
+            return {
+              isLoading: false,
+              name: "Not configured yet",
+              onClickManage: () => {
+                router.push({
+                  pathname: "/configuremarketplace",
+                  query: {
+                    marketplaceId: indexerMarketplaceData.id,
+                    isRecentlyCreated: true,
+                    kind: indexerMarketplaceData.kind,
+                  },
+                });
+              },
+            };
+          }
         }
       });
     }
