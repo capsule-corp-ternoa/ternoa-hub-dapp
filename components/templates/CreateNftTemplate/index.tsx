@@ -175,9 +175,11 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
             id="quantity"
             label="Quantity"
             required={true}
-            placeholder="Ex: 50"
+            placeholder="Maximum 1000"
             error={errors.quantity?.message}
             inputType="number"
+            min={1}
+            max={1000}
             {...register("quantity")}
           />
           <Input
@@ -188,6 +190,8 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
             error={errors.royalty?.message}
             defaultValue={undefined}
             inputType="number"
+            min={0}
+            max={100}
             {...register("royalty")}
           />
           <Input
