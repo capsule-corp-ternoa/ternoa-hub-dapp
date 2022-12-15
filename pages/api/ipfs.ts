@@ -38,6 +38,7 @@ const ipfsApi = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         url: `${ipfsRequestData.url}/api/v0/add`,
         data: formData,
+        maxBodyLength: Infinity,
         headers: {
           "Content-Type": "multipart/form-data",
           apikey: ipfsRequestData.key,
