@@ -17,6 +17,9 @@ const MyMarketplaces: NextPage = () => {
   const router = useRouter();
   const [trigger, marketplaces] =
     marketplaceApi.useLazyGetMarketplacesByOwnerQuery();
+  const currentNetwork = useSelector(
+    (state: RootState) => state.blockchain.currentNetwork
+  );
   const marketplacesData = useSelector(jsonDataSelector);
   const outdated = useSelector(
     (state: RootState) => state.outdated.marketplaces
@@ -45,6 +48,7 @@ const MyMarketplaces: NextPage = () => {
             onClickPreview: () => {
               router.push({
                 pathname: `/marketplace/${indexerMarketplaceData.id}`,
+                query: { network: currentNetwork.name.toLocaleLowerCase() },
               });
             },
             preview: {
