@@ -1,5 +1,5 @@
 import { ImageProps } from "next/image";
-import { Accept, DropzoneRef } from "react-dropzone";
+import { Accept, DropzoneRef, DropzoneOptions } from "react-dropzone";
 import { IconNamesType } from "../Icon/types";
 
 export interface IFileInput
@@ -18,4 +18,5 @@ export interface IFileInput
   dropzoneRef?: React.Ref<DropzoneRef>;
   error?: string;
   value?: File;
+  dropzoneOptions?: DropzoneOptions;
 }

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { useRef } from "react";
 import { Accept, DropzoneRef } from "react-dropzone";
 import { Controller } from "react-hook-form";
@@ -49,32 +48,16 @@ const SetMarketplaceConfigFilesForm: React.FC<ISetMarketplaceConfigFilesForm> =
           render={({ field: { ref, ...fieldProps } }) => (
             <React.Fragment>
               <FileInput
-                className="!w-[95px] !h-[95px] rounded-full m-auto md:m-[0px]"
-                previewClassName="!w-[95px] !h-[95px] rounded-full"
-                labelClassName="justify-center md:justify-start"
-                previewProps={{
-                  objectFit: "scale-down",
-                  height: 95,
-                  width: 95,
-                  className: "rounded-full",
-                }}
                 label="Logo image"
                 required={true}
                 onSelectFile={onSelectLogo}
                 dropzoneRef={dropzoneRefLogo}
                 accept={acceptedTypes}
-                dropzoneIcon={
-                  <Image
-                    src="/person.svg"
-                    alt="Select logo"
-                    width={30}
-                    height={30}
-                  />
-                }
-                description={renderDescription(
-                  `We recommend an image of at \nleast 300x300px. Gifs work \ntoo. Max 5mb.`
-                )}
+                description={`Drag and drop your image here. Max 2mb.`}
                 error={logoError}
+                dropzoneOptions={{
+                  maxSize: 2000000,
+                }}
                 {...fieldProps}
               />
               <div>
