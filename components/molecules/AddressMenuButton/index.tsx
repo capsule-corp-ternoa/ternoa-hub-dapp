@@ -41,7 +41,7 @@ const AddressMenuButton = React.forwardRef<HTMLDivElement, IAddressMenuButton>(
         if (isConnected && pubKey) {
           return (
             <div className="flex flex-row justify-between items-center w-full">
-              <div className="md:block hidden">
+              <div className="md:flex hidden">
                 <Avatar pubKey={pubKey} size={25} theme="polkadot" />
               </div>
               <div className="text-ellipsis overflow-hidden mx-s8">

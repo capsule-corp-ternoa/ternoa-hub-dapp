@@ -63,6 +63,7 @@ const NftCard: React.FC<INftCard> = ({
         {...preview}
         isLoading={isLoading}
         loader={<NftLoader text="Loading" />}
+        imageClassName="rounded-xl"
       />
       <div className="h-[55px] mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden">
         {renderData()}
