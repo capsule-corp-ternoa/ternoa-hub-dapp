@@ -231,7 +231,7 @@ export const WalletConnectClientContextProvider = ({
       disconnect();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentNetwork]);
+  }, [currentNetwork.name]);
 
   return (
     <WalletConnectClientContext.Provider
