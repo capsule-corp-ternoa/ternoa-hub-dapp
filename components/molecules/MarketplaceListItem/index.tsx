@@ -25,15 +25,20 @@ const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
       ) : (
         name && (
           <div className="flex flex-col md:flex-row md:items-center justify-between">
-            <div className="flex flex-row items-center md:mb-[0px] mb-s16">
+            <div className="flex flex-row items-center md:mb-[0px] mb-s16 whitespace-nowrap overflow-hidden text-ellipsis">
               {preview && (
                 <ImagePreview
                   {...preview}
-                  className="w-[50px] h-[50px] md:w-[50px] md:h-[50px] mr-s16"
+                  className="w-[50px] min-w-[50px] h-[50px] md:w-[50px] md:h-[50px] mr-s16"
                   loader={<LoaderEllipsis height={30} width={30} />}
                 />
               )}
-              <Text type="p2" weight="medium" text={name} />
+              <Text
+                type="p2"
+                weight="medium"
+                text={name}
+                className="overflow-hidden text-ellipsis"
+              />
             </div>
             <div className="flex flex-row items-center">
               {!!onClickPreview && (
