@@ -22,7 +22,7 @@ const MarketplaceNavbar: React.FC<IMarketplaceNavbar> = ({
   return (
     <nav className="h-[120px] md:h-[113px] w-full bg-white-default flex justify-center">
       <div className="flex flex-row items-center justify-between w-full pl-s8 pr-s8 md:pl-[42px] md:pr-[36px]">
-        <a className="flex flex-row items-center">
+        <a className="flex flex-row items-center whitespace-nowrap overflow-hidden text-ellipsis">
           <ImagePreview
             src={parseOffchainDataImage(marketplaceLogo)}
             alt={marketplaceName}
@@ -33,11 +33,11 @@ const MarketplaceNavbar: React.FC<IMarketplaceNavbar> = ({
                 className="bg-[transparent]"
               />
             }
-            className="w-[33px] h-[33px] md:w-[52px] md:h-[52px] mr-s8 md:mr-[13px]"
+            className="w-[33px] min-w-[33px] h-[33px] md:w-[52px] md:min-w-[54px] md:h-[52px] mr-s8 md:mr-[13px]"
           />
-          <Text text={marketplaceName} type="h4" weight="bold" />
+          <Text text={marketplaceName} type="h4" weight="bold" className="overflow-hidden text-ellipsis"/>
         </a>
-        <div className="flex flex-row items-center">
+        <div className="flex sm:flex-row flex-col-reverse items-center">
           {isEditVisible && (
             <Button
               text={isCurrentBreakpoint("md") ? "Edit Marketplace" : "Edit"}
@@ -53,7 +53,7 @@ const MarketplaceNavbar: React.FC<IMarketplaceNavbar> = ({
           )}
           <AddressMenuButton
             {...props}
-            className={`md:ml-s16 ml-s8`}
+            className={`md:ml-s16 ml-s8 mb-s8 sm:mb-[0px]`}
             color={mainColor}
             disabled={false}
           />
