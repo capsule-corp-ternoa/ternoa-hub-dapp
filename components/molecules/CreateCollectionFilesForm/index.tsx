@@ -49,31 +49,12 @@ const CreateCollectionFilesForm: React.FC<ICreateCollectionFilesForm> = ({
         render={({ field: { ref, ...fieldProps } }) => (
           <React.Fragment>
             <FileInput
-              className="!w-[95px] !h-[95px] rounded-full m-auto md:m-[0px]"
-              previewClassName="!w-[95px] !h-[95px] rounded-full"
-              labelClassName="justify-center md:justify-start"
-              previewProps={{
-                objectFit: "scale-down",
-                height: 95,
-                width: 95,
-                className: "rounded-full",
-              }}
               label="Logo image"
               required={true}
               onSelectFile={onSelectLogo}
               dropzoneRef={dropzoneRefLogo}
               accept={acceptedTypes}
-              dropzoneIcon={
-                <Image
-                  src="/person.svg"
-                  alt="Select logo"
-                  width={30}
-                  height={30}
-                />
-              }
-              description={renderDescription(
-                `We recommend an image of at \nleast 300x300px. Gifs work \ntoo. Max 5mb.`
-              )}
+              description={`We recommend an image of at least 300x300px. Max 5mb.`}
               error={logoError}
               {...fieldProps}
             />
@@ -96,16 +77,14 @@ const CreateCollectionFilesForm: React.FC<ICreateCollectionFilesForm> = ({
         render={({ field: { ref, ...fieldProps } }) => (
           <div className="mt-s40">
             <FileInput
-              className="!w-[237px] !h-[137px] rounded-xl m-auto md:m-[0px]"
+              className="!w-[237px] !h-[203px] rounded-xl m-auto md:m-[0px]"
               previewClassName="!w-[237px] !h-[137px] rounded-xl"
               labelClassName="justify-center md:justify-start"
               label="Banner image"
               required={true}
               onSelectFile={onSelectBanner}
               dropzoneRef={dropzoneRefBanner}
-              description={renderDescription(
-                `The dimensions change on\ndifferent devices.\n600 x 400px recommended.`
-              )}
+              description={`The dimensions change on different devices.\n600 x 400px recommended.`}
               dropzoneIcon={
                 <Image
                   src="/image.svg"

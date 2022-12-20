@@ -5,5 +5,6 @@ export interface IImagePreview {
   src?: string;
   alt?: string;
   className?: string;
+  imageClassName?: string;
   loader: React.ReactNode | React.ReactNode[];
 }

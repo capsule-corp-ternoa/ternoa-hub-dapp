@@ -20,6 +20,7 @@ const FileInput: React.FC<IFileInput> = ({
   description,
   error,
   value: currentFile,
+  dropzoneOptions,
   ...props
 }) => {
   const getPreview = useCallback((img: File) => {
@@ -31,7 +32,7 @@ const FileInput: React.FC<IFileInput> = ({
   const renderContent = (isDragActive: boolean) => {
     if (isDragActive) {
       return (
-        <React.Fragment>
+        <div className="flex flex-col items-center justify-center">
           <Icon
             name="ArrowFatLineDown"
             size={32}
@@ -39,7 +40,7 @@ const FileInput: React.FC<IFileInput> = ({
             className="block m-auto mb-s16"
           />
           Drop it!
-        </React.Fragment>
+        </div>
       );
     } else if (currentFile) {
       if (hasImageFiles()) {
@@ -60,27 +61,31 @@ const FileInput: React.FC<IFileInput> = ({
         );
       } else {
         return (
-          <React.Fragment>
+          <div className="flex flex-col items-center justify-center overflow-hidden">
             <Icon
               name="File"
               size={32}
               color="#94A3B8"
               className="block m-auto mb-s16"
             />
-            <p className="overflow-hidden text-ellipsis leading-loose">{currentFile.name}</p>
-          </React.Fragment>
+            <p className="overflow-hidden text-ellipsis leading-loose w-[90%]">
+              {currentFile.name}
+            </p>
+          </div>
         );
       }
-    } else if (dropzoneIcon) {
-      return dropzoneIcon;
     } else {
       return (
-        <Icon
-          name="FileSearch"
-          size={32}
-          color="#94A3B8"
-          className="block m-auto"
-        />
+        <div className="flex flex-col items-center justify-center overflow-hidden">
+          {dropzoneIcon || (
+            <Image src="/drop.svg" alt="Drop File" width={45} height={50} />
+          )}
+          {description && (
+            <p className="whitespace-pre-wrap text-center w-[90%] mt-s16">
+              {description}
+            </p>
+          )}
+        </div>
       );
     }
   };
@@ -115,6 +120,7 @@ const FileInput: React.FC<IFileInput> = ({
       onDrop={(files) => onSelectFile(files[0])}
       multiple={false}
       accept={accept}
+      {...dropzoneOptions}
     >
       {({ getRootProps, getInputProps, isDragActive }) => {
         return (
@@ -131,7 +137,7 @@ const FileInput: React.FC<IFileInput> = ({
             )}
             <input {...props} {...getInputProps({})} />
             <div
-              className={`bg-gray-100 border-[3px] border-dashed border-gray-200 rounded-xl w-full h-[296px] md:w-[240px] md:h-[200px] 
+              className={`bg-gray-100 border-[3px] border-dashed border-gray-200 rounded-xl w-[80vw] h-[296px] md:w-[240px] md:h-[200px] 
               ${getContainerClasses()} flex items-center justify-center cursor-pointer ${className}`}
             >
               <div className="text-gray-400 font-AirbnbCerealMedium text-fs16 overflow-hidden whitespace-nowrap px-s4 flex">
@@ -141,7 +147,7 @@ const FileInput: React.FC<IFileInput> = ({
             <div className="text-fs12 font-AirbnbCerealMedium text-red-300 mt-s4 pl-s2">
               {error}
             </div>
-            {description || (accept && renderDescription(accept))}
+            {accept && renderDescription(accept)}
           </div>
         );
       }}

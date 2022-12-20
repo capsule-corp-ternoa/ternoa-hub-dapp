@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { NextSeo } from "next-seo";
 import { useSelector } from "react-redux";
 import GridWrapper from "../components/atoms/GridWrapper";
 import { INftCard } from "../components/molecules/NftCard/types";
@@ -67,28 +68,33 @@ const Account: NextPage = () => {
   );
 
   return (
-    <BaseTemplate>
-      <div className="flex justify-center bg-gray-100 py-s40 flex flex-1">
-        <GridWrapper>
-          {account && (
-            <AccountNftsTemplate
-              nfts={nftListData}
-              isLoaderVisible={
-                indexerNfts.data?.hasNextPage || indexerNfts.isFetching
-              }
-              onEndReached={() => {
-                indexerNfts.data?.hasNextPage &&
-                  !indexerNfts.isFetching &&
-                  fetchPage(currentPage + 1);
-              }}
-              selectedFilter={selectedFilter}
-              onSelectFilter={setSelectedFilter}
-              onClickCreateNft={() => router.push("/createnft")}
-            />
-          )}
-        </GridWrapper>
-      </div>
-    </BaseTemplate>
+    <React.Fragment>
+      <NextSeo title="My Marketplaces" />
+      <BaseTemplate>
+        <div className="flex justify-center bg-gray-100 py-s40 flex flex-1">
+          <GridWrapper>
+            {account && (
+              <AccountNftsTemplate
+                nfts={nftListData}
+                isLoaderVisible={
+                  !indexerNfts.isError &&
+                  (indexerNfts.data?.hasNextPage || indexerNfts.isFetching)
+                }
+                onEndReached={() => {
+                  !indexerNfts.isError &&
+                    indexerNfts.data?.hasNextPage &&
+                    !indexerNfts.isFetching &&
+                    fetchPage(currentPage + 1);
+                }}
+                selectedFilter={selectedFilter}
+                onSelectFilter={setSelectedFilter}
+                onClickCreateNft={() => router.push("/createnft")}
+              />
+            )}
+          </GridWrapper>
+        </div>
+      </BaseTemplate>
+    </React.Fragment>
   );
 };
 

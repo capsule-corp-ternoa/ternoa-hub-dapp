@@ -10,6 +10,7 @@ const ImagePreview: React.FC<IImagePreview> = ({
   alt,
   loader,
   className = "",
+  imageClassName = ""
 }) => {
   const [imgLoaded, setImgLoaded] = useState<boolean>(false);
 
@@ -26,7 +27,7 @@ const ImagePreview: React.FC<IImagePreview> = ({
               <img
                 src={src}
                 alt={alt}
-                className={`bg-cover bg-no-repeat bg-center w-auto object-contain h-full rounded-xl ${
+                className={`bg-cover bg-no-repeat bg-center w-auto object-contain h-full ${imageClassName} ${
                   imgLoaded ? "" : "hidden"
                 }`}
                 onLoad={() => setImgLoaded(true)}

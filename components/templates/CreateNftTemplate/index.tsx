@@ -20,7 +20,15 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
     .object({
       name: yup.string().required().label("Name"),
       description: yup.string().required().label("Description"),
-      quantity: yup.number().integer().positive().required().label("Quantity"),
+      quantity: yup
+        .number()
+        .typeError("You must specify a quantity number")
+        .integer()
+        .positive()
+        .required()
+        .min(1)
+        .max(1000)
+        .label("Quantity"),
       collectionId: yup
         .number()
         .integer()
@@ -167,9 +175,11 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
             id="quantity"
             label="Quantity"
             required={true}
-            placeholder="Ex: 50"
+            placeholder="Maximum 1000"
             error={errors.quantity?.message}
             inputType="number"
+            min={1}
+            max={1000}
             {...register("quantity")}
           />
           <Input
@@ -180,6 +190,8 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
             error={errors.royalty?.message}
             defaultValue={undefined}
             inputType="number"
+            min={0}
+            max={100}
             {...register("royalty")}
           />
           <Input
