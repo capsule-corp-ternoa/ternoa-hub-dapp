@@ -5,7 +5,11 @@ export interface IAccountNftsTemplate {
   nfts: INftCard[];
   isLoaderVisible?: boolean;
   onEndReached: () => void;
-  selectedFilter: Filter;
-  onSelectFilter: (filter: Filter) => void;
-  onClickCreateNft: () => void;
+  filters?: Filter[];
+  selectedFilter?: Filter;
+  onSelectFilter?: (filter: Filter) => void;
+  onClickCreateNft?: () => void;
+  hideFilters?: boolean;
+  selectedIds?: string[];
+  onChangeSelectedIds?: (selectedIds: string[]) => void;
 }

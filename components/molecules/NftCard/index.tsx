@@ -5,6 +5,7 @@ import Text from "../../atoms/Text";
 import { middleEllipsis } from "../../../utils/strings";
 import Avatar from "../../atoms/Avatar";
 import NftLoader from "../../atoms/NftLoader";
+import Checkbox from "../../atoms/Checkbox";
 
 const NftCard: React.FC<INftCard> = ({
   creator,
@@ -12,6 +13,10 @@ const NftCard: React.FC<INftCard> = ({
   isLoading,
   preview,
   className = "",
+  isChecked,
+  showPrice,
+  price,
+  onChangeChecked,
 }) => {
   const renderData = () => {
     if (isLoading) {
@@ -24,31 +29,49 @@ const NftCard: React.FC<INftCard> = ({
     } else {
       return (
         <React.Fragment>
-          <div className="flex flex-row items-center">
-            {creator && (
-              <React.Fragment>
-                <Avatar
-                  pubKey={creator}
-                  size={20}
-                  theme="polkadot"
-                  className="md:scale-125 md:pt-s2 md:pl-s2"
-                />
+          <div className="flex flex-row items-center justify-between">
+            <div>
+              <div className="flex flex-row items-center">
+                {creator && (
+                  <React.Fragment>
+                    <Avatar
+                      pubKey={creator}
+                      size={20}
+                      theme="polkadot"
+                      className="md:scale-125 md:pt-s2 md:pl-s2"
+                    />
+                    <Text
+                      text={middleEllipsis(creator, 12)}
+                      weight="light"
+                      type="p3"
+                      className="ml-[6px] md:ml-[10px]"
+                    />
+                  </React.Fragment>
+                )}
+              </div>
+              {name && (
                 <Text
-                  text={middleEllipsis(creator, 12)}
-                  weight="light"
-                  type="p3"
-                  className="ml-[6px] md:ml-[10px]"
+                  text={name}
+                  weight="medium"
+                  type="p2"
+                  className="mt-s4 md:mt-[10px]"
                 />
-              </React.Fragment>
+              )}
+            </div>
+            {onChangeChecked && (
+              <div className="mr-s8">
+                <Checkbox
+                  checked={!!isChecked}
+                  onChange={() => onChangeChecked(!isChecked)}
+                />
+              </div>
             )}
           </div>
-          {name && (
-            <Text
-              text={name}
-              weight="medium"
-              type="p2"
-              className="mt-s4 md:mt-[10px]"
-            />
+          {showPrice && (
+            <div className="flex flex-row justify-between items-center bg-gray-100 p-s16 rounded-xl mt-s20">
+              <Text text="Price" weight="medium" type="p2" />
+              <Text text={!price ? "-" : price} weight="medium" type="p2" />
+            </div>
           )}
         </React.Fragment>
       );
@@ -65,7 +88,11 @@ const NftCard: React.FC<INftCard> = ({
         loader={<NftLoader text="Loading" />}
         imageClassName="rounded-xl"
       />
-      <div className="h-[55px] mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden">
+      <div
+        className={`${
+          showPrice ? "h-[130px]" : "h-[55px]"
+        } mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden flex flex-col justify-between`}
+      >
         {renderData()}
       </div>
     </div>

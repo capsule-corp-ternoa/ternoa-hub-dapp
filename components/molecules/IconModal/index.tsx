@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../../atoms/Button";
 import Icon from "../../atoms/Icon";
 import Modal from "../../atoms/Modal";
 import Text from "../../atoms/Text";
@@ -10,6 +11,8 @@ const IconModal: React.FC<IIconModal> = ({
   iconName,
   iconComponent,
   body,
+  buttonText,
+  onClickButton,
   ...props
 }) => {
   return (
@@ -30,6 +33,17 @@ const IconModal: React.FC<IIconModal> = ({
             text={body}
             color="text-gray-400 mt-s16"
           />
+        )}
+        {buttonText && onClickButton && (
+          <div className="flex items-center justify-center mt-s32">
+            <Button
+              text={buttonText}
+              autoWidth={true}
+              type="primary"
+              size="medium"
+              onClick={onClickButton}
+            />
+          </div>
         )}
       </div>
     </Modal>

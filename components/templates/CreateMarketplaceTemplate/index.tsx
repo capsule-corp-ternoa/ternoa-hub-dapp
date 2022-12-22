@@ -8,6 +8,7 @@ import ButtonToggle from "../../atoms/ButtonToggle";
 const CreateMarketplaceTemplate: React.FC<ICreateMarketplaceTemplate> = ({
   onSubmit,
   disabled,
+  serviceFee,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
@@ -61,7 +62,7 @@ const CreateMarketplaceTemplate: React.FC<ICreateMarketplaceTemplate> = ({
           color="text-gray-400"
           className="text-center whitespace-pre-wrap"
         />
-        <div className="flex flex-1 items-end">
+        <div className="flex flex-1 items-end flex-col items-center">
           <Button
             text="Continue"
             type="primary"
@@ -69,6 +70,16 @@ const CreateMarketplaceTemplate: React.FC<ICreateMarketplaceTemplate> = ({
             className="mt-s20 md:mt-s32"
             onClick={onClickSubmit}
             disabled={disabled}
+          />
+          <Text
+            type="p3"
+            weight="light"
+            className="mt-s20"
+            text={
+              serviceFee
+                ? `Service fee: ${serviceFee} CAPS`
+                : "Calulating service fee..."
+            }
           />
         </div>
       </div>

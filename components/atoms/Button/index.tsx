@@ -25,6 +25,8 @@ const getButtonType = (type: TButtonType, disabled: boolean) => {
         : "bg-gray-200";
     case "tertiary":
       return "!shadow-none bg-gray-100 hover:bg-gray-50 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 transition duration-150 active:shadow-lg ease-in-out";
+    case "quaternary":
+      return "bg-red-600 border-2 border-red-600 hover:bg-red-600 hover:border-red-600 hover:shadow-xl focus:shadow-lg focus:outline-none focus:ring-0 active:border-red-500 active:shadow-lg transition duration-150 ease-in-out";
     case "danger":
       return "bg-red-200 hover:border-2 hover:border-red-300 hover:shadow-lg hover:shadow-red-200 focus:shadow-lg focus:outline-none focus:ring-0 active:border-red-300 active:shadow-lg transition duration-150 ease-in-out";
   }
@@ -59,6 +61,13 @@ const getTextProps = (
         type: textType,
         weight: "medium",
         color: "text-gray-700",
+      };
+    case "quaternary":
+      return {
+        text,
+        type: textType,
+        weight: "medium",
+        color: "text-white-default",
       };
     case "danger":
       return { text, type: textType, weight: "medium", color: "text-red-400" };

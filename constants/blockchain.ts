@@ -1,0 +1,1 @@
+export const TERNOA_CHAIN_DECIMALS = 18;

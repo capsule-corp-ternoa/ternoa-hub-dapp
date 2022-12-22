@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
-import { NextSeo } from 'next-seo';
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { MarketplaceKind } from "ternoa-js/marketplace/enum";
+import BN from "bn.js";
 import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
 import IconModal from "../components/molecules/IconModal";
 import MarketplaceCreationSuccessModal from "../components/organisms/modals/MarketplaceCreationSuccessModal";
@@ -16,13 +17,16 @@ import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 import { RootState } from "../store";
 import { WalletConnectRejectedRequest } from "../types";
 import { CREATE_MARKETPLACE } from "../constants/features";
+import { balanceToNumber, getMarketplaceMintFee } from "ternoa-js";
+import { TERNOA_CHAIN_DECIMALS } from "../constants/blockchain";
 
 const CreateNft: NextPage = () => {
   const router = useRouter();
   const { account, client } = useWalletConnectClient();
-  const isConnectingBlockchain = useSelector(
-    (state: RootState) => state.blockchain.isConnecting
-  );
+  const {
+    isConnecting: isConnectingBlockchain,
+    isConnected: isConnectedBlockchain,
+  } = useSelector((state: RootState) => state.blockchain);
   const {
     createMarketplace,
     createMarketplaceTxLoadingState,
@@ -40,6 +44,21 @@ const CreateNft: NextPage = () => {
   const [isTxErrorModalVisible, setIsTxErrorModalVisible] =
     useState<boolean>(false);
   const [kind, setKind] = useState<MarketplaceKind>();
+  const [marketplaceMintFee, setMarketplaceMintFee] = useState<string>();
+
+  useEffect(() => {
+    const fetchFee = async () => {
+      const response = await getMarketplaceMintFee();
+      setMarketplaceMintFee(
+        (
+          Number(response.toString()) / Math.pow(10, TERNOA_CHAIN_DECIMALS)
+        ).toString()
+      );
+    };
+    if (isConnectedBlockchain) {
+      fetchFee();
+    }
+  }, [isConnectedBlockchain]);
 
   useEffect(() => {
     if (client && !account) {
@@ -76,7 +95,10 @@ const CreateNft: NextPage = () => {
 
   return (
     <React.Fragment>
-      <NextSeo title="Create Marketplace" description={CREATE_MARKETPLACE.description} />
+      <NextSeo
+        title="Create Marketplace"
+        description={CREATE_MARKETPLACE.description}
+      />
       <BaseTemplate>
         <IconModal
           title="Marketplace creation is processing..."
@@ -120,6 +142,7 @@ const CreateNft: NextPage = () => {
           <CreateMarketplaceTemplate
             onSubmit={onSubmit}
             disabled={isConnectingBlockchain}
+            serviceFee={marketplaceMintFee}
           />
         </div>
       </BaseTemplate>

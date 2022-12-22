@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import NftCard from ".";
@@ -11,9 +11,12 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof NftCard>;
 
-const Template: ComponentStory<typeof NftCard> = (args) => (
-  <NftCard {...args} />
-);
+const Template: ComponentStory<typeof NftCard> = (args) => {
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  return (
+    <NftCard {...args} onChangeChecked={setIsChecked} isChecked={isChecked} />
+  );
+};
 
 export const Base = Template.bind({});
 
