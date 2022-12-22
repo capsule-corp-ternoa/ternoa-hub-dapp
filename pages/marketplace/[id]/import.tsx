@@ -19,6 +19,7 @@ import IconModal from "../../../components/molecules/IconModal";
 import SetNftPriceModal from "../../../components/organisms/modals/SetNftPriceModal";
 import { onSubmitParams } from "../../../components/organisms/modals/SetNftPriceModal/types";
 import { WalletConnectRejectedRequest } from "../../../types";
+import NftLoader from "../../../components/atoms/NftLoader";
 
 const Import: NextPage = () => {
   const router = useRouter();
@@ -154,18 +155,22 @@ const Import: NextPage = () => {
           )}
         <div className="flex justify-center bg-gray-100 py-s40 flex flex-1">
           <GridWrapper>
-            {account && (
-              <AccountNftsTemplate
-                nfts={nftListData}
-                isLoaderVisible={isLoaderVisible}
-                onEndReached={onEndReached}
-                filters={[Filter["Not Listed"]]}
-                selectedFilter={selectedFilter}
-                onSelectFilter={setSelectedFilter}
-                onClickCreateNft={() => router.push("/createnft")}
-                selectedIds={selectedIds}
-                onChangeSelectedIds={setSelectedIds}
-              />
+            {!marketplaceData ? (
+              <NftLoader text="Loading marketplace data" className="mt-s64" />
+            ) : (
+              account && (
+                <AccountNftsTemplate
+                  nfts={nftListData}
+                  isLoaderVisible={isLoaderVisible}
+                  onEndReached={onEndReached}
+                  filters={[Filter["Not Listed"]]}
+                  selectedFilter={selectedFilter}
+                  onSelectFilter={setSelectedFilter}
+                  onClickCreateNft={() => router.push("/createnft")}
+                  selectedIds={selectedIds}
+                  onChangeSelectedIds={setSelectedIds}
+                />
+              )
             )}
           </GridWrapper>
         </div>

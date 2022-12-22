@@ -2,11 +2,9 @@ import { useState } from "react";
 import {
   batchTxHex,
   createTxHex,
-  signTxHex,
+  numberToBalance,
   submitTxHex,
-  TernoaConstants,
 } from "ternoa-js";
-import { TERNOA_CHAIN_DECIMALS } from "../constants/blockchain";
 import { LoadingState, WalletConnectRejectedRequest } from "../types";
 import { retry } from "../utils/retry";
 import { useWalletConnectClient } from "./useWalletConnectClient";
@@ -36,7 +34,7 @@ export const useListNfts = () => {
           nftData.nftId,
           nftData.marketplaceId,
           nftData.price
-            ? `${nftData.price * Math.pow(10, TERNOA_CHAIN_DECIMALS)}`
+            ? (await numberToBalance(nftData.price!)).toString()
             : undefined,
         ]);
         return tx;
