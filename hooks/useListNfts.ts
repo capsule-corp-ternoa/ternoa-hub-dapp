@@ -7,12 +7,13 @@ import {
 } from "ternoa-js";
 import { LoadingState, WalletConnectRejectedRequest } from "../types";
 import { retry } from "../utils/retry";
+import { priceWithChainDecimals } from "../utils/strings";
 import { useWalletConnectClient } from "./useWalletConnectClient";
 
 export interface ListNftParams {
   nftId: string;
   marketplaceId: string;
-  price?: number;
+  price?: string;
 }
 
 export interface ListNftsParams extends Array<ListNftParams> {}
@@ -33,9 +34,7 @@ export const useListNfts = () => {
         const tx = await createTxHex("marketplace", "listNft", [
           nftData.nftId,
           nftData.marketplaceId,
-          nftData.price
-            ? (await numberToBalance(nftData.price!)).toString()
-            : undefined,
+          nftData.price ? priceWithChainDecimals(nftData.price) : undefined,
         ]);
         return tx;
       })

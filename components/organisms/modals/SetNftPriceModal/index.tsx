@@ -13,7 +13,7 @@ const SetNftPriceModal: React.FC<ISetNftPriceModal> = ({
 }) => {
   const schema = yup.object({
     price: yup
-      .number()
+      .string()
       .typeError("You must specify a price")
       .min(0)
       .label("Price"),

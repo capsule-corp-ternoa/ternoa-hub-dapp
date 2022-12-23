@@ -4,7 +4,6 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { MarketplaceKind } from "ternoa-js/marketplace/enum";
-import BN from "bn.js";
 import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
 import IconModal from "../components/molecules/IconModal";
 import MarketplaceCreationSuccessModal from "../components/organisms/modals/MarketplaceCreationSuccessModal";
@@ -17,8 +16,8 @@ import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 import { RootState } from "../store";
 import { WalletConnectRejectedRequest } from "../types";
 import { CREATE_MARKETPLACE } from "../constants/features";
-import { balanceToNumber, getMarketplaceMintFee } from "ternoa-js";
-import { TERNOA_CHAIN_DECIMALS } from "../constants/blockchain";
+import { getMarketplaceMintFee } from "ternoa-js";
+import { formatPrice } from "../utils/strings";
 
 const CreateNft: NextPage = () => {
   const router = useRouter();
@@ -49,11 +48,7 @@ const CreateNft: NextPage = () => {
   useEffect(() => {
     const fetchFee = async () => {
       const response = await getMarketplaceMintFee();
-      setMarketplaceMintFee(
-        (
-          Number(response.toString()) / Math.pow(10, TERNOA_CHAIN_DECIMALS)
-        ).toString()
-      );
+      setMarketplaceMintFee(formatPrice(response.toString()));
     };
     if (isConnectedBlockchain) {
       fetchFee();

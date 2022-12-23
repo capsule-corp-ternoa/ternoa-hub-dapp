@@ -11,5 +11,5 @@ export interface onSubmitParams {
 }
 
 export interface ISetNFTPriceFormResult {
-  price: number;
+  price: string;
 }

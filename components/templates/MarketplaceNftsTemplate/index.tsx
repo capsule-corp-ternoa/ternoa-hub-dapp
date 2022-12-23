@@ -28,9 +28,9 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
 
   return (
     <div className="flex flex-col bg-gray-100 rounded-xl pb-s32 md:pb-s56">
-      <div className="bg-gray-100 grid grid-cols-marketplaceNftList md:grid-cols-marketplaceNftListDesktop md:gap-s24 gap-s16 place-items-center">
+      <div className="bg-gray-100 grid grid-cols-nftList md:grid-cols-nftListDesktop md:gap-s24 gap-s16 place-items-center">
         {Boolean(nfts.length) && !!onClickCreateNft && isCreateNftVisible && (
-          <div className="md:min-w-[290px] min-w-[144px]">
+          <div className="w-full">
             <ListNftCard
               onClickCreate={onClickCreateNft}
               className="md:block"
@@ -39,7 +39,7 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
           </div>
         )}
         {nfts.map((nftCard, i) => (
-          <div key={i} className="md:min-w-[290px] min-w-[144px]">
+          <div key={i} className="w-full">
             <NftCard {...nftCard} showPrice={true} className="w-full" />
           </div>
         ))}

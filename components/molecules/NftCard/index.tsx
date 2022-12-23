@@ -30,7 +30,7 @@ const NftCard: React.FC<INftCard> = ({
       return (
         <React.Fragment>
           <div className="flex flex-row items-center justify-between">
-            <div>
+            <div className="whitespace-nowrap overflow-hidden">
               <div className="flex flex-row items-center">
                 {creator && (
                   <React.Fragment>
@@ -54,7 +54,7 @@ const NftCard: React.FC<INftCard> = ({
                   text={name}
                   weight="medium"
                   type="p2"
-                  className="mt-s4 md:mt-[10px]"
+                  className="mt-s4 md:mt-[10px] overflow-hidden text-ellipsis"
                 />
               )}
             </div>
@@ -69,8 +69,18 @@ const NftCard: React.FC<INftCard> = ({
           </div>
           {showPrice && (
             <div className="flex flex-row justify-between items-center bg-gray-100 p-s16 rounded-xl mt-s20">
-              <Text text="Price" weight="medium" type="p2" />
-              <Text text={!price ? "-" : price} weight="medium" type="p2" />
+              <Text
+                text={price !== "0" ? "Price" : ""}
+                weight="medium"
+                type="p2"
+                className="mr-s20"
+              />
+              <Text
+                text={price && price !== "0" ? `${price} CAPS` : "NOT IN SELL"}
+                weight="medium"
+                type="p2"
+                className="break-all"
+              />
             </div>
           )}
         </React.Fragment>
@@ -89,9 +99,7 @@ const NftCard: React.FC<INftCard> = ({
         imageClassName="rounded-xl"
       />
       <div
-        className={`${
-          showPrice ? "h-[130px]" : "h-[55px]"
-        } mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden flex flex-col justify-between`}
+        className={`mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden flex flex-col justify-between`}
       >
         {renderData()}
       </div>
