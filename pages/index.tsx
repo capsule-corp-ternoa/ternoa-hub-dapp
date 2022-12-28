@@ -43,10 +43,10 @@ const Home: NextPage = () => {
           <div className="w-full grid grid-cols-homeCards md:grid-cols-homeCardsDesktop gap-s16 md:gap-s24">
             <ActionCard
               imgProps={{
-                src: "/nft-frame.svg",
+                src: "/create-nft-icon.svg",
                 alt: "Create an NFT",
-                width: 97,
-                height: 148,
+                width: 110,
+                height: 144,
               }}
               title={Features.CREATE_BASIC_NFT.name}
               body={Features.CREATE_BASIC_NFT.description}
@@ -55,10 +55,10 @@ const Home: NextPage = () => {
             />
             <ActionCard
               imgProps={{
-                src: "/collection-frame.svg",
+                src: "/nft-collection-icon.svg",
                 alt: "Collection",
-                width: 97,
-                height: 148,
+                width: 110,
+                height: 144,
               }}
               title={Features.CREATE_COLLECTION.name}
               body={Features.CREATE_COLLECTION.description}
@@ -67,10 +67,10 @@ const Home: NextPage = () => {
             />
             <ActionCard
               imgProps={{
-                src: "/marketplace-frame.svg",
+                src: "/create-marketplace-icon.svg",
                 alt: "Create a Marketplace",
-                width: 204,
-                height: 156,
+                width: 110,
+                height: 144,
               }}
               title={Features.CREATE_MARKETPLACE.name}
               body={Features.CREATE_MARKETPLACE.description}
@@ -78,7 +78,12 @@ const Home: NextPage = () => {
               onClickAction={() => onClickAction("/createmarketplace")}
             />
             <ActionCard
-              imgComponent={renderQuestionCard()}
+              imgProps={{
+                src: "/inApp-token-icon.svg",
+                alt: "In-app Token",
+                width: 127,
+                height: 144,
+              }}
               title="In-app Token"
               body={`Create your own token to be associated with a dApp`}
               action="Coming soon..."
@@ -94,7 +99,12 @@ const Home: NextPage = () => {
               className="border-dashed border-[2px]"
             />
             <ActionCard
-              imgComponent={renderQuestionCard()}
+              imgProps={{
+                src: "/delegate-nft-icon.svg",
+                alt: "Delegation",
+                width: 158,
+                height: 144,
+              }}
               title="Delegation"
               body={`Delegate your NFT to allow someone\n else to benefit from it's utility`}
               action="Coming soon..."
@@ -102,7 +112,12 @@ const Home: NextPage = () => {
               className="border-dashed border-[2px]"
             />
             <ActionCard
-              imgComponent={renderQuestionCard()}
+              imgProps={{
+                src: "/soulbound-token-icon.svg",
+                alt: "Soulbound Token",
+                width: 110,
+                height: 145,
+              }}
               title="Soulbound Token"
               body={`Create a single NFT that is not transferable`}
               action="Coming soon..."
@@ -118,7 +133,12 @@ const Home: NextPage = () => {
               className="border-dashed border-[2px]"
             />
             <ActionCard
-              imgComponent={renderQuestionCard()}
+              imgProps={{
+                src: "/rental-nft-icon.svg",
+                alt: "Rental NFT",
+                width: 110,
+                height: 145,
+              }}
               title="Rental NFT"
               body={`Monetize your NFT by renting it`}
               action="Coming soon..."
@@ -126,7 +146,12 @@ const Home: NextPage = () => {
               className="border-dashed border-[2px]"
             />
             <ActionCard
-              imgComponent={renderQuestionCard()}
+              imgProps={{
+                src: "/secret-nft-icon.svg",
+                alt: "Secret NFT",
+                width: 110,
+                height: 145,
+              }}
               title="Secret NFT"
               body={`Create a single encrypted NFT that only the owner can decrypt`}
               action="Coming soon..."
@@ -134,7 +159,12 @@ const Home: NextPage = () => {
               className="border-dashed border-[2px]"
             />
             <ActionCard
-              imgComponent={renderQuestionCard()}
+              imgProps={{
+                src: "/nft-dealing-icon.svg",
+                alt: "NFT Dealing",
+                width: 110,
+                height: 144,
+              }}
               title="NFT Dealing"
               body={`Trade NFTs directly with another party\n `}
               action="Coming soon..."
