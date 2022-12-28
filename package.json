@@ -29,7 +29,7 @@
     "axios": "^0.27.2",
     "better-sqlite3": "^7.6.2",
     "clsx": "^1.2.1",
-    "formidable": "^2.0.1",
+    "formidable": "^2.1.1",
     "fs": "^0.0.1-security",
     "graphql-request": "^5.0.0",
     "mime-types": "^2.1.35",
