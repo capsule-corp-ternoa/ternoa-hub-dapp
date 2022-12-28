@@ -38,6 +38,7 @@ export const useCreateNft = () => {
   const [mintNftError, setMintNftError] = useState<Error>();
   const [ipfsError, setIpfsError] = useState<Error>();
   const [txId, setTxId] = useState<string>();
+  const [nftId, setNftId] = useState<string>();
 
   const isMintNtfSuccess = mintNftLoadingState === "finished" && !mintNftError;
   const ipfsIsSuccess = createNftLoadingState === "finished" && !ipfsError;
@@ -96,6 +97,19 @@ export const useCreateNft = () => {
     }
   };
 
+  const submitTx = async (signedHash: `0x${string}`): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      submitTxHex(signedHash, (result) => {
+        const nftCreatedEvent = result.events.find(
+          (event) => event.event.method === "NFTCreated"
+        );
+        if (nftCreatedEvent) {
+          resolve(nftCreatedEvent.event.data[0].toString());
+        }
+      }).catch(reject);
+    });
+  };
+
   const createNft = async ({
     file,
     preview,
@@ -109,6 +123,7 @@ export const useCreateNft = () => {
     setNftMintLoadingState("idle");
     setIpfsError(undefined);
     setMintNftError(undefined);
+    setNftId(undefined);
     let txHash: string = "";
     try {
       const ipfsJsonResponse = await uploadJsonToIpfs({
@@ -135,7 +150,10 @@ export const useCreateNft = () => {
       try {
         setNftMintLoadingState("loading");
         const signedHash = await walletConnectRequest(txHash);
-        await retry(submitTxHex, [JSON.parse(signedHash).signedTxHash]);
+        const _nftId = await retry(submitTx, [
+          JSON.parse(signedHash).signedTxHash,
+        ]);
+        setNftId(_nftId);
         dispatch(nftApi.util.invalidateTags(["Nfts"]));
       } catch (err) {
         if (err && (err as any).code === -32000) {
@@ -162,5 +180,6 @@ export const useCreateNft = () => {
     ipfsError,
     ipfsIsSuccess,
     txId,
+    nftId,
   };
 };
