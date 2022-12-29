@@ -29,6 +29,7 @@ import LoaderEllipsis from "../../components/atoms/LoaderEllipsis";
 import TxModal from "../../components/organisms/modals/TxModal";
 import SetNftPriceModal from "../../components/organisms/modals/SetNftPriceModal";
 import { ListNftsParams, useListNfts } from "../../hooks/useListNfts";
+import { useFetchExchangeRate } from "../../hooks/useFetchExchangeRate";
 
 const Marketplace: NextPage = () => {
   const router = useRouter();
@@ -70,13 +71,14 @@ const Marketplace: NextPage = () => {
     txId,
     nftId,
   } = useCreateNft();
+  const { listNfts, listNftsLoadingState, listNftError, isListNftTxSuccess } =
+    useListNfts();
   const {
-    listNfts,
-    listNftsLoadingState,
-    listNftError,
-    txId: listNftTxId,
-    isListNftTxSuccess,
-  } = useListNfts();
+    exchangeRate,
+    loadingState: fetchExchangeRateLoadingState,
+    fetchExchangeRate,
+  } = useFetchExchangeRate();
+
   const [isSucessModalVisible, setIsSucessModalVisible] =
     useState<boolean>(false);
   const [isIpfsErrorModalVisible, setIsIpfsErrorModalVisible] =
@@ -89,6 +91,11 @@ const Marketplace: NextPage = () => {
     useState<boolean>(false);
   const [isListErrorModalVisible, setIsListErrorModalVisible] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    fetchExchangeRate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setIsSucessModalVisible(isMintNtfSuccess);
@@ -281,6 +288,9 @@ const Marketplace: NextPage = () => {
           onSubmit={onSetPrice}
           isOpened={isSetPriceModalVisible}
           onClose={() => setIsSetPriceModalVisible(false)}
+          mainColor={jsonData.mainColor}
+          exchangeRate={exchangeRate}
+          isLoadingExchangeRate={fetchExchangeRateLoadingState === "loading"}
         />
         <TxModal
           isOpened={listNftsLoadingState === "loading"}

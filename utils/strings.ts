@@ -1,5 +1,6 @@
 import { encodeAddress, decodeAddress } from "@polkadot/util-crypto";
 import { hexToU8a, isHex } from "@polkadot/util";
+import Big from "big.js";
 import BN from "bn.js";
 import { TERNOA_CHAIN_DECIMALS } from "../constants/blockchain";
 
@@ -58,30 +59,25 @@ export const parseOffchainDataImage = (urlOrHash: string) => {
   }
 };
 
+/**
+ * Format price to a floating number in string (ex: "100,000,000.01", "0.000000001")
+ * we use big.js instead of BN because is better to manage floating-point numbers
+ * @param number price as string
+ * @returns formatted price substracting chain decimals
+ */
 export const formatPrice = (number: string) => {
   if (number === "0") {
     return number;
   }
-  const num = new BN(number);
-  const chainDecimals = new BN(Math.pow(10, TERNOA_CHAIN_DECIMALS).toString());
-  const resultInteger = num.div(chainDecimals).toString();
+  const value = new Big(number);
+  const chainDecimals = new Big(Math.pow(10, 18));
+  const result = value.div(chainDecimals);
   const addCommas = (str: string) => str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  if (!parseFloat(resultInteger)) {
-    // for numbers < 1
-    return (Number(number) / Math.pow(10, TERNOA_CHAIN_DECIMALS))
-      .toFixed(TERNOA_CHAIN_DECIMALS)
-      .replace(/(\.\d*?[1-9])0+$/g, "$1");
+  if (result.toFixed(2) === "0.00") {
+    // for numbers < 0.01
+    return result.toFixed();
   } else {
-    const mod = num.mod(chainDecimals);
-    const resultDecimals = mod.toString();
-    if (parseFloat(resultDecimals)) {
-      // for number with decimals
-      return addCommas(
-        `${resultInteger}.${resultDecimals}`.replace(/(\.\d*?[1-9])0+$/g, "$1")
-      );
-    }
-    // numbers wihout decimals
-    return addCommas(resultInteger.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    return addCommas(value.div(chainDecimals).toFixed(2));
   }
 };
 
