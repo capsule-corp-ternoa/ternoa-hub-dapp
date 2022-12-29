@@ -20,6 +20,7 @@ import SetNftPriceModal from "../../../components/organisms/modals/SetNftPriceMo
 import { onSubmitParams } from "../../../components/organisms/modals/SetNftPriceModal/types";
 import { WalletConnectRejectedRequest } from "../../../types";
 import NftLoader from "../../../components/atoms/NftLoader";
+import { useFetchExchangeRate } from "../../../hooks/useFetchExchangeRate";
 
 const Import: NextPage = () => {
   const router = useRouter();
@@ -46,12 +47,22 @@ const Import: NextPage = () => {
     txId,
     isListNftTxSuccess,
   } = useListNfts();
+  const {
+    exchangeRate,
+    loadingState: fetchExchangeRateLoadingState,
+    fetchExchangeRate,
+  } = useFetchExchangeRate();
 
   const [isSetPriceModalVisible, setIsSetPriceModalVisible] =
     useState<boolean>(false);
   const [isErrorModalVisible, setIsErrorModalVisible] =
     useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchExchangeRate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (router.isReady && parsedMarketplaceId && isConnected) {
@@ -139,6 +150,9 @@ const Import: NextPage = () => {
           onSubmit={onSetPrice}
           isOpened={isSetPriceModalVisible}
           onClose={() => setIsSetPriceModalVisible(false)}
+          mainColor={marketplaceData?.jsonData?.mainColor}
+          exchangeRate={exchangeRate}
+          isLoadingExchangeRate={fetchExchangeRateLoadingState === "loading"}
         />
         {!!selectedIds.length &&
           !isSetPriceModalVisible &&

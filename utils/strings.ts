@@ -66,7 +66,7 @@ export const parseOffchainDataImage = (urlOrHash: string) => {
  * @returns formatted price substracting chain decimals
  */
 export const formatPrice = (number: string) => {
-  if (number === "0") {
+  if (number === "0" || !number) {
     return number;
   }
   const value = new Big(number);
