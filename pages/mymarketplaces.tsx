@@ -46,10 +46,8 @@ const MyMarketplaces: NextPage = () => {
                 query: { marketplaceId: indexerMarketplaceData.id },
               }),
             onClickPreview: () => {
-              router.push({
-                pathname: `/marketplace/${indexerMarketplaceData.id}`,
-                query: { network: currentNetwork.name.toLocaleLowerCase() },
-              });
+              const url = `/marketplace/${indexerMarketplaceData.id}/?network=/${currentNetwork.name.toLocaleLowerCase()}`
+              window.open(url, '_blank')
             },
             preview: {
               src:
@@ -71,9 +69,8 @@ const MyMarketplaces: NextPage = () => {
                   query: { marketplaceId: indexerMarketplaceData.id },
                 }),
               onClickPreview: () => {
-                router.push({
-                  pathname: `/marketplace/${indexerMarketplaceData.id}`,
-                });
+                const url = `/marketplace/${indexerMarketplaceData.id}`
+                window.open(url, '_blank')
               },
               name: "Not indexed yet",
             };
