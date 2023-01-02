@@ -13,6 +13,8 @@ import FileForm from "../../molecules/FileForm";
 const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
   onSubmit,
   disabled,
+  noTitle,
+  noQuantity,
 }) => {
   const [isPreviewVisible, setIsPreviewVisible] = useState<boolean>();
 
@@ -55,6 +57,9 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
 
   const formData = useForm<INftFormResult>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      quantity: noQuantity ? 1 : undefined,
+    },
   });
 
   const fileValue = formData.getValues("file");
@@ -150,8 +155,12 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
           />
         )}
       </div>
-      <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto">
-        <Text text="Create your NFT" type="h3" weight="bold" />
+      <div
+        className={`bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto ${
+          noTitle ? "!pt-[0px]" : ""
+        }`}
+      >
+        {!noTitle && <Text text="Create your NFT" type="h3" weight="bold" />}
         <form className="mt-s4 md:mt-s8 flex flex-col flex-1">
           <Input
             id="name"
@@ -180,6 +189,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
             inputType="number"
             min={1}
             max={1000}
+            type={noQuantity ? "disabled" : "primary"}
             {...register("quantity")}
           />
           <Input

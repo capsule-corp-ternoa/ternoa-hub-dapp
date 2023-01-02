@@ -25,7 +25,7 @@ export type NftQueryParams = {
 export type NftByMarketplaceQueryParams = {
   marketplaceId: string;
   pagination: PaginationFilter;
-}
+};
 
 export type NftReducerState = {
   nfts: Nft[];
@@ -38,7 +38,8 @@ export type PaginationFilter = {
 };
 
 export enum Filter {
-  "Created" = "Created",
   "Owned" = "Owned",
+  "Created" = "Created",
   "On Sale" = "On Sale",
+  "Not Listed" = "Not Listed",
 }

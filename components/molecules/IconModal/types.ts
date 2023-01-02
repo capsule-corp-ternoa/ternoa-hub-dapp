@@ -8,4 +8,6 @@ export interface IIconModal extends Omit<IModal, "children"> {
   iconComponent?: React.ReactNode | React.ReactNode[];
   body?: string;
   className?: string;
+  buttonText?: string;
+  onClickButton?: () => void;
 }
