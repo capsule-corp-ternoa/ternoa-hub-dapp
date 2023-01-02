@@ -5,6 +5,7 @@ import Button from "../../atoms/Button";
 import Card from "../../atoms/Card";
 import NftLoader from "../../atoms/NftLoader";
 import Text from "../../atoms/Text";
+import ListNftCard from "../../molecules/ListNftCard";
 import NftCard from "../../molecules/NftCard";
 import { IMarketplaceNftsTemplate } from "./types";
 
@@ -27,10 +28,19 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
 
   return (
     <div className="flex flex-col bg-gray-100 rounded-xl pb-s32 md:pb-s56">
-      <div className="bg-gray-100 grid grid-cols-marketplaceNftList md:grid-cols-marketplaceNftListDesktop md:gap-s24 gap-s16 place-items-center">
+      <div className="bg-gray-100 grid grid-cols-nftList md:grid-cols-nftListDesktop md:gap-s24 gap-s16 place-items-center">
+        {Boolean(nfts.length) && !!onClickCreateNft && isCreateNftVisible && (
+          <div className="w-full">
+            <ListNftCard
+              onClickCreate={onClickCreateNft}
+              className="md:block"
+              buttonColor={mainColor}
+            />
+          </div>
+        )}
         {nfts.map((nftCard, i) => (
-          <div key={i} className="md:min-w-[290px] min-w-[144px]">
-            <NftCard {...nftCard} className="w-full" />
+          <div key={i} className="w-full">
+            <NftCard {...nftCard} showPrice={true} className="w-full" />
           </div>
         ))}
       </div>

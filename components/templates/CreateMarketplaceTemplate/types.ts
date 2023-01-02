@@ -11,4 +11,5 @@ export interface onSubmitParams {
 export interface ICreateMarketplaceTemplate {
   onSubmit: (params: onSubmitParams) => void;
   disabled?: boolean;
+  serviceFee?: string;
 }

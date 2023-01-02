@@ -1,7 +1,12 @@
 import React from "react";
 
 export type TButtonSize = "large" | "medium" | "small";
-export type TButtonType = "primary" | "secondary" | "tertiary" | "danger";
+export type TButtonType =
+  | "primary"
+  | "secondary"
+  | "tertiary"
+  | "quaternary"
+  | "danger";
 
 export interface IButton extends Omit<React.ComponentProps<"button">, "type"> {
   text: string;

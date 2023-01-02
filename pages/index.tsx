@@ -6,6 +6,8 @@ import ActionCard from "../components/molecules/ActionCard";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
 import { useWalletConnectClient } from "../hooks/useWalletConnectClient";
 import * as Features from "../constants/features";
+import { NextSeo } from "next-seo";
+import React from "react";
 
 const Home: NextPage = () => {
   const router = useRouter();

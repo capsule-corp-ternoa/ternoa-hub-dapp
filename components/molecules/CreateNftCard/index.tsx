@@ -21,7 +21,7 @@ const CreateNftCard: React.FC<ICreateNftCard> = ({
         className="bg-gray-100 rounded-xl p-s8 mt-s20 cursor-pointer"
         onClick={onClickCreate}
       >
-        <div className="bg-gray-500 rounded-xl py-[12px] px-s56 text-center">
+        <div className="bg-gray-500 rounded-xl py-[12px] text-center">
           <Text
             type="p2"
             text="+ Add a new NFT"
