@@ -36,7 +36,8 @@ export type IconNamesType =
   | "Percent"
   | "Power"
   | "SignOut"
-  | "Lock";
+  | "Lock"
+  | "ArrowSquareOut";
 
 export interface IIcon {
   name: IconNamesType;
