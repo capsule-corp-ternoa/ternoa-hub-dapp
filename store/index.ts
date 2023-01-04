@@ -16,6 +16,8 @@ import { blockchain } from "./slices/blockchain/blockchain";
 import { marketplacesData } from "./slices/marketplacesData";
 import { nftsData } from "./slices/nftsData";
 import { outdated } from "./slices/outdated";
+import { ipfs } from "./slices/ipfs";
+import { blockchainTx } from "./slices/blockchainTx";
 
 const rootReducer = {
   [indexerApi.reducerPath]: indexerApi.reducer,
@@ -36,6 +38,8 @@ const rootReducer = {
     },
     outdated.reducer
   ),
+  [ipfs.name]: ipfs.reducer,
+  [blockchainTx.name]: blockchainTx.reducer,
 };
 
 const middlewares = [listenerMiddleware.middleware, indexerApi.middleware];
@@ -45,7 +49,16 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+          "blockchainTx/submitSignedTx/fulfilled",
+        ],
+        ignoredPaths: ["blockchainTx.data"],
       },
     }).concat(middlewares);
   },

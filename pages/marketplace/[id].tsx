@@ -23,10 +23,7 @@ import CreateNftFromMarketplaceModal from "../../components/organisms/modals/Cre
 import { onSubmitParams } from "../../components/templates/CreateNftTemplate/types";
 import { onSubmitParams as onSubmitSetPriceParams } from "../../components/organisms/modals/SetNftPriceModal/types";
 import { useCreateNft } from "../../hooks/useCreateNft";
-import { WalletConnectRejectedRequest } from "../../types";
 import IconModal from "../../components/molecules/IconModal";
-import LoaderEllipsis from "../../components/atoms/LoaderEllipsis";
-import TxModal from "../../components/organisms/modals/TxModal";
 import SetNftPriceModal from "../../components/organisms/modals/SetNftPriceModal";
 import { ListNftsParams, useListNfts } from "../../hooks/useListNfts";
 import { useFetchExchangeRate } from "../../hooks/useFetchExchangeRate";
@@ -53,6 +50,7 @@ const Marketplace: NextPage = () => {
   const [results, setResults] = useState<Nft[]>([]);
   const [triggerFetchNfts, indexerNfts] =
     nftApi.useLazyGetNftsByMarketplaceQuery();
+  const [nftId, setNftId] = useState<number>();
   const isOwner =
     !!account && indexerMarketplaceData.data?.marketplace.owner === account;
   const userIsOnList =
@@ -63,27 +61,23 @@ const Marketplace: NextPage = () => {
 
   const {
     createNft,
-    createNftLoadingState,
-    mintNftLoadingState,
-    isMintNtfSuccess,
-    mintNftError,
-    ipfsError,
-    txId,
-    nftId,
+    isSuccess: isCreateNftSuccess,
+    error: createNftError,
   } = useCreateNft();
-  const { listNfts, listNftsLoadingState, listNftError, isListNftTxSuccess } =
-    useListNfts();
+  const {
+    listNfts,
+    isSuccess: isListNftSuccess,
+    error: listNftError,
+  } = useListNfts();
   const {
     exchangeRate,
     loadingState: fetchExchangeRateLoadingState,
     fetchExchangeRate,
   } = useFetchExchangeRate();
 
-  const [isSucessModalVisible, setIsSucessModalVisible] =
+  const [isCreateNftSuccessModalVisible, setIsCreateNftSucessModalVisible] =
     useState<boolean>(false);
-  const [isIpfsErrorModalVisible, setIsIpfsErrorModalVisible] =
-    useState<boolean>(false);
-  const [isMintNFTErrorModalVisible, setIsMintNFTErrorModalVisible] =
+  const [isCreateNftErrorModalVisisble, setIsCreateNftErrorModalVisible] =
     useState<boolean>(false);
   const [isSetPriceModalVisible, setIsSetPriceModalVisible] =
     useState<boolean>(false);
@@ -98,43 +92,24 @@ const Marketplace: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    setIsSucessModalVisible(isMintNtfSuccess);
-    if (isMintNtfSuccess) {
-      setIsCreateNftModalVisible(false);
-    }
-  }, [isMintNtfSuccess]);
-
-  useEffect(() => {
-    setIsIpfsErrorModalVisible(Boolean(ipfsError));
-  }, [ipfsError]);
-
-  useEffect(() => {
-    setIsMintNFTErrorModalVisible(Boolean(mintNftError));
-  }, [mintNftError]);
-
-  useEffect(() => {
-    setIsListNftSuccessModalVisible(isListNftTxSuccess);
-  }, [isListNftTxSuccess]);
+    setIsListNftSuccessModalVisible(isListNftSuccess);
+  }, [isListNftSuccess]);
 
   useEffect(() => {
     setIsListErrorModalVisible(Boolean(listNftError));
   }, [listNftError]);
 
-  const parseMintNftError = () => {
-    if (mintNftError instanceof WalletConnectRejectedRequest) {
-      return "The request has been rejected";
-    } else {
-      return "There was an error trying to mint the NFT";
-    }
-  };
+  useEffect(() => {
+    setIsCreateNftErrorModalVisible(Boolean(createNftError));
+  }, [createNftError]);
 
-  const parseListNftError = () => {
-    if (listNftError instanceof WalletConnectRejectedRequest) {
-      return "The request has been rejected";
-    } else {
-      return "There was an error trying to list the NFT";
+  useEffect(() => {
+    setIsCreateNftSucessModalVisible(isCreateNftSuccess);
+    if (isCreateNftSuccess) {
+      setIsCreateNftModalVisible(false);
     }
-  };
+  }, [isCreateNftSuccess]);
+
 
   useEffect(() => {
     if (router.isReady && parsedMarketplaceId && isConnected) {
@@ -182,11 +157,14 @@ const Marketplace: NextPage = () => {
   };
 
   const onSubmitCreateNft = async ({ result, formData }: onSubmitParams) => {
-    await createNft({
+    const createdEvent = await createNft({
       title: result.name,
       ...result,
     });
-    formData.reset();
+    if (createdEvent) {
+      setNftId(createdEvent.nftId);
+      formData.reset();
+    }
   };
 
   const onSetPrice = ({ result, formData }: onSubmitSetPriceParams) => {
@@ -195,7 +173,7 @@ const Marketplace: NextPage = () => {
     if (nftId) {
       const nftsListData: ListNftsParams = [
         {
-          nftId: nftId,
+          nftId: nftId.toString(),
           marketplaceId: router.query.id as string,
           price: result.price,
         },
@@ -243,46 +221,21 @@ const Marketplace: NextPage = () => {
           onClickCreate={onClickCreate}
         />
         <CreateNftFromMarketplaceModal
+          containerClassName="!z-[10]"
           isOpened={isCreateNftModalVisible}
           onClose={() => setIsCreateNftModalVisible(false)}
           onSubmit={onSubmitCreateNft}
         />
         <IconModal
-          title="NFT creation is processing..."
-          iconComponent={<LoaderEllipsis />}
-          body="it should be confirmed on the blockchain shortly..."
-          isOpened={createNftLoadingState === "loading"}
-        />
-        <TxModal
-          isOpened={mintNftLoadingState === "loading"}
-          txId={txId || "Loading..."}
-          body={
-            "An NFT minting proposal has been sent to your Ternoa Wallet App"
-          }
-          title="Minting request sent!"
-        />
-        <IconModal
           title="Creation complete!"
-          body="You have listed your NFT with success!"
+          body="You have created your NFT with success!"
           iconName="CheckCircle"
-          isOpened={isSucessModalVisible}
+          isOpened={isCreateNftSuccessModalVisible}
           buttonText={"Set Price"}
           onClickButton={() => {
-            setIsSucessModalVisible(false);
+            setIsCreateNftSucessModalVisible(false);
             setIsSetPriceModalVisible(true);
           }}
-        />
-        <IconModal
-          iconName="Warning"
-          isOpened={isMintNFTErrorModalVisible}
-          onClose={() => setIsMintNFTErrorModalVisible(false)}
-          title={parseMintNftError()}
-        />
-        <IconModal
-          iconName="Warning"
-          isOpened={isIpfsErrorModalVisible}
-          onClose={() => setIsIpfsErrorModalVisible(false)}
-          title="There was an error trying to create the NFT"
         />
         <SetNftPriceModal
           onSubmit={onSetPrice}
@@ -291,14 +244,6 @@ const Marketplace: NextPage = () => {
           mainColor={jsonData.mainColor}
           exchangeRate={exchangeRate}
           isLoadingExchangeRate={fetchExchangeRateLoadingState === "loading"}
-        />
-        <TxModal
-          isOpened={listNftsLoadingState === "loading"}
-          txId={txId || "Loading..."}
-          body={
-            "An NFT listing proposal has been sent to your Ternoa Wallet App"
-          }
-          title="List NFT request sent!"
         />
         <IconModal
           iconName="CheckCircle"
@@ -311,7 +256,13 @@ const Marketplace: NextPage = () => {
           iconName="Warning"
           isOpened={isListErrorModalVisible}
           onClose={() => setIsListErrorModalVisible(false)}
-          title={parseListNftError()}
+          title={"There was an error trying to list the NFT"}
+        />
+        <IconModal
+          iconName="Warning"
+          isOpened={isCreateNftErrorModalVisisble}
+          onClose={() => setIsCreateNftErrorModalVisible(false)}
+          title="There was an error trying to create the NFT"
         />
         <BaseTemplate
           renderCustomNavbar={(props) => {

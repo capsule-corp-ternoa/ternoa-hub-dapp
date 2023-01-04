@@ -1,18 +1,17 @@
 import { useState } from "react";
-import { batchTxHex, createTxHex, submitTxHex } from "ternoa-js";
+import { NFTCreatedEvent } from "ternoa-js";
 import mime from "mime-types";
-import { useDispatch, useSelector } from "react-redux";
-import * as IpfsService from "../services/ipfs";
+import { useDispatch } from "react-redux";
 import { useWalletConnectClient } from "./useWalletConnectClient";
-import {
-  LoadingState,
-  NftJsonData,
-  WalletConnectRejectedRequest,
-} from "../types";
+import { LoadingState, NftJsonData, TxType } from "../types";
 import { nftApi } from "../store/slices/nfts";
-import { RootState } from "../store";
-import { retry } from "../utils/retry";
+import { AppDispatch } from "../store";
 import { IpfsUploadFileResponse } from "../pages/api/ipfs";
+import { uploadToIpfs } from "../store/slices/ipfs";
+import {
+  createNft as blockchainTxCreateNft,
+  submitSignedTx,
+} from "../store/slices/blockchainTx";
 
 export interface CreatNftParams {
   file: File;
@@ -25,23 +24,11 @@ export interface CreatNftParams {
 }
 
 export const useCreateNft = () => {
-  const { request: walletConnectRequest, account } = useWalletConnectClient();
-  const dispatch = useDispatch();
-  const currentNetwork = useSelector(
-    (state: RootState) => state.blockchain.currentNetwork
-  );
-
-  const [mintNftLoadingState, setNftMintLoadingState] =
-    useState<LoadingState>("idle");
-  const [createNftLoadingState, setCreateNftLoadingState] =
-    useState<LoadingState>("idle");
-  const [mintNftError, setMintNftError] = useState<Error>();
-  const [ipfsError, setIpfsError] = useState<Error>();
-  const [txId, setTxId] = useState<string>();
-  const [nftId, setNftId] = useState<string>();
-
-  const isMintNtfSuccess = mintNftLoadingState === "finished" && !mintNftError;
-  const ipfsIsSuccess = createNftLoadingState === "finished" && !ipfsError;
+  const { request: walletConnectRequest } = useWalletConnectClient();
+  const dispatch = useDispatch<AppDispatch>();
+  const [loadingState, setLoadingState] = useState<LoadingState>("idle");
+  const [error, setError] = useState<Error>();
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const uploadJsonToIpfs = async ({
     file,
@@ -54,9 +41,9 @@ export const useCreateNft = () => {
     title: string;
     description: string;
   }): Promise<IpfsUploadFileResponse> => {
-    const ipfsFileResponse = await IpfsService.uploadFile(file, currentNetwork);
+    const ipfsFileResponse = await dispatch(uploadToIpfs(file)).unwrap();
     const ipfsPreviewResonse =
-      preview && (await IpfsService.uploadFile(preview, currentNetwork));
+      preview && (await dispatch(uploadToIpfs(preview)).unwrap());
     const json: NftJsonData = {
       title,
       description,
@@ -74,40 +61,7 @@ export const useCreateNft = () => {
     const blob = new Blob([JSON.stringify(json)], {
       type: "application/json",
     });
-    return await IpfsService.uploadFile(blob, currentNetwork);
-  };
-
-  const createTx = async (
-    hash: string,
-    royalty: number,
-    collectionId: number | undefined,
-    quantity: number
-  ) => {
-    const txHash = await createTxHex("nft", "createNft", [
-      hash,
-      `000${royalty * 10000}`,
-      collectionId,
-      false,
-    ]);
-    if (quantity === 1) {
-      return txHash;
-    } else {
-      const txHashes = Array(quantity).fill(txHash);
-      return await batchTxHex(txHashes);
-    }
-  };
-
-  const submitTx = async (signedHash: `0x${string}`): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      submitTxHex(signedHash, (result) => {
-        const nftCreatedEvent = result.events.find(
-          (event) => event.event.method === "NFTCreated"
-        );
-        if (nftCreatedEvent) {
-          resolve(nftCreatedEvent.event.data[0].toString());
-        }
-      }).catch(reject);
-    });
+    return await dispatch(uploadToIpfs(blob)).unwrap();
   };
 
   const createNft = async ({
@@ -118,12 +72,10 @@ export const useCreateNft = () => {
     royalty,
     quantity,
     collectionId,
-  }: CreatNftParams) => {
-    setCreateNftLoadingState("loading");
-    setNftMintLoadingState("idle");
-    setIpfsError(undefined);
-    setMintNftError(undefined);
-    setNftId(undefined);
+  }: CreatNftParams): Promise<NFTCreatedEvent | undefined> => {
+    setLoadingState("loading");
+    setError(undefined);
+    setIsSuccess(false);
     let txHash: string = "";
     try {
       const ipfsJsonResponse = await uploadJsonToIpfs({
@@ -132,54 +84,41 @@ export const useCreateNft = () => {
         title,
         description,
       });
-      txHash = await createTx(
-        ipfsJsonResponse.Hash,
-        royalty,
-        collectionId,
-        quantity
-      );
-      await setTxId(ipfsJsonResponse.Hash);
+      txHash = await dispatch(
+        blockchainTxCreateNft({
+          hash: ipfsJsonResponse.Hash,
+          royalty,
+          collectionId,
+          quantity,
+        })
+      ).unwrap();
+      if (txHash) {
+        const signedHash = await walletConnectRequest(txHash, TxType.CreateNFT);
+        if (signedHash) {
+          const createdEvent = await dispatch(
+            submitSignedTx(NFTCreatedEvent)({
+              signedHash: JSON.parse(signedHash).signedTxHash,
+            })
+          ).unwrap();
+          setIsSuccess(true);
+          dispatch(nftApi.util.invalidateTags(["Nfts"]));
+          return createdEvent;
+        }
+      }
     } catch (err) {
+      console.error(err);
       if (err instanceof Error) {
-        setIpfsError(err);
+        setError(err);
       }
     } finally {
-      setCreateNftLoadingState("finished");
-    }
-    if (txHash) {
-      try {
-        setNftMintLoadingState("loading");
-        const signedHash = await walletConnectRequest(txHash);
-        const _nftId = await retry(submitTx, [
-          JSON.parse(signedHash).signedTxHash,
-        ]);
-        setNftId(_nftId);
-        dispatch(nftApi.util.invalidateTags(["Nfts"]));
-      } catch (err) {
-        if (err && (err as any).code === -32000) {
-          setMintNftError(
-            new WalletConnectRejectedRequest("The request has been rejected")
-          );
-        } else {
-          if (err instanceof Error) {
-            setMintNftError(err);
-          }
-        }
-      } finally {
-        setNftMintLoadingState("finished");
-      }
+      setLoadingState("finished");
     }
   };
 
   return {
     createNft,
-    mintNftLoadingState,
-    mintNftError,
-    isMintNtfSuccess,
-    createNftLoadingState,
-    ipfsError,
-    ipfsIsSuccess,
-    txId,
-    nftId,
+    loadingState,
+    error,
+    isSuccess,
   };
 };

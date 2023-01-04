@@ -1,13 +1,12 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { NFTListedEvent } from "ternoa-js";
+import { AppDispatch } from "../store";
+import { LoadingState, TxType } from "../types";
 import {
-  batchTxHex,
-  createTxHex,
-  numberToBalance,
-  submitTxHex,
-} from "ternoa-js";
-import { LoadingState, WalletConnectRejectedRequest } from "../types";
-import { retry } from "../utils/retry";
-import { priceWithChainDecimals } from "../utils/strings";
+  listNft as blockchainTxListNft,
+  submitSignedTx,
+} from "../store/slices/blockchainTx";
 import { useWalletConnectClient } from "./useWalletConnectClient";
 
 export interface ListNftParams {
@@ -20,65 +19,46 @@ export interface ListNftsParams extends Array<ListNftParams> {}
 
 export const useListNfts = () => {
   const { request: walletConnectRequest } = useWalletConnectClient();
-  const [listNftsLoadingState, setListNftsLoadingState] =
-    useState<LoadingState>("idle");
-  const [listNftError, setListNftError] = useState<Error>();
-  const [txId, setTxId] = useState<string>();
+  const dispatch = useDispatch<AppDispatch>();
+  const [loadingState, setLoadingState] = useState<LoadingState>("idle");
+  const [error, setError] = useState<Error>();
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  const isListNftTxSuccess =
-    listNftsLoadingState === "finished" && !listNftError;
-
-  const createListTx = async (nftsData: ListNftsParams) => {
-    const txs = await Promise.all(
-      nftsData.map(async (nftData) => {
-        const tx = await createTxHex("marketplace", "listNft", [
-          nftData.nftId,
-          nftData.marketplaceId,
-          nftData.price ? priceWithChainDecimals(nftData.price) : undefined,
-        ]);
-        return tx;
-      })
-    );
-    if (txs.length > 1) {
-      return await batchTxHex(txs);
-    } else {
-      return txs[0];
-    }
-  };
-
-  const listNfts = async (nftsData: ListNftsParams) => {
-    setListNftsLoadingState("loading");
-    setListNftError(undefined);
-    setTxId(undefined);
+  const listNfts = async (
+    nftsData: ListNftsParams
+  ): Promise<NFTListedEvent | undefined> => {
+    setLoadingState("loading");
+    setError(undefined);
+    setIsSuccess(false);
     try {
-      const txHash = await createListTx(nftsData);
-      setTxId(txHash);
-      const signedHash = await walletConnectRequest(txHash);
-      console.log(signedHash);
-      const response = await retry(submitTxHex, [
-        JSON.parse(signedHash).signedTxHash,
-      ]);
-      console.log(response);
+      let txHash: `0x${string}` | undefined = undefined;
+      txHash = await dispatch(blockchainTxListNft(nftsData)).unwrap();
+      if (txHash) {
+        const signedHash = await walletConnectRequest(txHash, TxType.ListNft);
+        if (signedHash) {
+          const createdEvent = await dispatch(
+            submitSignedTx(NFTListedEvent)({
+              signedHash: JSON.parse(signedHash).signedTxHash,
+            })
+          ).unwrap();
+          setIsSuccess(true);
+          return createdEvent;
+        }
+      }
     } catch (err) {
       console.error(err);
-      if (err && (err as any).code === -32000) {
-        setListNftError(
-          new WalletConnectRejectedRequest("The request has been rejected")
-        );
-      }
       if (err instanceof Error) {
-        setListNftError(err);
+        setError(err);
       }
     } finally {
-      setListNftsLoadingState("finished");
+      setLoadingState("finished");
     }
   };
 
   return {
     listNfts,
-    listNftsLoadingState,
-    listNftError,
-    txId,
-    isListNftTxSuccess,
+    loadingState,
+    error,
+    isSuccess,
   };
 };

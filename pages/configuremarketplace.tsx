@@ -4,10 +4,8 @@ import React, { useEffect, useState } from "react";
 import { NextSeo } from "next-seo";
 import { useSelector } from "react-redux";
 import { MarketplaceKind } from "ternoa-js/marketplace/enum";
-import LoaderEllipsis from "../components/atoms/LoaderEllipsis";
 import NftLoader from "../components/atoms/NftLoader";
 import IconModal from "../components/molecules/IconModal";
-import TxModal from "../components/organisms/modals/TxModal";
 import BaseTemplate from "../components/templates/base/BaseTemplate";
 import SetMarketplaceConfigurationTemplate from "../components/templates/SetMarketplaceConfigurationTemplate";
 import { onSubmitParams } from "../components/templates/SetMarketplaceConfigurationTemplate/types";
@@ -17,7 +15,7 @@ import { fetchFromIpfs } from "../services/ipfs";
 import { RootState } from "../store";
 import { marketplaceApi } from "../store/slices/marketplaces";
 import { jsonDataSelector } from "../store/slices/marketplacesData";
-import { LoadingState, WalletConnectRejectedRequest } from "../types";
+import { LoadingState } from "../types";
 
 const ConfigureMarketplace: NextPage = () => {
   const router = useRouter();
@@ -31,15 +29,8 @@ const ConfigureMarketplace: NextPage = () => {
     (state: RootState) => state.blockchain.isConnecting
   );
   const marketplacesData = useSelector(jsonDataSelector);
-  const {
-    setMarketplaceConfiguration,
-    marketplaceTxLoadingState,
-    configureMarketplaceLoadingState,
-    marketplaceTxError,
-    isMarketplaceTxSuccess,
-    ipfsError,
-    txId,
-  } = useSetMarketplaceConfiguration();
+  const { setMarketplaceConfiguration, isSuccess, error } =
+    useSetMarketplaceConfiguration();
   const [trigger, indexerMarketplaceData] =
     marketplaceApi.useLazyGetMarketplaceByIdQuery();
   const marketplaceData =
@@ -48,9 +39,7 @@ const ConfigureMarketplace: NextPage = () => {
 
   const [isSucessModalVisible, setIsSucessModalVisible] =
     useState<boolean>(false);
-  const [isIpfsErrorModalVisible, setIsIpfsErrorModalVisible] =
-    useState<boolean>(false);
-  const [isTxErrorModalVisible, setIsTxErrorModalVisible] =
+  const [isErrorModalVisible, setIsErrorModalVisible] =
     useState<boolean>(false);
   const [isLoadingLogo, setIsLoadingLogo] = useState<LoadingState>("idle");
   const [logo, setLogo] = useState<File>();
@@ -66,6 +55,14 @@ const ConfigureMarketplace: NextPage = () => {
       trigger({ id: parsedMarketplaceId });
     }
   }, [router.isReady, parsedMarketplaceId, trigger, parsedIsRecentlyCreated]);
+
+  useEffect(() => {
+    setIsSucessModalVisible(isSuccess);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    setIsErrorModalVisible(Boolean(error));
+  }, [error]);
 
   useEffect(() => {
     const fetchLogo = async () => {
@@ -85,26 +82,6 @@ const ConfigureMarketplace: NextPage = () => {
     fetchLogo();
   }, [marketplacesData, indexerMarketplaceData.data?.marketplace.id]);
 
-  useEffect(() => {
-    setIsSucessModalVisible(isMarketplaceTxSuccess);
-  }, [isMarketplaceTxSuccess]);
-
-  useEffect(() => {
-    setIsIpfsErrorModalVisible(Boolean(ipfsError));
-  }, [ipfsError]);
-
-  useEffect(() => {
-    setIsTxErrorModalVisible(Boolean(marketplaceTxError));
-  }, [marketplaceTxError]);
-
-  const parseConfigureMarketplaceTxError = () => {
-    if (marketplaceTxError instanceof WalletConnectRejectedRequest) {
-      return "The request has been rejected";
-    } else {
-      return "There was an error trying to create the Marketplace";
-    }
-  };
-
   const onSubmit = async ({ result }: onSubmitParams) => {
     await setMarketplaceConfiguration(
       result,
@@ -117,20 +94,6 @@ const ConfigureMarketplace: NextPage = () => {
       <NextSeo title="Configure Marketplace" />
       <BaseTemplate>
         <IconModal
-          title="Marketplace configuration is processing..."
-          iconComponent={<LoaderEllipsis />}
-          body="it should be confirmed on the blockchain shortly..."
-          isOpened={configureMarketplaceLoadingState === "loading"}
-        />
-        <TxModal
-          isOpened={marketplaceTxLoadingState === "loading"}
-          txId={txId || "Loading..."}
-          body={
-            "A Marketplace configuration proposal has been sent to your Ternoa Wallet App"
-          }
-          title="Configure Marketplace request sent!"
-        />
-        <IconModal
           iconName="CheckCircle"
           title="Configuration complete!"
           body="You have configured your Marketplace with success!"
@@ -139,14 +102,8 @@ const ConfigureMarketplace: NextPage = () => {
         />
         <IconModal
           iconName="Warning"
-          isOpened={isTxErrorModalVisible}
-          onClose={() => setIsTxErrorModalVisible(false)}
-          title={parseConfigureMarketplaceTxError()}
-        />
-        <IconModal
-          iconName="Warning"
-          isOpened={isIpfsErrorModalVisible}
-          onClose={() => setIsIpfsErrorModalVisible(false)}
+          isOpened={isErrorModalVisible}
+          onClose={() => setIsErrorModalVisible(false)}
           title="There was an error trying to set marketplace's configuration"
         />
         {indexerMarketplaceData.isFetching ||

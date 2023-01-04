@@ -6,6 +6,7 @@ const Modal: React.FC<IModal> = ({
   isOpened,
   onClose,
   className = "",
+  containerClassName = "",
   closeIconClassName = "",
   closeIconColor = "#CBD5E1",
   children,
@@ -27,7 +28,9 @@ const Modal: React.FC<IModal> = ({
         }
         onClick={() => onClose && onClose()}
       />
-      <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-[12]">
+      <div
+        className={`fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-[12] ${containerClassName}`}
+      >
         <div
           className={`flex flex-inline bg-white-default border-gray-200 border-2 border-solid rounded-xl ${className}`}
         >

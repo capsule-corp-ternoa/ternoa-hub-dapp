@@ -5,6 +5,7 @@ export interface IModal {
   isOpened: boolean;
   onClose?: () => void;
   className?: string;
+  containerClassName?: string;
   closeIconClassName?: string;
   closeIconColor?: string;
 }

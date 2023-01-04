@@ -1,3 +1,5 @@
+import { NotRetryableError } from "../types";
+
 export const retry = async <T extends (...arg0: any[]) => any>(
   fn: T,
   params: Parameters<T>,
@@ -8,7 +10,7 @@ export const retry = async <T extends (...arg0: any[]) => any>(
     const data = await fn(...params);
     return data;
   } catch (e) {
-    if (attempt === 0) {
+    if (attempt === 0 || e instanceof NotRetryableError) {
       throw e;
     }
     await new Promise((sleep) => setTimeout(sleep, time));
