@@ -31,6 +31,8 @@ const Home: NextPage = () => {
   );
 
   return (
+    <React.Fragment>
+    <NextSeo title="Helping Builders Bring Their NFT Ideas to Life" />
     <BaseTemplate>
       <div className="flex flex-1 md:pt-[100px] pt-s24 justify-center">
         <GridWrapper className="flex items-center flex-col mb-s136">
@@ -177,6 +179,7 @@ const Home: NextPage = () => {
         </GridWrapper>
       </div>
     </BaseTemplate>
+    </React.Fragment>
   );
 };
 
