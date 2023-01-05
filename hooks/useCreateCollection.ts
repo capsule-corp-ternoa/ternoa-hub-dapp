@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { createCollectionTx, submitTxHex } from "ternoa-js";
-import { useSelector } from "react-redux";
-import * as IpfsService from "../services/ipfs";
+import { useDispatch } from "react-redux";
 import { useWalletConnectClient } from "./useWalletConnectClient";
+import { CollectionJsonData, LoadingState, TxType } from "../types";
+import { AppDispatch } from "../store";
 import {
-  CollectionJsonData,
-  LoadingState,
-  WalletConnectRejectedRequest,
-} from "../types";
-import { RootState } from "../store";
-import { retry } from "../utils/retry";
+  createCollection as blockchainTxCreateCollection,
+  submitSignedTx,
+} from "../store/slices/blockchainTx";
 import { IpfsUploadFileResponse } from "../pages/api/ipfs";
+import { uploadToIpfs } from "../store/slices/ipfs";
+import { CollectionCreatedEvent } from "ternoa-js";
 
 export interface CreateCollectionParams {
   name: string;
@@ -23,34 +22,20 @@ export interface CreateCollectionParams {
 
 export const useCreateCollection = () => {
   const { request: walletConnectRequest } = useWalletConnectClient();
-  const currentNetwork = useSelector(
-    (state: RootState) => state.blockchain.currentNetwork
-  );
-
-  const [collectionTxLoadingState, setCollectionTxLoadingState] =
-    useState<LoadingState>("idle");
-  const [createCollectionLoadingState, setCreateCollectionLoadingState] =
-    useState<LoadingState>("idle");
-  const [collectionTxError, setCollectionTxError] = useState<Error>();
-  const [ipfsError, setIpfsError] = useState<Error>();
-  const [txId, setTxId] = useState<string>();
-
-  const isCollectionTxSuccess =
-    collectionTxLoadingState === "finished" && !collectionTxError;
-  const ipfsIsSuccess =
-    createCollectionLoadingState === "finished" && !ipfsError;
+  const dispatch = useDispatch<AppDispatch>();
+  const [loadingState, setLoadingState] = useState<LoadingState>("idle");
+  const [error, setError] = useState<Error>();
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const uploadJsonToIpfs = async (
     collectionData: CreateCollectionParams
   ): Promise<IpfsUploadFileResponse> => {
-    const ipfsLogoResponse = await IpfsService.uploadFile(
-      collectionData.logo,
-      currentNetwork
-    );
-    const ipfsBannerResponse = await IpfsService.uploadFile(
-      collectionData.banner,
-      currentNetwork
-    );
+    const ipfsLogoResponse = await dispatch(
+      uploadToIpfs(collectionData.logo)
+    ).unwrap();
+    const ipfsBannerResponse = await dispatch(
+      uploadToIpfs(collectionData.banner)
+    ).unwrap();
     const json: CollectionJsonData = {
       name: collectionData.name,
       description: collectionData.description,
@@ -61,60 +46,53 @@ export const useCreateCollection = () => {
     const blob = new Blob([JSON.stringify(json)], {
       type: "application/json",
     });
-    return await IpfsService.uploadFile(blob, currentNetwork);
+    return await dispatch(uploadToIpfs(blob)).unwrap();
   };
 
-  const createTx = async (hash: string, limit?: number) => {
-    const txHash = await createCollectionTx(hash, limit);
-    return txHash;
-  };
-
-  const createCollection = async (collectionData: CreateCollectionParams) => {
-    setCreateCollectionLoadingState("loading");
-    setCollectionTxLoadingState("idle");
-    setIpfsError(undefined);
-    setCollectionTxError(undefined);
-    let txHash: `0x${string}` | undefined = undefined;
+  const createCollection = async (
+    collectionData: CreateCollectionParams
+  ): Promise<CollectionCreatedEvent | undefined> => {
+    setLoadingState("loading");
+    setError(undefined);
+    setIsSuccess(false);
     try {
+      let txHash: `0x${string}` | undefined = undefined;
       const ipfsJsonResponse = await uploadJsonToIpfs(collectionData);
-      txHash = await createTx(ipfsJsonResponse.Hash, collectionData.limit);
-      await setTxId(ipfsJsonResponse.Hash);
+      txHash = await dispatch(
+        blockchainTxCreateCollection({
+          hash: ipfsJsonResponse.Hash,
+          limit: collectionData.limit,
+        })
+      ).unwrap();
+      if (txHash) {
+        const signedHash = await walletConnectRequest(
+          txHash,
+          TxType.CreateCollection
+        );
+        if (signedHash) {
+          const createdEvent = await dispatch(
+            submitSignedTx(CollectionCreatedEvent)({
+              signedHash: JSON.parse(signedHash).signedTxHash,
+            })
+          ).unwrap();
+          setIsSuccess(true);
+          return createdEvent;
+        }
+      }
     } catch (err) {
+      console.error(err);
       if (err instanceof Error) {
-        setIpfsError(err);
+        setError(err);
       }
     } finally {
-      setCreateCollectionLoadingState("finished");
-    }
-    if (txHash) {
-      try {
-        setCollectionTxLoadingState("loading");
-        const signedHash = await walletConnectRequest(txHash);
-        await retry(submitTxHex, [JSON.parse(signedHash).signedTxHash]);
-      } catch (err) {
-        if (err && (err as any).code === -32000) {
-          setCollectionTxError(
-            new WalletConnectRejectedRequest("The request has been rejected")
-          );
-        } else {
-          if (err instanceof Error) {
-            setCollectionTxError(err);
-          }
-        }
-      } finally {
-        setCollectionTxLoadingState("finished");
-      }
+      setLoadingState("finished");
     }
   };
 
   return {
     createCollection,
-    collectionTxLoadingState,
-    createCollectionLoadingState,
-    collectionTxError,
-    isCollectionTxSuccess,
-    ipfsError,
-    ipfsIsSuccess,
-    txId,
+    loadingState,
+    error,
+    isSuccess,
   };
 };

@@ -11,9 +11,15 @@ import { isMobile as checkIsMobile } from "@walletconnect/legacy-utils";
 import { ERROR } from "@walletconnect/utils";
 import { IContext } from "./types";
 import { PairingTypes, SessionTypes } from "@walletconnect/types";
-import WalletConnectModal from "../components/organisms/modals/WalletConnectModal";
+import WalletConnectModal from "../../components/organisms/modals/WalletConnectModal";
 import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { RootState } from "../../store";
+import {
+  LoadingState,
+  TxType,
+  WalletConnectRejectedRequest,
+} from "../../types";
+import WalletConnectRequestModals from "./components/WalletConnectRequestModals";
 
 const DEFAULT_APP_METADATA = {
   name: "Ternoa HUB",
@@ -42,6 +48,11 @@ export const WalletConnectClientContextProvider = ({
   const [account, setAccount] = useState<string>();
   const [walletConnectModalUri, setWalletConnectModalUri] =
     useState<string | undefined>(undefined);
+  const [requestTxType, setRequestTxType] = useState<TxType>();
+  const [requestHash, setRequestHash] = useState<string>();
+  const [requestLoadingState, setRequestLoadingState] =
+    useState<LoadingState>("idle");
+  const [requestError, setRequestError] = useState<Error>();
   const isMobile = checkIsMobile();
   const currentNetwork = useSelector(
     (state: RootState) => state.blockchain.currentNetwork
@@ -196,24 +207,42 @@ export const WalletConnectClientContextProvider = ({
     }
   }, [checkPersistedState, subscribeToEvents]);
 
-  const request = async (hash: string) => {
+  const request = async (hash: string, txType: TxType) => {
     if (client) {
-      return client.request<string>({
-        chainId: currentNetwork.ternoaChain,
-        topic: session!.topic,
-        request: {
-          method: "sign_message",
-          params: {
-            pubKey: account,
-            request: {
-              nonce: 1,
-              validity: null,
-              submit: false,
-              hash,
+      try {
+        setRequestError(undefined);
+        setRequestTxType(txType);
+        setRequestHash(hash);
+        setRequestLoadingState("loading");
+        return await client.request<string>({
+          chainId: currentNetwork.ternoaChain,
+          topic: session!.topic,
+          request: {
+            method: "sign_message",
+            params: {
+              pubKey: account,
+              request: {
+                nonce: 1,
+                validity: null,
+                submit: false,
+                hash,
+              },
             },
           },
-        },
-      });
+        });
+      } catch (err) {
+        console.error(err);
+        if (err && (err as any).code === -32000) {
+          setRequestError(
+            new WalletConnectRejectedRequest("The request has been rejected")
+          );
+        } else if (err instanceof Error) {
+          console.error(err);
+          setRequestError(err);
+        }
+      } finally {
+        setRequestLoadingState("finished");
+      }
     } else {
       throw new Error("Client not available");
     }
@@ -247,6 +276,10 @@ export const WalletConnectClientContextProvider = ({
         connect,
         disconnect,
         request,
+        requestTxType,
+        requestLoadingState,
+        requestError,
+        requestHash,
         isCreatingUri,
       }}
     >
@@ -258,6 +291,7 @@ export const WalletConnectClientContextProvider = ({
         }}
         uri={walletConnectModalUri}
       />
+      <WalletConnectRequestModals />
       {children}
     </WalletConnectClientContext.Provider>
   );

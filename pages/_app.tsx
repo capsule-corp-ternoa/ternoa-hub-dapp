@@ -7,13 +7,15 @@ import type { AppProps } from "next/app";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { DefaultSeo } from "next-seo";
-import { WalletConnectClientContextProvider } from "../contexts/WalletConnectClientContext";
+import { WalletConnectClientContextProvider } from "../contexts/WalletConnect/WalletConnectClientContext";
 import { AppDispatch, persistor, RootState, store } from "../store";
 import React, { useRef, useEffect } from "react";
 import * as yup from "../utils/yup";
 import { connect } from "../store/slices/blockchain/blockchain";
 import { useRouter } from "next/router";
 import SEO from "../constants/seo";
+import IpfsModals from "./app/components/IpfsModals";
+import BlockchainTxModals from "./app/components/BlockchainTxModals";
 
 const Initialize = () => {
   const initialized = useRef<boolean>();
@@ -56,6 +58,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           {() => (
             <WalletConnectClientContextProvider>
               <Initialize />
+              <IpfsModals />
+              <BlockchainTxModals />
               <Component {...pageProps} />
             </WalletConnectClientContextProvider>
           )}

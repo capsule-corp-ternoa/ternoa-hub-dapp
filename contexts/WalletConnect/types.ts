@@ -1,5 +1,6 @@
 import { PairingTypes, SessionTypes } from "@walletconnect/types";
 import Client from "@walletconnect/sign-client";
+import { LoadingState, TxType } from "../../types";
 
 export interface IContext {
   client: Client | undefined;
@@ -13,5 +14,9 @@ export interface IContext {
   isConnected: boolean;
   isCreatingUri: boolean;
   account?: string;
-  request: (hash: string) => Promise<string>;
+  request: (hash: string, txType: TxType) => Promise<string | undefined>;
+  requestTxType?: TxType;
+  requestLoadingState: LoadingState;
+  requestError?: Error;
+  requestHash?: string;
 }

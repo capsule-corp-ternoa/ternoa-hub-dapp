@@ -13,12 +13,10 @@ import { marketplaceApi } from "../../../store/slices/marketplaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { jsonDataSelector } from "../../../store/slices/marketplacesData";
-import TxModal from "../../../components/organisms/modals/TxModal";
 import { ListNftsParams, useListNfts } from "../../../hooks/useListNfts";
 import IconModal from "../../../components/molecules/IconModal";
 import SetNftPriceModal from "../../../components/organisms/modals/SetNftPriceModal";
 import { onSubmitParams } from "../../../components/organisms/modals/SetNftPriceModal/types";
-import { WalletConnectRejectedRequest } from "../../../types";
 import NftLoader from "../../../components/atoms/NftLoader";
 import { useFetchExchangeRate } from "../../../hooks/useFetchExchangeRate";
 
@@ -42,10 +40,9 @@ const Import: NextPage = () => {
   const { isConnected } = useSelector((state: RootState) => state.blockchain);
   const {
     listNfts,
-    listNftsLoadingState,
-    listNftError,
-    txId,
-    isListNftTxSuccess,
+    loadingState: listNftLoadingState,
+    isSuccess: isListNftsSuccess,
+    error: listNftError
   } = useListNfts();
   const {
     exchangeRate,
@@ -75,13 +72,6 @@ const Import: NextPage = () => {
     setIsErrorModalVisible(Boolean(listNftError));
   }, [listNftError]);
 
-  const parseListNftError = () => {
-    if (listNftError instanceof WalletConnectRejectedRequest) {
-      return "The request has been rejected";
-    } else {
-      return "There was an error trying to list the NFT";
-    }
-  };
 
   useEffect(() => {
     if (client && !account) {
@@ -119,19 +109,11 @@ const Import: NextPage = () => {
     <React.Fragment>
       <NextSeo title="Import NFTs to Marketplace" />
       <BaseTemplate>
-        <TxModal
-          isOpened={listNftsLoadingState === "loading"}
-          txId={txId || "Loading..."}
-          body={
-            "An NFT listing proposal has been sent to your Ternoa Wallet App"
-          }
-          title="List NFT request sent!"
-        />
         <IconModal
           iconName="CheckCircle"
           title="Listing NFT complete!"
           body="You have listed your NFT with success! It should be ready in a few seconds"
-          isOpened={isListNftTxSuccess}
+          isOpened={isListNftsSuccess}
           buttonText={"View Marketplace"}
           onClickButton={() => {
             router.push({
@@ -139,12 +121,6 @@ const Import: NextPage = () => {
               query: { network: currentNetwork.name.toLocaleLowerCase() },
             });
           }}
-        />
-        <IconModal
-          iconName="Warning"
-          isOpened={isErrorModalVisible}
-          onClose={() => setIsErrorModalVisible(false)}
-          title={parseListNftError()}
         />
         <SetNftPriceModal
           onSubmit={onSetPrice}
@@ -156,8 +132,8 @@ const Import: NextPage = () => {
         />
         {!!selectedIds.length &&
           !isSetPriceModalVisible &&
-          listNftsLoadingState !== "loading" &&
-          !isListNftTxSuccess && (
+          listNftLoadingState !== "loading" &&
+          !isListNftsSuccess && (
             <FloatingAction
               text={`${selectedIds.length} NFT${
                 selectedIds.length > 1 ? "s" : ""
