@@ -40,6 +40,7 @@ const MyMarketplaces: NextPage = () => {
           return {
             isLoading: marketplaceData.state.isLoading,
             name: marketplaceData.jsonData?.name,
+            marketplaceId: indexerMarketplaceData.id,
             onClickManage: () =>
               router.push({
                 pathname: "/configuremarketplace",

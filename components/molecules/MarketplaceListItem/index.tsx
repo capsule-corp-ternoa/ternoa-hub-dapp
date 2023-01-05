@@ -8,6 +8,7 @@ import IconButton from "../../atoms/IconButton";
 
 const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
   name,
+  marketplaceId,
   isLoading,
   className = "",
   preview,
@@ -34,12 +35,22 @@ const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
                   loader={<LoaderEllipsis height={30} width={30} />}
                 />
               )}
+              <div className="flex flex-col md:items-left justify-between">
               <Text
                 type="p2"
                 weight="medium"
                 text={name}
                 className="overflow-hidden text-ellipsis"
               />
+              {marketplaceId && (
+                <Text
+                  type="p3"
+                  weight="light"
+                  text={`ID: ${marketplaceId}`}
+                  className="overflow-hidden text-ellipsis"
+                />)
+              }
+              </div>
             </div>
             <div className="flex flex-row items-center">
               {!!onClickPreview && (
