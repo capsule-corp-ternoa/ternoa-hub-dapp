@@ -23,6 +23,9 @@ const ConfigureMarketplace: NextPage = () => {
   const router = useRouter();
   const { marketplaceId, kind, isRecentlyCreated } = router.query;
   const parsedMarketplaceId = parseInt(marketplaceId as string);
+  const currentNetwork = useSelector(
+    (state: RootState) => state.blockchain.currentNetwork
+  );
   const parsedKind: MarketplaceKind | undefined = kind as MarketplaceKind;
   const parsedIsRecentlyCreated: boolean =
     isRecentlyCreated === "true" ? true : false;
@@ -112,6 +115,11 @@ const ConfigureMarketplace: NextPage = () => {
     );
   };
 
+  const navigateToMarketplace = () => {
+    const url = `/marketplace/${marketplaceId}/?network=/${currentNetwork.name.toLocaleLowerCase()}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <React.Fragment>
       <NextSeo title="Configure Marketplace" />
@@ -136,6 +144,8 @@ const ConfigureMarketplace: NextPage = () => {
           body="You have configured your Marketplace with success!"
           isOpened={isSucessModalVisible}
           onClose={() => setIsSucessModalVisible(false)}
+          buttonText="Visit my marketplace"
+          onClickButton={navigateToMarketplace}
         />
         <IconModal
           iconName="Warning"
