@@ -4,6 +4,7 @@ import LoaderEllipsis from "../../atoms/LoaderEllipsis";
 import ImagePreview from "../../atoms/ImagePreview";
 import Text from "../../atoms/Text";
 import { IMarketplaceListItem } from "./types";
+import IconButton from "../../atoms/IconButton";
 
 const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
   name,
@@ -42,8 +43,12 @@ const MarketplaceListItem: React.FC<IMarketplaceListItem> = ({
             </div>
             <div className="flex flex-row items-center">
               {!!onClickPreview && (
-                <Button
+                <IconButton
                   type="secondary"
+                  reversed={true}
+                  icon="ArrowSquareOut"
+                  iconColor="black"
+                  iconSize={24}
                   size="small"
                   text="Preview"
                   autoWidth={true}
