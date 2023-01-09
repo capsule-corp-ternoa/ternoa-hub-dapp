@@ -7,6 +7,10 @@ import { parseOffchainDataImage } from "../../../utils/strings";
 import Button from "../../atoms/Button";
 import Icon from "../../atoms/Icon";
 import { useWindowBreakpoint } from "../../../hooks/useWindowBreakpoint";
+import NavbarMenu from "../../molecules/NavbarMenu";
+import { useRef, useState } from "react";
+import { useRouter } from "next/router";
+import { useWalletConnectClient } from "../../../hooks/useWalletConnectClient";
 
 const MarketplaceNavbar: React.FC<IMarketplaceNavbar> = ({
   onClickAddress,
@@ -17,7 +21,19 @@ const MarketplaceNavbar: React.FC<IMarketplaceNavbar> = ({
   mainColor,
   ...props
 }) => {
+  const router = useRouter();
+  const AddressMenuButtonRef = useRef<HTMLDivElement>(null);
+  const [isNavBarMenuOpen, setNavBarMenuOpen] = useState<boolean>(false);
   const { isCurrentBreakpoint } = useWindowBreakpoint();
+  const {
+    disconnect,
+  } = useWalletConnectClient();
+  
+
+  const onClickLogout = () => {
+    disconnect();
+    router.push("/");
+  };
 
   return (
     <nav className="h-[120px] md:h-[113px] w-full bg-white-default flex justify-center">
@@ -35,7 +51,7 @@ const MarketplaceNavbar: React.FC<IMarketplaceNavbar> = ({
             }
             className="w-[33px] min-w-[33px] h-[33px] md:w-[52px] md:min-w-[54px] md:h-[52px] mr-s8 md:mr-[13px]"
           />
-          <Text text={marketplaceName} type="h4" weight="bold" className="overflow-hidden text-ellipsis"/>
+          <Text text={marketplaceName} type="h4" weight="bold" className="overflow-hidden text-ellipsis" />
         </a>
         <div className="flex sm:flex-row flex-col-reverse items-center">
           {isEditVisible && (
@@ -53,13 +69,24 @@ const MarketplaceNavbar: React.FC<IMarketplaceNavbar> = ({
           )}
           <AddressMenuButton
             {...props}
-            className={`md:ml-s16 ml-s8 mb-s8 sm:mb-[0px]`}
-            color={mainColor}
-            disabled={false}
+            ref={AddressMenuButtonRef}
+            onClickConnected={() => setNavBarMenuOpen(true)}
+            className="md:ml-s16 ml-s8"
           />
         </div>
-      </div>
-    </nav>
+        {props.pubKey && (
+          <NavbarMenu
+            onClickMyNfts={() => router.push("/mynfts")}
+            onClickAddress={onClickAddress}
+            onClickLogout={onClickLogout}
+            pubKey={props.pubKey}
+            state={isNavBarMenuOpen ? "open" : "closed"}
+            onClose={() => setNavBarMenuOpen(false)}
+            anchorRef={AddressMenuButtonRef}
+          />
+        )}
+    </div>
+    </nav >
   );
 };
 
