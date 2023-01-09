@@ -14,7 +14,7 @@ import useCopyToClipboard from "../../../hooks/useCopyToClipboard";
 
 const NavbarMenu: React.FC<INavbarMenu> = ({
   pubKey,
-  onClickAddress = () => {},
+  onClickAddress = () => { },
   onClickMyNfts,
   onClickMyMarketplaces,
   onClickLogout,
@@ -27,8 +27,7 @@ const NavbarMenu: React.FC<INavbarMenu> = ({
     <MenuItemInner
       {...props}
       className={({ hover }) =>
-        `${
-          hover && "bg-gray-700 rounded"
+        `${hover && "bg-gray-700 rounded"
         } border-b border-gray-700 py-s16 px-s8 mx-s16 ${props.className || ""}`
       }
     />
@@ -83,22 +82,23 @@ const NavbarMenu: React.FC<INavbarMenu> = ({
         </div>
         <Text weight="light" type="p3" text="My NFTs" className="ml-s20" />
       </MenuItem>
-      <MenuItem className="" onClick={onClickMyMarketplaces}>
-        <div className="w-s20 h-s20 relative">
-          <Image
-            src="/marketplaces.svg"
-            alt="My Marketplaces"
-            layout="fill"
-            color="white"
+      {onClickMyMarketplaces &&
+        <MenuItem className="" onClick={onClickMyMarketplaces}>
+          <div className="w-s20 h-s20 relative">
+            <Image
+              src="/marketplaces.svg"
+              alt="My Marketplaces"
+              layout="fill"
+              color="white"
+            />
+          </div>
+          <Text
+            weight="light"
+            type="p3"
+            text="My Marketplaces"
+            className="ml-s20"
           />
-        </div>
-        <Text
-          weight="light"
-          type="p3"
-          text="My Marketplaces"
-          className="ml-s20"
-        />
-      </MenuItem>
+        </MenuItem>}
       <MenuItem onClick={onClickLogout} className="!border-none">
         <Icon name="SignOut" size={24} color="white" />
         <Text weight="light" type="p3" text="Logout" className="ml-s20" />
