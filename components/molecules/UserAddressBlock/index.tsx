@@ -14,6 +14,7 @@ const UserAddressBlock = React.forwardRef<HTMLDivElement, IUserAddressBlock>(
       icon,
       iconSize = 24,
       iconColor,
+      avatarSize = 38,
 
     },
   ) => {
@@ -28,7 +29,7 @@ const UserAddressBlock = React.forwardRef<HTMLDivElement, IUserAddressBlock>(
       }}>
         <div className="flex flex-row justify-between items-center w-full">
           <div className="md:flex hidden">
-            <Avatar pubKey={pubKey} size={25} theme="polkadot" />
+            <Avatar pubKey={pubKey} size={avatarSize} theme="polkadot" />
           </div>
           <div className="text-ellipsis overflow-hidden mx-s8">
             {middleEllipsis(pubKey, isCurrentBreakpoint("md") ? 10 : 8)}
