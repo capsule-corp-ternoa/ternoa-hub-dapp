@@ -19,7 +19,10 @@ const base: INftDetailTemplate = {
     loader: <LoaderEllipsis></LoaderEllipsis>
   },
   quantity: 10,
-  description: "Description mock for NFT Detail Template"
+  description: "Description mock for NFT Detail Template",
+  displayButton:true,
+  disabled:true,
+  buttonText:"Not for sale"
 
 
 };
