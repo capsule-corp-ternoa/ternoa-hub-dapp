@@ -1,4 +1,4 @@
-import { TextFontWeightType } from "../../atoms/Avatar/types";
+import { TAvatarSize, TextFontWeightType } from "../../atoms/Avatar/types";
 import { IconNamesType, IconSizeType } from "../../atoms/Icon/types";
 
 export interface IUserAddressBlock {
@@ -7,4 +7,5 @@ export interface IUserAddressBlock {
   icon?:IconNamesType;
   iconSize?:IconSizeType;
   iconColor?:string;
+  avatarSize?: TAvatarSize
   }
