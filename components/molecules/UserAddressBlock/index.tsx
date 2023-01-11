@@ -23,12 +23,12 @@ const UserAddressBlock = React.forwardRef<HTMLDivElement, IUserAddressBlock>(
     const [copied, setCopied] = useState<boolean>();
 
     return (
-      <button onClick={async (e) => {
+      <button onClick={async () => {
         onClick && onClick();
         setCopied(await copyToClipboard(pubKey));
       }}>
         <div className="flex flex-row justify-between items-center w-full">
-          <div className="md:flex hidden">
+          <div className="flex">
             <Avatar pubKey={pubKey} size={avatarSize} theme="polkadot" />
           </div>
           <div className="text-ellipsis overflow-hidden mx-s8">

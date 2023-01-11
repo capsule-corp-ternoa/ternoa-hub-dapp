@@ -11,4 +11,8 @@ export interface INftDetailTemplate {
   collectionName?: string;
   collectionLogo?: IImagePreview;
   creator: IUserAddressBlock;
+  displayButton:boolean;
+  onClick?: () => void;
+  buttonText?:string;
+  disabled?:boolean;
 }
