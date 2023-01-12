@@ -6,11 +6,13 @@ import Icon from "../Icon";
 const getButtonSize = (size: TButtonSize) => {
   switch (size) {
     case "large":
-      return "md:min-w-240 lg:min-w-240 xl:min-w-240 h-s56";
+      return "md:min-w-240 lg:min-w-240 xl:min-w-240 h-s56 px-s56";
     case "medium":
-      return "md:min-w-184 lg:min-w-184 xl:min-w-184 h-s48";
+      return "md:min-w-184 lg:min-w-184 xl:min-w-184 h-s48 px-s46";
     case "small":
-      return "md:min-w-144 lg:min-w-144 xl:min-w-144 h-s40";
+      return "md:min-w-144 lg:min-w-144 xl:min-w-144 h-s40 px-s36";
+      case "xsmall":
+        return "md:min-w-70 lg:min-w-70 xl:min-w-70 h-s40 px-s16"
   }
 };
 
@@ -91,15 +93,15 @@ const IconButton: React.FC<IButton> = ({
       )} ${getButtonType(
         type,
         disabled
-      )} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer ${
+      )} text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer ${
         autoWidth && "!min-w-[auto]"
       } ${className}`}
     >
       {!reversed && (
-        <Icon name={icon} size={iconSize} color={iconColor}  className="md:mr-[1rem] sm:mr-[1rem] lg:ml-[1rem]" />
+        <Icon name={icon} size={iconSize} color={iconColor}  className="md:mr-s8 sm:mr-s8 lg:mr-s8" />
       )}
       <Text {...getTextProps(type, size, text, disabled)} />
-      {reversed && <Icon name={icon} size={iconSize} color={iconColor} className="md:ml-[1rem] sm:ml-[1rem] lg:ml-[1rem]"/>}
+      {reversed && <Icon name={icon} size={iconSize} color={iconColor} className="md:ml-s8 sm:ml-s8 lg:ml-s8"/>}
     </button>
   );
 };

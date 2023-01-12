@@ -123,6 +123,7 @@ module.exports = {
       s240: "240px",
     },
     minWidth: {
+      70:"70px",
       144: "144px",
       184: "184px",
       240: "240px",
