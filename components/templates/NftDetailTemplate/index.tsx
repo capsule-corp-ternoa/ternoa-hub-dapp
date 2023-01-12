@@ -31,7 +31,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
           alt={nftImage.alt}
           loader={nftImage.loader}
           imageClassName="rounded-[30px]"
-          className="h-[500px] md:h-[500px]"
+          className="h-[500px] md:h-[500px] maxsm:h-[400px] maxxs:h-[300px]"
         />
       </div>
 
