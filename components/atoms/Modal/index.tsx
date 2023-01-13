@@ -37,7 +37,7 @@ const Modal: React.FC<IModal> = ({
           {onClose && (
             <div
               onClick={() => onClose()}
-              className={`fixed top-s16 right-s16 cursor-pointer ${closeIconClassName}`}
+              className={`fixed top-s16 right-s16 cursor-pointer z-[1] ${closeIconClassName}`}
             >
               <Icon name="X" size={20} color={closeIconColor} weight="bold" />
             </div>

@@ -7,8 +7,8 @@ import IconButton from "../../atoms/IconButton";
 import ImagePreview from "../../atoms/ImagePreview";
 import Text from "../../atoms/Text";
 import UserAddressBlock from "../../molecules/UserAddressBlock";
+import ZoomModal from "../../organisms/modals/ZoomModal";
 import { INftDetailTemplate } from "./types";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
   nftImage,
@@ -24,7 +24,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
   disabled,
   displayButton,
 }) => {
-  const [isPreviewVisible, setIsPreviewVisible] = useState<boolean>();
+  const [isZoomModalVisible, setIsZoomModalVisible] = useState<boolean>(false);
   const router = useRouter();
 
   return (
@@ -42,18 +42,17 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
             type="primary"
             className="rounded-[20px] absolute -left-s8 -top-s16"
           />
-          <TransformWrapper>
-            <TransformComponent>
-              <ImagePreview
-                src={nftImage.src}
-                alt={nftImage.alt}
-                loader={nftImage.loader}
-                imageClassName="rounded-[30px]"
-                className="h-[500px] md:h-[500px] maxsm:h-[400px] maxxs:h-[300px] border-solid border-[5px] rounded-[35px] border-gray-200"
-              />
-            </TransformComponent>
-          </TransformWrapper>
-          <div className="absolute right-s16 bottom-s16">
+          <ImagePreview
+            src={nftImage.src}
+            alt={nftImage.alt}
+            loader={nftImage.loader}
+            imageClassName="rounded-[30px]"
+            className="h-[500px] md:h-[500px] maxsm:h-[400px] maxxs:h-[300px] border-solid border-[5px] rounded-[35px] border-gray-200"
+          />
+          <div
+            className="absolute right-s16 bottom-s16 cursor-pointer"
+            onClick={() => setIsZoomModalVisible(true)}
+          >
             <Image src="/zoom.svg" width="51" height="51" alt="zoom" />
           </div>
         </div>
@@ -124,6 +123,15 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
           )}
         </div>
       </div>
+      {nftImage.src && nftImage.alt && (
+        <ZoomModal
+          isOpened={isZoomModalVisible}
+          imageSrc={nftImage.src}
+          imageAlt={nftImage.alt}
+          loader={nftImage.loader}
+          onClose={() => setIsZoomModalVisible(false)}
+        />
+      )}
     </div>
   );
 };
