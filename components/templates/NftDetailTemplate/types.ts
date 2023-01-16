@@ -4,10 +4,10 @@ import { IUserAddressBlock } from "../../molecules/UserAddressBlock/types";
 
 export interface INftDetailTemplate {
   nftImage: IImagePreview;
-  id:number;
+  id:string;
   name: string;
   description: string
-  quantity: number;
+  quantity?: string;
   collectionName?: string;
   collectionLogo?: IImagePreview;
   creator: IUserAddressBlock;

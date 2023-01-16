@@ -64,20 +64,21 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
             <div className="flex grow">
               <Text text={name} type="h5" weight="bold" />
             </div>
-            <div className="flex shrink rounded-[10px] bg-gray-200 p-s8 justify-center items-center">
-              <Image
-                src="/quantity.svg"
-                width="17"
-                height="22"
-                alt="quantity"
-              />
-              <Text
-                type="label"
-                weight="bold"
-                text={quantity.toString()}
-                className="pl-s4"
-              />
-            </div>
+            {quantity &&
+              <div className="flex shrink rounded-[10px] bg-gray-200 p-s8 justify-center items-center">
+                <Image
+                  src="/quantity.svg"
+                  width="17"
+                  height="22"
+                  alt="quantity"
+                />
+                <Text
+                  type="label"
+                  weight="bold"
+                  text={quantity.toString()}
+                  className="pl-s4"
+                />
+              </div>}
           </div>
 
           <div className="py-s16">
