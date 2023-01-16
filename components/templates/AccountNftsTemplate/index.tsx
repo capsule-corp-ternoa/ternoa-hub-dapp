@@ -73,8 +73,7 @@ const AccountNftsTemplate: React.FC<IAccountNftsTemplate> = ({
               }
               isClickable={true}
               onClick={() => router.push({
-                pathname: "/nft",
-                query: { nftId: nftCard.id },
+                pathname: `/nft/${nftCard.id}`,
               })
             }
             />
