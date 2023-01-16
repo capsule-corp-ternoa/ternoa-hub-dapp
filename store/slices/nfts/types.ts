@@ -7,6 +7,32 @@ export type Nft = {
   creator: string;
 };
 
+export type NftDetail = {
+  id: string;
+  nodeId: string;
+  price: string;
+  offchainData: string;
+  owner: string;
+  creator: string;
+  collectionId: string;
+  royalty: string;
+  mintFee: string;
+  isCapsule: string;
+  isSecret: string;
+  isSoulbound: string;
+  isListed: string;
+};
+
+export type Collection = {
+  nodeId: string;
+  id: string;
+  collectionId: string;
+  owner: string;
+  offchainData: string;
+  nbNfts: string;
+  limit: string;
+}
+
 export type NftQueryResponse = {
   nftEntities: {
     nodes: Nft[];
@@ -22,6 +48,15 @@ export type NftQueryParams = {
   filter: Filter;
 };
 
+export type NftDetailQueryParams = {
+  nftId: string;
+};
+
+
+export type NftDetailQueryResponse = {
+  nftEntity:NftDetail & { collection: Collection}
+};
+
 export type NftByMarketplaceQueryParams = {
   marketplaceId: string;
   pagination: PaginationFilter;
@@ -30,6 +65,10 @@ export type NftByMarketplaceQueryParams = {
 export type NftReducerState = {
   nfts: Nft[];
   hasNextPage: boolean;
+};
+
+export type NftDetailReducerState = {
+  nftDetail: NftDetail  & { collection: Collection}
 };
 
 export type PaginationFilter = {

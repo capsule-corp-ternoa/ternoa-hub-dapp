@@ -2,6 +2,9 @@ import { gql } from "graphql-request";
 import { indexerApi } from "../../services/indexerApi";
 import type {
   NftByMarketplaceQueryParams,
+  NftDetailQueryParams,
+  NftDetailQueryResponse,
+  NftDetailReducerState,
   NftQueryParams,
   NftQueryResponse,
   NftReducerState,
@@ -62,6 +65,46 @@ export const nftApi = indexerApi.injectEndpoints({
         hasNextPage: response.nftEntities.pageInfo.hasNextPage,
       }),
     }),
+    getNftById: builder.query<NftDetailReducerState, NftDetailQueryParams>({
+      query: ({ nftId }) => ({
+        body: gql`
+        query Query {
+          nftEntity(id:"${nftId}"),
+          {
+            id,
+            nodeId,
+            nftId,
+            collectionId,
+            owner,
+            creator, 
+            offchainData, 
+            royalty, 
+            mintFee, 
+            isCapsule, 
+            isSecret, 
+            isSoulbound, 
+            isListed,  
+            price 
+            collection 
+              {
+                nodeId,
+                id,
+                collectionId,
+                owner,
+                offchainData,
+                nbNfts,
+                limit,
+              }, 
+            }
+         }
+         `,
+      }),
+      providesTags: ["Nfts"],
+      transformResponse: (response: NftDetailQueryResponse) => ({
+        nftDetail: response.nftEntity
+      }),
+    }),
+
     getNftsByMarketplace: builder.query<
       NftReducerState,
       NftByMarketplaceQueryParams
