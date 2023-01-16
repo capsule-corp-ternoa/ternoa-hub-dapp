@@ -9,7 +9,9 @@ import NftDetailTemplate from "../../components/templates/NftDetailTemplate";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { nftApi } from "../../store/slices/nfts";
-import { Nft, NftDetail } from "../../store/slices/nfts/types";
+import { Nft, NftDetail, NftDetailWithCollection } from "../../store/slices/nfts/types";
+import { parseOffchainDataImage } from "../../utils/strings";
+import LoaderEllipsis from "../../components/atoms/LoaderEllipsis";
 
 const Account: NextPage = () => {
   const router = useRouter();
@@ -19,10 +21,17 @@ const Account: NextPage = () => {
     (state: RootState) => state.blockchain
   );
 
-  const [nftDetail, setNftDetail] = useState<NftDetail | undefined>();
+  const [nftDetail, setNftDetail] = useState<NftDetailWithCollection | undefined>();
 
   const [trigger, indexerNftDetail] = nftApi.useLazyGetNftByIdQuery();
 
+  const {
+    fetchNftData,
+    isLoading,
+    nftData,
+    fetchCollectionData,
+    collectionData
+  } = useNftDetail();
 
   useEffect(() => {
     if (router.isReady && nftId && isConnected) {
@@ -33,16 +42,17 @@ const Account: NextPage = () => {
 
   useEffect(() => {
     const data = indexerNftDetail.data?.nftDetail;
-      setNftDetail(data);
+    setNftDetail(data);
+    if (data?.offchainData) {
+      fetchNftData(data?.offchainData)
+    }
+    if (data?.collection?.offchainData) {
+      fetchCollectionData(data?.collection?.offchainData)
+    }
   }, [indexerNftDetail.data?.nftDetail]);
 
 
-  const {
-    nftData,
-    isLoaderVisible,
-  } = useNftDetail();
-
-  console.log('nftData', nftData);
+  console.log('nftDetail', nftDetail, 'nftData', nftData, 'collectionData', collectionData);
 
   useEffect(() => {
     if (client && !account) {
@@ -54,23 +64,33 @@ const Account: NextPage = () => {
     <React.Fragment>
       <NextSeo title="Nft Detail" />
       <BaseTemplate>
-       {/*  {account && (
+        {nftDetail && nftData ? (
           <NftDetailTemplate
-            nftImage={}
-            id
-            name
-            description
-            quantity
-            collectionName
-            collectionLogo
-            creator
-            onClick
-            buttonText
-            disabled
-            displayButton
+            nftImage={{
+              src: parseOffchainDataImage(nftData.image),
+              alt: nftData.title,
+              loader: <LoaderEllipsis />
+            }}
+            id={nftDetail.id}
+            name={nftData.title}
+            description={nftData.description}
+            quantity={nftDetail.collection?.limit}
+            collectionName={collectionData?.name}
+            collectionLogo={{
+              src: collectionData?.profile_image ? parseOffchainDataImage(collectionData?.profile_image) : undefined,
+              alt: collectionData?.name,
+              loader: <LoaderEllipsis />
+            }}
+            creator={{ pubKey: nftDetail.creator }}
+            displayButton={true}
+            disabled={!nftDetail.isListed}
+          /* onClick
+          buttonText
+          disabled
+          */
 
           />
-        )} */}
+        ) : null}
 
       </BaseTemplate>
     </React.Fragment>

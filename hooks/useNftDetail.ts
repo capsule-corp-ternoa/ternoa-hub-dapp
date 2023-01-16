@@ -1,35 +1,35 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { INftCard } from "../components/molecules/NftCard/types";
-import { RootState } from "../store";
-import { nftApi } from "../store/slices/nfts";
-import { Nft } from "../store/slices/nfts/types";
-import { jsonDataSelector } from "../store/slices/nftsData";
-import { parseNft } from "../utils/nft";
-import { useWalletConnectClient } from "./useWalletConnectClient";
+import { fetchFromIpfs } from "../services/ipfs";
+import { CollectionJsonData, LoadingState, NftJsonData } from "../types";
 
 export const useNftDetail = () => {
-  const { account } = useWalletConnectClient();
-  const [trigger, indexerNfts] = nftApi.useLazyGetNftsByAddressQuery();
-  const currentNetwork = useSelector(
-    (state: RootState) => state.blockchain.currentNetwork
-  );
-  const nftData = useSelector(jsonDataSelector);
-  const [results, setResults] = useState<Nft[]>([]);
-  
-  
-  const nftDetailData: INftCard[] = results.map((nft) =>
-    parseNft(nft, nftData)
-  );
+  const [isLoading, setIsLoading] = useState<LoadingState>("idle");
+  const [nftData, setNftData] = useState<NftJsonData>();
+  const [collectionData, setCollectionData] =useState<CollectionJsonData>();
 
-  const isLoaderVisible =
-    !indexerNfts.isError &&
-    (indexerNfts.data?.hasNextPage || indexerNfts.isFetching);
+  const fetchNftData = async (offchainData: string) => {
+    setIsLoading("loading");
+    const nftOffchainData = await fetchFromIpfs<NftJsonData>(
+      offchainData
+    );
+    setNftData(nftOffchainData);
+    setIsLoading("finished");
+  };
 
-  
+  const fetchCollectionData = async (offchainData: string) => {
+    setIsLoading("loading");
+    const CollectionOffchainData = await fetchFromIpfs<CollectionJsonData>(
+      offchainData
+    );
+    setCollectionData(CollectionOffchainData);
+    setIsLoading("finished");
+  };
+
   return {
-    indexerNfts,
+    fetchNftData,
+    isLoading,
     nftData,
-    isLoaderVisible,
+    fetchCollectionData,
+    collectionData
   };
 };

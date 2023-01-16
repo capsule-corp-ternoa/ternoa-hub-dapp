@@ -33,6 +33,8 @@ export type Collection = {
   limit: string;
 }
 
+export type NftDetailWithCollection = NftDetail & { collection: Collection }
+
 export type NftQueryResponse = {
   nftEntities: {
     nodes: Nft[];
@@ -54,7 +56,7 @@ export type NftDetailQueryParams = {
 
 
 export type NftDetailQueryResponse = {
-  nftEntity:NftDetail & { collection: Collection}
+  nftEntity: NftDetailWithCollection
 };
 
 export type NftByMarketplaceQueryParams = {
@@ -68,7 +70,7 @@ export type NftReducerState = {
 };
 
 export type NftDetailReducerState = {
-  nftDetail: NftDetail  & { collection: Collection}
+  nftDetail: NftDetailWithCollection
 };
 
 export type PaginationFilter = {
