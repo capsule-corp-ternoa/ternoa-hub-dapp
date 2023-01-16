@@ -10,6 +10,7 @@ const base: INftCard = {
   creator: "5GYiVxT9SLvW8mUDPK3PorCYYRWtkw6XRNh7PLfxDPsSHLxF",
   name: "Nft Mock Name",
   isChecked: true,
+  isClickable:true,
 };
 
 export const mockNftCardProps = {

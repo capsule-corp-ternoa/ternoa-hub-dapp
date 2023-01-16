@@ -11,4 +11,6 @@ export interface INftCard {
   isChecked?: boolean;
   price?: string;
   showPrice?: boolean;
+  isClickable?: boolean;
+  onClick?: () => void;
 }

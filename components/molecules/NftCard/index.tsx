@@ -16,6 +16,8 @@ const NftCard: React.FC<INftCard> = ({
   isChecked,
   showPrice,
   price,
+  isClickable,
+  onClick,
   onChangeChecked,
 }) => {
   const renderData = () => {
@@ -30,6 +32,7 @@ const NftCard: React.FC<INftCard> = ({
       return (
         <React.Fragment>
           <div className="flex flex-row items-center justify-between">
+
             <div className="whitespace-nowrap overflow-hidden">
               <div className="flex flex-row items-center">
                 {creator && (
@@ -67,30 +70,32 @@ const NftCard: React.FC<INftCard> = ({
               </div>
             )}
           </div>
-          {showPrice && (
-            <div className="flex flex-row justify-between items-center bg-gray-100 p-s16 rounded-xl mt-s20">
-              <Text
-                text={price !== "0" ? "Price" : ""}
-                weight="medium"
-                type="p2"
-                className="mr-s20"
-              />
-              <Text
-                text={price && price !== "0" ? `${price} CAPS` : "NOT IN SELL"}
-                weight="medium"
-                type="p2"
-                className="break-all"
-              />
-            </div>
-          )}
-        </React.Fragment>
+          {
+            showPrice && (
+              <div className="flex flex-row justify-between items-center bg-gray-100 p-s16 rounded-xl mt-s20">
+                <Text
+                  text={price !== "0" ? "Price" : ""}
+                  weight="medium"
+                  type="p2"
+                  className="mr-s20"
+                />
+                <Text
+                  text={price && price !== "0" ? `${price} CAPS` : "NOT IN SELL"}
+                  weight="medium"
+                  type="p2"
+                  className="break-all"
+                />
+              </div>
+            )
+          }
+        </React.Fragment >
       );
     }
   };
 
   return (
     <div
-      className={`bg-gray-500 border-gray-200 border border-solid rounded-2xl p-[10px] md:p-s20 inline-block ${className}`}
+      className={`bg-gray-500 border-gray-200 border border-solid rounded-2xl p-[10px] md:p-s20 inline-block ${className} ${isClickable && "cursor-pointer"}`} onClick={() => onClick && onClick()}
     >
       <ImagePreview
         {...preview}
