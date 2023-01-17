@@ -39,7 +39,7 @@ const UserAddressBlock = React.forwardRef<HTMLDivElement, IUserAddressBlock>(
               name={icon ? icon : copied ? "Check" : "Copy"}
               size={iconSize ? iconSize : 20}
               color={iconColor ? iconColor : "black"}
-              className="ml-s24"
+              className="ml-s8"
             />
           )}
         </div >

@@ -76,11 +76,7 @@ const Account: NextPage = () => {
             description={nftData.description}
             quantity={nftDetail.collection?.limit}
             collectionName={collectionData?.name}
-            collectionLogo={{
-              src: collectionData?.profile_image ? parseOffchainDataImage(collectionData?.profile_image) : undefined,
-              alt: collectionData?.name,
-              loader: <LoaderEllipsis />
-            }}
+            collectionLogo={collectionData?.profile_image ? parseOffchainDataImage(collectionData?.profile_image) : undefined}
             creator={{ pubKey: nftDetail.creator }}
             displayButton={true}
             disabled={!nftDetail.isListed}

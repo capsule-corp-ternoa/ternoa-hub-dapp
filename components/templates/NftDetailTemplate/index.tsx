@@ -28,7 +28,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
   const router = useRouter();
 
   return (
-    <div className="flex flex-col md:flex-row justify-center">
+    <div className="flex flex-col md:flex-row justify-center self-center px-s20 md:max-w-[94%] l:max-w-[85%]">
       <div className="flex flex-col md:mr-s20 mb-s16">
         <div className="relative mt-s24">
           <IconButton
@@ -46,8 +46,9 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
             src={nftImage.src}
             alt={nftImage.alt}
             loader={nftImage.loader}
+            cover={true}
             imageClassName="rounded-[30px]"
-            className="h-[500px] md:h-[500px] maxsm:h-[400px] maxxs:h-[300px] border-solid border-[5px] rounded-[35px] border-gray-200"
+            className="border-[3px] md:border-[5px] border-solid border-[5px] rounded-[35px] border-gray-200"
           />
           <div
             className="absolute right-s16 bottom-s16 cursor-pointer"
@@ -58,8 +59,8 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
         </div>
       </div>
 
-      <div className="flex flex-col">
-        <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px]">
+      <div className="flex flex-col mt-s24">
+        <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] md:w-[400px]">
           <div className="flex items-center">
             <div className="flex grow">
               <Text text={name} type="h5" weight="bold" />
@@ -86,23 +87,24 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
           </div>
           <div className="flex">
             {collectionName && (
-              <div className="flex flex-auto flex-col  pr-s16">
+              <div className="flex flex-col pr-s16">
                 <Text text="Collection" type="p3" weight="bold" />
                 <div className="flex flex-row py-s16 items-center">
                   {collectionLogo && (
-                    <ImagePreview
-                      src={collectionLogo.src}
-                      alt={collectionLogo.alt}
-                      loader={collectionLogo.loader}
-                      imageClassName="rounded-[12px]"
-                      className="h-[40px] md:h-[40px] pr-s8"
+                    <div className="pr-s8 min-w-[48px]">
+                    <Image
+                      src={collectionLogo}
+                      alt={collectionName}
+                      width="40"
+                      height="40"
+                      className="rounded-[12px]"
                     />
+                    </div>
                   )}
                   <Text text={collectionName} type="label" weight="bold" />
                 </div>
               </div>
             )}
-
             <div className="flex flex-auto flex-col grow">
               <Text text="Creator" type="p3" weight="bold" />
               <div className="flex py-s16 grow">

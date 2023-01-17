@@ -9,7 +9,7 @@ export interface INftDetailTemplate {
   description: string
   quantity?: string;
   collectionName?: string;
-  collectionLogo?: IImagePreview;
+  collectionLogo?: string;
   creator: IUserAddressBlock;
   displayButton:boolean;
   onClick?: () => void;

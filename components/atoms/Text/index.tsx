@@ -3,15 +3,15 @@ import { IText, TextFontWeightType } from "./types";
 const getSize = (type: string) => {
   switch (type) {
     case "p1":
-      return "text-fs16 md:text-fs20";
+      return "text-fs16 md:text-fs20 break-words";
     case "p2":
-      return "text-fs14 md:text-fs18";
+      return "text-fs14 md:text-fs18 break-words";
     case "p3":
-      return "text-fs14 md:text-fs16";
+      return "text-fs14 md:text-fs16 break-words";
     case "p4":
-      return "text-fs12 md:text-fs14";
+      return "text-fs12 md:text-fs14 break-words";
     default:
-      return "text-fs12";
+      return "text-fs12 break-words";
   }
 };
 
@@ -36,20 +36,20 @@ const Text: React.FC<IText> = ({
   switch (type) {
     case "h1":
       return (
-        <h1 className={`text-fs30 md:text-fs64 ${getWeight(weight)} ${color} ${className}`}>
+        <h1 className={`text-fs30 md:text-fs64 break-words ${getWeight(weight)} ${color} ${className}`}>
           {text}
         </h1>
       );
     case "h2":
       return (
-        <h2 className={`text-fs48 ${getWeight(weight)} ${color} ${className}`}>
+        <h2 className={`text-fs48 break-words ${getWeight(weight)} ${color} ${className}`}>
           {text}
         </h2>
       );
     case "h3":
       return (
         <h3
-          className={`text-fs24 md:text-fs36 ${getWeight(
+          className={`text-fs24 md:text-fs36 break-words ${getWeight(
             weight
           )} ${color} ${className}`}
         >
@@ -58,20 +58,20 @@ const Text: React.FC<IText> = ({
       );
     case "h4":
       return (
-        <h4 className={`text-fs18 md:text-fs30 ${getWeight(weight)} ${color} ${className}`}>
+        <h4 className={`text-fs18 md:text-fs30 break-words ${getWeight(weight)} ${color} ${className}`}>
           {text}
         </h4>
       );
     case "h5":
       return (
-        <h5 className={`text-fs18 md:text-fs24 ${getWeight(weight)} ${color} ${className}`}>
+        <h5 className={`text-fs18 md:text-fs24 break-words ${getWeight(weight)} ${color} ${className}`}>
           {text}
         </h5>
       );
     case "label":
       return (
         <label
-          className={`text-fs14 ${getWeight(weight)} ${color} ${className}`}
+          className={`text-fs14 break-words ${getWeight(weight)} ${color} ${className}`}
         >
           {text}
         </label>

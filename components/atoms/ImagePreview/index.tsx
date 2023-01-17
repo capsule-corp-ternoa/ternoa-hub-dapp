@@ -9,8 +9,10 @@ const ImagePreview: React.FC<IImagePreview> = ({
   src,
   alt,
   loader,
+  cover,
   className = "",
   imageClassName = ""
+
 }) => {
   const [imgLoaded, setImgLoaded] = useState<boolean>(false);
 
@@ -27,9 +29,9 @@ const ImagePreview: React.FC<IImagePreview> = ({
               <img
                 src={src}
                 alt={alt}
-                className={`bg-cover bg-no-repeat bg-center w-auto object-contain h-full ${imageClassName} ${
-                  imgLoaded ? "" : "hidden"
-                }`}
+                className={`bg-cover bg-no-repeat bg-center w-auto h-full ${imageClassName} ${imgLoaded ? "" : "hidden"
+                  } ${cover ? "object-cover" : "object-contain"
+                  }`}
                 onLoad={() => setImgLoaded(true)}
               />
             }
@@ -57,13 +59,15 @@ const ImagePreview: React.FC<IImagePreview> = ({
 
   return (
     <div
-      className={`h-s144 md:h-[290px] rounded-xl flex justify-center items-center ${
-        isLoading || !imgLoaded || !src ? "bg-gray-100" : "bg-[tranparent]"
-      } ${className}`}
+      className={`rounded-xl flex justify-center items-center ${
+              isLoading || !imgLoaded || !src ? "bg-gray-100" : "bg-[tranparent]"
+            }
+            ${cover ? "" : "h-s144 md:h-[290px]"}
+            ${className}`}
     >
-      {renderImage()}
-    </div>
-  );
-};
+            {renderImage()}
+          </div>
+        );
+      };
 
-export default ImagePreview;
+      export default ImagePreview;

@@ -6,5 +6,6 @@ export interface IImagePreview {
   alt?: string;
   className?: string;
   imageClassName?: string;
+  cover?:boolean;
   loader: React.ReactNode | React.ReactNode[];
 }
