@@ -8,6 +8,7 @@ export interface INftDetailTemplate {
   name: string;
   description: string
   quantity?: string;
+  limit?: string;
   collectionName?: string;
   collectionLogo?: string;
   creator: IUserAddressBlock;

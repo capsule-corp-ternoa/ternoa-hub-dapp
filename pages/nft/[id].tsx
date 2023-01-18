@@ -74,16 +74,16 @@ const Account: NextPage = () => {
             id={nftDetail.id}
             name={nftData.title}
             description={nftData.description}
-            quantity={nftDetail.collection?.limit}
+            quantity={nftDetail.collection?.nbNfts}
+            limit={nftDetail.collection?.limit}
             collectionName={collectionData?.name}
             collectionLogo={collectionData?.profile_image ? parseOffchainDataImage(collectionData?.profile_image) : undefined}
             creator={{ pubKey: nftDetail.creator }}
             displayButton={true}
             disabled={!nftDetail.isListed}
-          /* onClick
-          buttonText
-          disabled
-          */
+            buttonText={!nftDetail.isListed ? 'Not for sale' : ""}
+          
+          /* onClick*/
 
           />
         ) : null}

@@ -15,6 +15,7 @@ const base: INftDetailTemplate = {
   collectionName: "Uzuki long long",
   collectionLogo: "https://ipfs-dev.trnnfr.com/ipfs/QmQ1sD95jLSo1vJK6mcXHGogrph8Bqpgx7L8Vy4SX6Xbrg",
   quantity: '10',
+  limit:'15',
   description: "Description mock for NFT Detail Template",
   displayButton: true,
   disabled: true,

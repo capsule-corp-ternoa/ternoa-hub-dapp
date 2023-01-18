@@ -16,6 +16,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
   name,
   description,
   quantity,
+  limit,
   collectionName,
   collectionLogo,
   creator,
@@ -65,7 +66,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
             <div className="flex grow">
               <Text text={name} type="h5" weight="bold" />
             </div>
-            {quantity &&
+            {quantity && limit &&
               <div className="flex shrink rounded-[10px] bg-gray-200 p-s8 justify-center items-center">
                 <Image
                   src="/quantity.svg"
@@ -76,7 +77,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
                 <Text
                   type="label"
                   weight="bold"
-                  text={quantity.toString()}
+                  text={`${quantity}/${limit}`}
                   className="pl-s4"
                 />
               </div>}

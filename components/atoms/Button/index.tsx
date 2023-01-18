@@ -95,7 +95,7 @@ const Button: React.FC<IButton> = ({
       )} ${getButtonType(
         type,
         disabled
-      )} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md cursor-pointer ${
+      )} px-s56 text-center whitespace-nowrap leading-tight rounded-lg shadow-md ${
         autoWidth && "!min-w-[auto]"
       } ${className}`}
     >
