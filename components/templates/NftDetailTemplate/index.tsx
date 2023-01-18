@@ -64,7 +64,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
         <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] md:w-[400px]">
           <div className="flex items-center">
             <div className="flex grow">
-              <Text text={name} type="h5" weight="bold" />
+              <Text text={name} type="h5" weight="bold" className="break-all" />
             </div>
             {quantity && limit &&
               <div className="flex shrink rounded-[10px] bg-gray-200 p-s8 justify-center items-center">
@@ -84,7 +84,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
           </div>
 
           <div className="py-s16">
-            <Text type="p3" weight="light" text={description} />
+            <Text type="p3" weight="light" text={description} className="break-all" />
           </div>
           <div className="flex">
             {collectionName && (
