@@ -30,7 +30,7 @@ const ImagePreview: React.FC<IImagePreview> = ({
                 src={src}
                 alt={alt}
                 className={`bg-cover bg-no-repeat bg-center w-auto h-full ${imageClassName} ${imgLoaded ? "" : "hidden"
-                  } ${cover ? "object-cover" : "object-contain"
+                  } ${cover ? "object-cover max-h-screen max-w-screen" : "object-contain"
                   }`}
                 onLoad={() => setImgLoaded(true)}
               />
