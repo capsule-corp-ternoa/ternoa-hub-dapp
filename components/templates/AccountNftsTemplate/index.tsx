@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Filter } from "../../../store/slices/nfts/types";
@@ -23,6 +24,7 @@ const AccountNftsTemplate: React.FC<IAccountNftsTemplate> = ({
   selectedIds,
 }) => {
   const { ref: endReachRef, inView: isEndReached } = useInView();
+  const router = useRouter();
 
   useEffect(() => {
     if (isEndReached) {
@@ -69,6 +71,11 @@ const AccountNftsTemplate: React.FC<IAccountNftsTemplate> = ({
               onChangeChecked={
                 onChangeSelectedIds ? onChangeChecked(nftCard.id) : undefined
               }
+              isClickable={true}
+              onClick={() => router.push({
+                pathname: `/nft/${nftCard.id}`,
+              })
+            }
             />
           </div>
         ))}
@@ -106,9 +113,8 @@ const AccountNftsTemplate: React.FC<IAccountNftsTemplate> = ({
             type="primary"
             size="medium"
             autoWidth={true}
-            className={`${
-              Boolean(nfts.length) && "md:hidden"
-            } mt-s40 md:mt-s32`}
+            className={`${Boolean(nfts.length) && "md:hidden"
+              } mt-s40 md:mt-s32`}
             onClick={onClickCreateNft}
           />
         </div>

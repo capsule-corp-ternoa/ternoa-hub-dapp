@@ -8,7 +8,9 @@ module.exports = {
   theme: {
     screens: {
       xs: "375px",
+      maxxs:{'max':'375px'},
       sm: "600px",
+      maxsm:{'max': '600px'},
       md: "900px",
       lg: "1200px",
       xl: "1535px",
@@ -121,6 +123,7 @@ module.exports = {
       s240: "240px",
     },
     minWidth: {
+      70:"70px",
       144: "144px",
       184: "184px",
       240: "240px",
