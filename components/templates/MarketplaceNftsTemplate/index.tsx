@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Button from "../../atoms/Button";
@@ -18,7 +19,7 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
   isCreateNftVisible,
 }) => {
   const { ref: endReachRef, inView: isEndReached } = useInView();
-
+  const router = useRouter();
   useEffect(() => {
     if (isEndReached) {
       onEndReached();
@@ -40,7 +41,10 @@ const MarketplaceNftsTemplate: React.FC<IMarketplaceNftsTemplate> = ({
         )}
         {nfts.map((nftCard, i) => (
           <div key={i} className="w-full">
-            <NftCard {...nftCard} showPrice={true} className="w-full" />
+            <NftCard {...nftCard} showPrice={true} className="w-full" isClickable={true}
+              onClick={() => router.push({
+                pathname: `/nft/${nftCard.id}`,
+              })} />
           </div>
         ))}
       </div>
