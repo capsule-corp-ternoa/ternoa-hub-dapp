@@ -14,6 +14,7 @@ import { CREATE_BASIC_NFT } from "../constants/features";
 
 const CreateNft: NextPage = () => {
   const router = useRouter();
+  const isSoulBound: boolean = Boolean (router.query.isSoulBound);
   const { account, client } = useWalletConnectClient();
   const isConnectingBlockchain = useSelector(
     (state: RootState) => state.blockchain.isConnecting
@@ -72,6 +73,7 @@ const CreateNft: NextPage = () => {
           <CreateNftTemplate
             onSubmit={onSubmit}
             disabled={isConnectingBlockchain}
+            isSoulBound={isSoulBound}
           />
         </div>
       </BaseTemplate>

@@ -36,13 +36,13 @@ const Text: React.FC<IText> = ({
   switch (type) {
     case "h1":
       return (
-        <h1 className={`text-fs30 md:text-fs64 ${getWeight(weight)} ${color} ${className}`}>
+        <h1 className={`text-fs30 md:text-fs64 ${getWeight(weight)} text-${color} ${className}`}>
           {text}
         </h1>
       );
     case "h2":
       return (
-        <h2 className={`text-fs48 ${getWeight(weight)} ${color} ${className}`}>
+        <h2 className={`text-fs48 ${getWeight(weight)} text-${color} ${className}`}>
           {text}
         </h2>
       );
@@ -51,27 +51,27 @@ const Text: React.FC<IText> = ({
         <h3
           className={`text-fs24 md:text-fs36 ${getWeight(
             weight
-          )} ${color} ${className}`}
+          )} text-${color} ${className}`}
         >
           {text}
         </h3>
       );
     case "h4":
       return (
-        <h4 className={`text-fs18 md:text-fs30 ${getWeight(weight)} ${color} ${className}`}>
+        <h4 className={`text-fs18 md:text-fs30 ${getWeight(weight)} text-${color} ${className}`}>
           {text}
         </h4>
       );
     case "h5":
       return (
-        <h5 className={`text-fs18 md:text-fs24 ${getWeight(weight)} ${color} ${className}`}>
+        <h5 className={`text-fs18 md:text-fs24 ${getWeight(weight)} text-${color} ${className}`}>
           {text}
         </h5>
       );
     case "label":
       return (
         <label
-          className={`text-fs14 ${getWeight(weight)} ${color} ${className}`}
+          className={`text-fs14 ${getWeight(weight)} text-${color} ${className}`}
         >
           {text}
         </label>
@@ -81,7 +81,7 @@ const Text: React.FC<IText> = ({
         <p
           className={`${getSize(type)} ${getWeight(
             weight
-          )} ${color} ${className}`}
+          )} text-${color} ${className}`}
         >
           {text}
         </p>

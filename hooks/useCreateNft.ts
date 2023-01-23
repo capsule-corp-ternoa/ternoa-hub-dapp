@@ -21,6 +21,7 @@ export interface CreatNftParams {
   royalty: number;
   quantity: number;
   collectionId?: number;
+  isSoulBound?:boolean;
 }
 
 export const useCreateNft = () => {

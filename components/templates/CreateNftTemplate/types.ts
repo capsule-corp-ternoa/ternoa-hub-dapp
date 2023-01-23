@@ -20,4 +20,5 @@ export interface ICreateNftTemplate {
   disabled?: boolean;
   noTitle?: boolean
   noQuantity?: boolean;
+  isSoulBound?:boolean;
 }
