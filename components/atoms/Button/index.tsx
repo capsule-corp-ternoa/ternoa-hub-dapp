@@ -46,31 +46,31 @@ const getTextProps = (
         text,
         type: textType,
         weight: "medium",
-        color: disabled ? "text-gray-400" : "text-white-default",
+        color: disabled ? "gray-400" : "white-default",
       };
     case "secondary":
       return {
         text,
         type: textType,
         weight: "medium",
-        color: disabled ? "text-gray-400" : "text-gray-800",
+        color: disabled ? "gray-400" : "gray-800",
       };
     case "tertiary":
       return {
         text,
         type: textType,
         weight: "medium",
-        color: "text-gray-700",
+        color: "gray-700",
       };
     case "quaternary":
       return {
         text,
         type: textType,
         weight: "medium",
-        color: "text-white-default",
+        color: "white-default",
       };
     case "danger":
-      return { text, type: textType, weight: "medium", color: "text-red-400" };
+      return { text, type: textType, weight: "medium", color: "red-400" };
   }
 };
 
