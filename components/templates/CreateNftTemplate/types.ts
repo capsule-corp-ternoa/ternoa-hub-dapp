@@ -13,6 +13,7 @@ export interface INftFormResult {
 export interface onSubmitParams {
   result: INftFormResult;
   formData: UseFormReturn<INftFormResult>;
+  isSoulBound:boolean
 }
 
 export interface ICreateNftTemplate {

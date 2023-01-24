@@ -115,7 +115,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
 
   const onClickSubmit = () => {
     handleSubmit((formResponse) => {
-      onSubmit({ result: formResponse, formData });
+      onSubmit({ result: formResponse, formData, isSoulBound:isSoulBound??false });
     })();
   };
 
@@ -123,8 +123,8 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
     <React.Fragment>
       <div className="flex flex-col justify-center h-[max-content]">
         {isSoulBound && (
-          <div className="bg-gray-500 p-s20 flex-col rounded-[20px] my-s24 m-w-[896px]">
-            <div className="bg-gray-700 rounded-[8px] px-s8 py-s4 inline-flex">
+          <div className="bg-gray-500 p-s20 flex-col rounded-[20px] my-s24 max-w-[896px]">
+            <div className="bg-gray-700 rounded-[8px] px-s16 py-s8 inline-flex">
               <Text
                 text="Good to know !"
                 type="label"
@@ -132,16 +132,38 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
                 color="gray-500"
               />
             </div>
-            <div className="flex flex-row">
-              <div className="flex border-3 border-gray-300 rounded-xl m-s16">
-                <Image src="/soulbound-token-illustration1.svg" width="53" height="69" alt="soulbound-token-illustration1" />
-                <Text text="1- They are non-transferable and public-verifiable digital tokens. Once you acquire one, it will always be tied to your personal wallet."
-                type="p3" weight="medium" color="gray-400" />
+            <div className="flex sm:flex-col md:flex-row">
+              <div className="flex border-[3px] border-gray-300 bg-gray-50 rounded-xl my-s16 p-s8 md:mr-s16  items-center">
+                <div className="mr-s16 min-w-[53px]">
+                  <Image
+                    src="/soulbound-token-illustration1.svg"
+                    width="53"
+                    height="69"
+                    alt="soulbound-token-illustration1"
+                  />
+                </div>
+                <Text
+                  text="1- They are non-transferable and public-verifiable digital tokens. Once you acquire one, it will always be tied to your personal wallet."
+                  type="p3"
+                  weight="medium"
+                  color="gray-400"
+                />
               </div>
-              <div className="flex border-3 border-gray-300 rounded-xl m-s16">
-              <Image src="/soulbound-token-illustration2.svg" width="53" height="69" alt="soulbound-token-illustration2" />
-              <Text text="2- They can be used for immutable records such as a badge, a DiD, a pass..."
-                type="p3" weight="medium" color="gray-400" />
+              <div className="flex border-[3px] border-gray-300 bg-gray-50 rounded-xl my-s16 p-s8 items-center">
+                <div className="mr-s16 min-w-[53px]">
+                  <Image
+                    src="/soulbound-token-illustration2.svg"
+                    width="53"
+                    height="69"
+                    alt="soulbound-token-illustration2"
+                  />
+                </div>
+                <Text
+                  text="2- They can be used for immutable records such as a badge, a DiD, a pass..."
+                  type="p3"
+                  weight="medium"
+                  color="gray-400"
+                />
               </div>
             </div>
           </div>
@@ -255,12 +277,15 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
                 inputType="number"
                 {...register("collectionId")}
               />
+              
+
               <div className="flex flex-1 items-end">
                 <Button
-                  text="Create NFT"
+                  color="gray-50"
+                  text={isSoulBound ? "Create SBT" : "Create NFT"}
                   type="primary"
                   size="medium"
-                  className="mt-s20 md:mt-s32"
+                  className="mt-s20 md:mt-s32 bg-gray-300"
                   onClick={onClickSubmit}
                   disabled={disabled}
                 />

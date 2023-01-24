@@ -130,9 +130,7 @@ export const submitSignedTx = <T extends BlockchainEvent>(
   createAsyncThunk<T, { signedHash: `0x${string}` }>(
     "blockchainTx/submitSignedTx",
     async (args) => {
-      const submitTx = async (
-        signedHash: `0x${string}`
-      ): Promise<T> => {
+      const submitTx = async (signedHash: `0x${string}`): Promise<T> => {
         try {
           const { events } = await submitTxBlocking(
             signedHash,
@@ -159,18 +157,23 @@ export const createNft = createAsyncThunk<
     royalty: number;
     collectionId: number | undefined;
     quantity: number;
+    isSoulBound: boolean;
   }
 >("blockchainTx/create/nft", async (args) => {
   const txHash = await createTxHex("nft", "createNft", [
     args.hash,
-    `000${args.royalty * 10000}`,
+    `000${(args.royalty || 0) * 10000}`,
     args.collectionId,
-    false,
+    args.isSoulBound,
   ]);
   if (args.quantity === 1) {
+    console.log("txHash", txHash);
+
     return txHash;
   } else {
     const txHashes = Array(args.quantity).fill(txHash);
+
+    console.log("txHashes", txHashes);
     return await batchTxHex(txHashes);
   }
 });

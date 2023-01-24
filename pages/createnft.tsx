@@ -39,10 +39,11 @@ const CreateNft: NextPage = () => {
     setIsErrorModalVisible(Boolean(error));
   }, [error]);
 
-  const onSubmit = async ({ result, formData }: onSubmitParams) => {
+  const onSubmit = async ({ result, formData, isSoulBound }: onSubmitParams) => {
     await createNft({
       title: result.name,
       ...result,
+      isSoulBound
     });
     formData.reset();
   };
