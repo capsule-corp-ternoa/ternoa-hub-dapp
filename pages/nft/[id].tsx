@@ -9,7 +9,7 @@ import NftDetailTemplate from "../../components/templates/NftDetailTemplate";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { nftApi } from "../../store/slices/nfts";
-import { Nft, NftDetail, NftDetailWithCollection } from "../../store/slices/nfts/types";
+import { NftDetailWithCollection } from "../../store/slices/nfts/types";
 import { parseOffchainDataImage } from "../../utils/strings";
 import LoaderEllipsis from "../../components/atoms/LoaderEllipsis";
 
@@ -82,6 +82,9 @@ const Account: NextPage = () => {
             displayButton={true}
             disabled={!nftDetail.isListed}
             buttonText={!nftDetail.isListed ? 'Not for sale' : ""}
+            isCapsule={Boolean(nftDetail.isCapsule)}
+            isSecret={Boolean(nftDetail.isSecret)}
+            isSoulBound={Boolean(nftDetail.isSoulbound)}
           
           /* onClick*/
 

@@ -171,10 +171,16 @@ module.exports = {
           400: "#F87171",
           500: "#EF4444",
           600: "#BC3748",
+          default:"#FF5C46"
         },
         blue: {
+          500:"#2997FC",
           default: "#2454FF",
+
         },
+        purple:{
+          default:"#6B4FFF",
+        }
       },
       gridTemplateColumns: {
         nftListDesktop: "repeat(auto-fill, minmax(290px,1fr))",
