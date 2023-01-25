@@ -19,6 +19,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
   noTitle,
   noQuantity,
   isSoulBound,
+  hasBackBtn,
 }) => {
   const [isPreviewVisible, setIsPreviewVisible] = useState<boolean>();
   const router = useRouter();
@@ -215,18 +216,18 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
               className={`bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] w-full md:inline-flex md:flex-col md:w-auto ${noTitle ? "!pt-[0px]" : ""
                 }`}
             >
-
-              <IconButton
-                onClick={() => router.back()}
-                text="Back"
-                icon="ArrowLeft"
-                iconSize={16}
-                iconColor="white"
-                size="xsmall"
-                autoWidth
-                type="primary"
-                className="rounded-[20px] absolute -left-s8 -top-s16 maxmd:hidden"
-              />
+              {hasBackBtn &&
+                <IconButton
+                  onClick={() => router.back()}
+                  text="Back"
+                  icon="ArrowLeft"
+                  iconSize={16}
+                  iconColor="white"
+                  size="xsmall"
+                  autoWidth
+                  type="primary"
+                  className="rounded-[20px] absolute -left-s8 -top-s16 maxmd:hidden"
+                />}
               {!noTitle && !isSoulBound ? (
                 <Text text="Create your NFT" type="h3" weight="bold" />
               ) : (
