@@ -105,8 +105,6 @@ export const useCreateNft = () => {
           ).unwrap();
           setIsSuccess(true);
           dispatch(nftApi.util.invalidateTags(["Nfts"]));
-          console.log("createNft txHash, signedHash ", txHash, signedHash);
-
           return createdEvent;
         }
       }

@@ -14,7 +14,6 @@ const Home: NextPage = () => {
   const { account, connect } = useWalletConnectClient();
 
   const onClickAction = async (route: string, queryParams: any = {}) => {
-    //console.log("oncLickAction", route);
 
     if (account) {
       router.push({

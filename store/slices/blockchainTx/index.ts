@@ -167,13 +167,9 @@ export const createNft = createAsyncThunk<
     args.isSoulBound,
   ]);
   if (args.quantity === 1) {
-    console.log("txHash", txHash);
-
     return txHash;
   } else {
     const txHashes = Array(args.quantity).fill(txHash);
-
-    console.log("txHashes", txHashes);
     return await batchTxHex(txHashes);
   }
 });
