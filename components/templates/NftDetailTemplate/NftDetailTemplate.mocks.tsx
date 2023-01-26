@@ -19,8 +19,10 @@ const base: INftDetailTemplate = {
   description: "Description mock for NFT Detail Template",
   displayButton: true,
   disabled: true,
-  buttonText: "Not for sale"
-
+  buttonText: "Not for sale",
+  isSoulbound:false,
+  isCapsule:true,
+  isSecret:false
 
 };
 
