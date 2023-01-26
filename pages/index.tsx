@@ -64,6 +64,20 @@ const Home: NextPage = () => {
                 action="Create"
                 onClickAction={() => onClickAction("/createnft")}
               />
+               <ActionCard
+                imgProps={{
+                  src: "/soulbound-token-icon.svg",
+                  alt: "Soulbound Token",
+                  width: 110,
+                  height: 145,
+                }}
+                title="Soulbound Token"
+                body={`Create a single NFT that is not transferable`}
+                action="Create"
+                onClickAction={() =>
+                  onClickAction("/createnft", { isSoulBound: true })
+                }
+              />
               <ActionCard
                 imgProps={{
                   src: "/nft-collection-icon.svg",
@@ -122,20 +136,7 @@ const Home: NextPage = () => {
                 disabled={true}
                 className="border-dashed border-[2px]"
               />
-              <ActionCard
-                imgProps={{
-                  src: "/soulbound-token-icon.svg",
-                  alt: "Soulbound Token",
-                  width: 110,
-                  height: 145,
-                }}
-                title="Soulbound Token"
-                body={`Create a single NFT that is not transferable`}
-                action="Create"
-                onClickAction={() =>
-                  onClickAction("/createnft", { isSoulBound: true })
-                }
-              />
+             
               <ActionCard
                 imgComponent={renderQuestionCard()}
                 title="Auction"

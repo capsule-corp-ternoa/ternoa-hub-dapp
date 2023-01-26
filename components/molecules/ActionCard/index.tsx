@@ -16,7 +16,7 @@ const ActionCard: React.FC<IActionCard> = ({
 }) => {
   return (
     <Card
-      className={`justify-between flex flex-col items-center !py-s40 ${className}`}
+      className={`justify-between flex flex-col items-center !py-s40 ${className} ${disabled && `opacity-50`}` }
     >
       {imgComponent
         ? imgComponent
