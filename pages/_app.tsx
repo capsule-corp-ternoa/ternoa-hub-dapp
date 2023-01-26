@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import SEO from "../constants/seo";
 import IpfsModals from "./app/components/IpfsModals";
 import BlockchainTxModals from "./app/components/BlockchainTxModals";
+import { Analytics } from '@vercel/analytics/react';
 
 const Initialize = () => {
   const initialized = useRef<boolean>();
@@ -65,7 +66,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           )}
         </PersistGate>
       </Provider>
+      <Analytics />
     </React.Fragment>
+    
   );
 }
 

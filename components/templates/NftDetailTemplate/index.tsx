@@ -61,7 +61,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
       </div>
 
       <div className="flex flex-col mt-s24">
-        <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] md:w-[400px]">
+        <div className="bg-gray-500 px-s16 md:px-s32 py-s28 md:py-s32 rounded-[20px] lg:w-[400px]">
           <div className="flex items-center">
             <div className="flex grow">
               <Text text={name} type="h5" weight="bold" className="break-all" />

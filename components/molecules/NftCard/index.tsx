@@ -95,14 +95,16 @@ const NftCard: React.FC<INftCard> = ({
 
   return (
     <div
-      className={`bg-gray-500 border-gray-200 border border-solid rounded-2xl p-[10px] md:p-s20 inline-block ${className} ${isClickable && "cursor-pointer"}`} onClick={() => onClick && onClick()}
+      className={`bg-gray-500 border-gray-200 border border-solid rounded-2xl p-[10px] md:p-s20 inline-block ${className}`}
     >
-      <ImagePreview
-        {...preview}
-        isLoading={isLoading}
-        loader={<NftLoader text="Loading" />}
-        imageClassName="rounded-xl"
-      />
+      <div className={`${isClickable && "cursor-pointer"}`} onClick={() => onClick && onClick()}>
+        <ImagePreview
+          {...preview}
+          isLoading={isLoading}
+          loader={<NftLoader text="Loading" />}
+          imageClassName="rounded-xl"
+        />
+      </div>
       <div
         className={`mb-s4 md:mb-s8 mt-[10px] md:mt-s28 overflow-hidden flex flex-col justify-between`}
       >
