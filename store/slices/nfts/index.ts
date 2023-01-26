@@ -47,12 +47,15 @@ export const nftApi = indexerApi.injectEndpoints({
                       hasNextPage
                     }
                     nodes {
-                      nodeId
-                      id
-                      price
-                      offchainData
-                      owner
-                      creator
+                      nodeId,
+                      id,
+                      price,
+                      offchainData,
+                      owner,
+                      creator,
+                      isCapsule, 
+                      isSecret, 
+                      isSoulbound, 
                     }
                     totalCount
                   }
@@ -84,7 +87,7 @@ export const nftApi = indexerApi.injectEndpoints({
             isSecret, 
             isSoulbound, 
             isListed,  
-            price 
+            price, 
             collection 
               {
                 nodeId,
@@ -101,7 +104,7 @@ export const nftApi = indexerApi.injectEndpoints({
       }),
       providesTags: ["Nfts"],
       transformResponse: (response: NftDetailQueryResponse) => ({
-        nftDetail: response.nftEntity
+        nftDetail: response.nftEntity,
       }),
     }),
 

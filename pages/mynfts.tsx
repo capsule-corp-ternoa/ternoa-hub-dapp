@@ -25,7 +25,8 @@ const Account: NextPage = () => {
       router.push("/");
     }
   }, [client, account, router]);
-
+  //console.log('nftListData', nftListData);
+  
   return (
     <React.Fragment>
       <NextSeo title="My Nfts" />

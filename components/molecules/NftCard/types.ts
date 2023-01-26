@@ -13,4 +13,7 @@ export interface INftCard {
   showPrice?: boolean;
   isClickable?: boolean;
   onClick?: () => void;
+  isSoulbound?:boolean;
+  isCapsule?:boolean;
+  isSecret?:boolean;
 }

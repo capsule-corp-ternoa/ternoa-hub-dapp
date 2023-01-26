@@ -18,7 +18,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
   disabled,
   noTitle,
   noQuantity,
-  isSoulBound,
+  isSoulbound,
   hasBackBtn,
 }) => {
   const [isPreviewVisible, setIsPreviewVisible] = useState<boolean>();
@@ -118,14 +118,14 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
 
   const onClickSubmit = () => {
     handleSubmit((formResponse) => {
-      onSubmit({ result: formResponse, formData, isSoulBound: isSoulBound ?? false });
+      onSubmit({ result: formResponse, formData, isSoulbound: isSoulbound ?? false });
     })();
   };
 
   return (
     <React.Fragment>
       <div className="flex flex-col justify-center h-[max-content]">
-        {isSoulBound && (
+        {isSoulbound && (
           <div className="bg-gray-500 p-s20 flex-col rounded-[20px] mt-s24 mb-s40 max-w-[896px]">
             <div className="bg-gray-700 rounded-[8px] px-s16 py-s8 inline-flex">
               <Text
@@ -228,11 +228,11 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
                   type="primary"
                   className="rounded-[20px] absolute -left-s8 -top-s16 maxmd:hidden"
                 />}
-              {!noTitle && !isSoulBound ? (
+              {!noTitle && !isSoulbound ? (
                 <Text text="Create your NFT" type="h3" weight="bold" />
               ) : (
                 !noTitle &&
-                isSoulBound && (
+                isSoulbound && (
                   <Text
                     text="Create your soulbound Token"
                     type="h3"
@@ -271,7 +271,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
                   type={noQuantity ? "disabled" : "primary"}
                   {...register("quantity")}
                 />
-                {!isSoulBound && (
+                {!isSoulbound && (
                   <Input
                     id="royalty"
                     label="Royalty"
@@ -299,7 +299,7 @@ const CreateNftTemplate: React.FC<ICreateNftTemplate> = ({
                 <div className="flex flex-1 items-end">
                   <Button
                     color="gray-50"
-                    text={isSoulBound ? "Create SBT" : "Create NFT"}
+                    text={isSoulbound ? "Create SBT" : "Create NFT"}
                     type="primary"
                     size="medium"
                     className="mt-s20 md:mt-s32 bg-gray-300"

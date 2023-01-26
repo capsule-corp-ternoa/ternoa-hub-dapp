@@ -18,7 +18,10 @@ export const parseNft = (nft: Nft, nftsData: NftsData): INftCard => {
       name: nftData.jsonData?.title,
       creator: nft.creator,
       price: formatPrice(nft.price),
-    };
+      isSoulbound:Boolean(nft.isSoulbound),
+      isCapsule:Boolean(nft.isCapsule),
+      isSecret:Boolean(nft.isSecret),
+    };  
   } else {
     return {
       id: nft.id,

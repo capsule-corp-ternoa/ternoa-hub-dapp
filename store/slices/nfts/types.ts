@@ -5,6 +5,9 @@ export type Nft = {
   offchainData: string;
   owner: string;
   creator: string;
+  isCapsule: string;
+  isSecret: string;
+  isSoulbound: string;
 };
 
 export type NftDetail = {
