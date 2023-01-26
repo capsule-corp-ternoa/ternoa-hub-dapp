@@ -160,7 +160,7 @@ const Marketplace: NextPage = () => {
     const createdEvent = await createNft({
       title: result.name,
       ...result,
-      isSoulBound: false
+      isSoulbound: false
     });
   if (createdEvent) {
     setNftId(createdEvent.nftId);

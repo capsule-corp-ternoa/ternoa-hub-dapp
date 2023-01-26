@@ -16,7 +16,7 @@ export interface INftDetailTemplate {
   onClick?: () => void;
   buttonText?:string;
   disabled?:boolean;
-  isSoulBound:boolean;
+  isSoulbound:boolean;
   isCapsule:boolean;
   isSecret:boolean;
   

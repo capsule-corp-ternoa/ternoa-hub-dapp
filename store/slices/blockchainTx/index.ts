@@ -157,14 +157,14 @@ export const createNft = createAsyncThunk<
     royalty: number;
     collectionId: number | undefined;
     quantity: number;
-    isSoulBound: boolean;
+    isSoulbound: boolean;
   }
 >("blockchainTx/create/nft", async (args) => {
   const txHash = await createTxHex("nft", "createNft", [
     args.hash,
     `000${(args.royalty || 0) * 10000}`,
     args.collectionId,
-    args.isSoulBound,
+    args.isSoulbound,
   ]);
   if (args.quantity === 1) {
     return txHash;

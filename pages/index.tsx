@@ -75,7 +75,7 @@ const Home: NextPage = () => {
                 body={`Create a single NFT that is not transferable`}
                 action="Create"
                 onClickAction={() =>
-                  onClickAction("/createnft", { isSoulBound: true })
+                  onClickAction("/createnft", { isSoulbound: true })
                 }
               />
               <ActionCard

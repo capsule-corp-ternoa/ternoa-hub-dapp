@@ -24,7 +24,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
   buttonText,
   disabled,
   displayButton,
-  isSoulBound,
+  isSoulbound,
   isCapsule,
   isSecret,
 
@@ -57,7 +57,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
           />
           <div className="absolute bottom-s16 left-s16">
             <div className="flex flex-row">
-              {isSoulBound && <div className="bg-purple-default opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200 mr-s16">
+              {isSoulbound && <div className="bg-purple-default opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200 mr-s16">
                 <div className="w-[14px] h-[18px]">
                   <Image src="/nft-badge-icon.svg" width="14" height="18" alt="nft-badge" />
                 </div>

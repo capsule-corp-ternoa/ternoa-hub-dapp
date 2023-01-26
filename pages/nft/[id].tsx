@@ -84,7 +84,7 @@ const Account: NextPage = () => {
             buttonText={!nftDetail.isListed ? 'Not for sale' : ""}
             isCapsule={Boolean(nftDetail.isCapsule)}
             isSecret={Boolean(nftDetail.isSecret)}
-            isSoulBound={Boolean(nftDetail.isSoulbound)}
+            isSoulbound={Boolean(nftDetail.isSoulbound)}
           
           /* onClick*/
 
