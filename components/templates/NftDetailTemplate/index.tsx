@@ -48,7 +48,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
             alt={nftImage.alt}
             loader={nftImage.loader}
             cover={true}
-            imageClassName="rounded-[30px] lg:max-w-[700px]"
+            imageClassName="rounded-[30px] max-w-[700px]"
             className="border-[3px] md:border-[5px] border-solid border-[5px] rounded-[35px] border-gray-200"
           />
           <div

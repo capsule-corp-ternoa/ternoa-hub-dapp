@@ -20,6 +20,7 @@ export interface CreatNftParams {
   description: string;
   royalty: number;
   quantity: number;
+  isSoulBound: boolean;
   collectionId?: number;
 }
 
@@ -72,6 +73,7 @@ export const useCreateNft = () => {
     royalty,
     quantity,
     collectionId,
+    isSoulBound,
   }: CreatNftParams): Promise<NFTCreatedEvent | undefined> => {
     setLoadingState("loading");
     setError(undefined);
@@ -90,6 +92,7 @@ export const useCreateNft = () => {
           royalty,
           collectionId,
           quantity,
+          isSoulBound,
         })
       ).unwrap();
       if (txHash) {

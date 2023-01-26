@@ -10,6 +10,7 @@ const CreateNftFromMarketplaceModal: React.FC<ICreateNftFromMarketplaceModal> =
           onSubmit={onSubmit}
           noTitle={true}
           noQuantity={true}
+          hasBackBtn={false}
         />
       </Modal>
     );

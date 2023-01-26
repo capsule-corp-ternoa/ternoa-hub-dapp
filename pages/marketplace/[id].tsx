@@ -160,156 +160,157 @@ const Marketplace: NextPage = () => {
     const createdEvent = await createNft({
       title: result.name,
       ...result,
+      isSoulBound: false
     });
-    if (createdEvent) {
-      setNftId(createdEvent.nftId);
-      formData.reset();
-    }
-  };
-
-  const onSetPrice = ({ result, formData }: onSubmitSetPriceParams) => {
-    setIsSetPriceModalVisible(false);
+  if (createdEvent) {
+    setNftId(createdEvent.nftId);
     formData.reset();
-    if (nftId) {
-      const nftsListData: ListNftsParams = [
-        {
-          nftId: nftId.toString(),
-          marketplaceId: router.query.id as string,
-          price: result.price,
-        },
-      ];
-      listNfts(nftsListData);
-    }
-  };
+  }
+};
 
-  if (indexerMarketplaceData.isError) {
-    return (
-      <BaseTemplate renderCustomNavbar={() => null}>
-        <div className="flex flex-1 w-full h-full justify-center items-center">
-          <Text
-            text="There was an error trying to fetch the marketplace"
-            type="h3"
-            weight="medium"
-          />
+const onSetPrice = ({ result, formData }: onSubmitSetPriceParams) => {
+  setIsSetPriceModalVisible(false);
+  formData.reset();
+  if (nftId) {
+    const nftsListData: ListNftsParams = [
+      {
+        nftId: nftId.toString(),
+        marketplaceId: router.query.id as string,
+        price: result.price,
+      },
+    ];
+    listNfts(nftsListData);
+  }
+};
+
+if (indexerMarketplaceData.isError) {
+  return (
+    <BaseTemplate renderCustomNavbar={() => null}>
+      <div className="flex flex-1 w-full h-full justify-center items-center">
+        <Text
+          text="There was an error trying to fetch the marketplace"
+          type="h3"
+          weight="medium"
+        />
+      </div>
+    </BaseTemplate>
+  );
+}
+
+if (
+  marketplaceData?.state.isLoading ||
+  indexerNfts.isFetching ||
+  isConnecting ||
+  !jsonData
+) {
+  return (
+    <BaseTemplate renderCustomNavbar={() => null}>
+      <div className="flex flex-1 w-full h-full justify-center items-center">
+        <NftLoader text="Loading Marketplace" />
+      </div>
+    </BaseTemplate>
+  );
+}
+
+if (router.isReady && jsonData) {
+  return (
+    <React.Fragment>
+      <AddNftToMarketplaceModal
+        isOpened={isAddNftModalVisible}
+        onClose={() => setIsAddNftModalVisible(false)}
+        onClickImport={onClickImport}
+        onClickCreate={onClickCreate}
+      />
+      <CreateNftFromMarketplaceModal
+        containerClassName="!z-[10]"
+        isOpened={isCreateNftModalVisible}
+        onClose={() => setIsCreateNftModalVisible(false)}
+        onSubmit={onSubmitCreateNft}
+      />
+      <IconModal
+        title="Creation complete!"
+        body="You have created your NFT with success!"
+        iconName="CheckCircle"
+        isOpened={isCreateNftSuccessModalVisible}
+        buttonText={"Set Price"}
+        onClickButton={() => {
+          setIsCreateNftSucessModalVisible(false);
+          setIsSetPriceModalVisible(true);
+        }}
+      />
+      <SetNftPriceModal
+        onSubmit={onSetPrice}
+        isOpened={isSetPriceModalVisible}
+        onClose={() => setIsSetPriceModalVisible(false)}
+        mainColor={jsonData.mainColor}
+        exchangeRate={exchangeRate}
+        isLoadingExchangeRate={fetchExchangeRateLoadingState === "loading"}
+      />
+      <IconModal
+        iconName="CheckCircle"
+        title="Listing NFT complete!"
+        body="You have listed your NFT with success! It should be ready in a few seconds"
+        isOpened={isListNftSuccessModalVisible}
+        onClose={() => setIsListNftSuccessModalVisible(false)}
+      />
+      <IconModal
+        iconName="Warning"
+        isOpened={isListErrorModalVisible}
+        onClose={() => setIsListErrorModalVisible(false)}
+        title={"There was an error trying to list the NFT"}
+      />
+      <IconModal
+        iconName="Warning"
+        isOpened={isCreateNftErrorModalVisisble}
+        onClose={() => setIsCreateNftErrorModalVisible(false)}
+        title="There was an error trying to create the NFT"
+      />
+      <BaseTemplate
+        renderCustomNavbar={(props) => {
+          return (
+            <MarketplaceNavbar
+              {...props}
+              marketplaceName={jsonData.name}
+              marketplaceLogo={jsonData.logo}
+              mainColor={jsonData.mainColor}
+              isEditVisible={isOwner}
+              onClickEdit={() =>
+                router.push({
+                  pathname: "/configuremarketplace",
+                  query: { marketplaceId: parsedMarketplaceId },
+                })
+              }
+            />
+          );
+        }}
+      >
+        <div className="flex justify-center bg-gray-100 py-s40 flex flex-1">
+          <GridWrapper>
+            <MarketplaceNftsTemplate
+              nfts={nftListData}
+              isLoaderVisible={
+                indexerNfts.data?.hasNextPage || indexerNfts.isFetching
+              }
+              onEndReached={() => {
+                indexerNfts.data?.hasNextPage &&
+                  !indexerNfts.isFetching &&
+                  fetchPage(currentPage + 1);
+              }}
+              onClickCreateNft={() => setIsAddNftModalVisible(true)}
+              isCreateNftVisible={
+                userIsOnList ||
+                indexerMarketplaceData.data?.marketplace.kind ===
+                MarketplaceKind.Public
+              }
+              mainColor={jsonData.mainColor}
+            />
+          </GridWrapper>
         </div>
       </BaseTemplate>
-    );
-  }
-
-  if (
-    marketplaceData?.state.isLoading ||
-    indexerNfts.isFetching ||
-    isConnecting ||
-    !jsonData
-  ) {
-    return (
-      <BaseTemplate renderCustomNavbar={() => null}>
-        <div className="flex flex-1 w-full h-full justify-center items-center">
-          <NftLoader text="Loading Marketplace" />
-        </div>
-      </BaseTemplate>
-    );
-  }
-
-  if (router.isReady && jsonData) {
-    return (
-      <React.Fragment>
-        <AddNftToMarketplaceModal
-          isOpened={isAddNftModalVisible}
-          onClose={() => setIsAddNftModalVisible(false)}
-          onClickImport={onClickImport}
-          onClickCreate={onClickCreate}
-        />
-        <CreateNftFromMarketplaceModal
-          containerClassName="!z-[10]"
-          isOpened={isCreateNftModalVisible}
-          onClose={() => setIsCreateNftModalVisible(false)}
-          onSubmit={onSubmitCreateNft}
-        />
-        <IconModal
-          title="Creation complete!"
-          body="You have created your NFT with success!"
-          iconName="CheckCircle"
-          isOpened={isCreateNftSuccessModalVisible}
-          buttonText={"Set Price"}
-          onClickButton={() => {
-            setIsCreateNftSucessModalVisible(false);
-            setIsSetPriceModalVisible(true);
-          }}
-        />
-        <SetNftPriceModal
-          onSubmit={onSetPrice}
-          isOpened={isSetPriceModalVisible}
-          onClose={() => setIsSetPriceModalVisible(false)}
-          mainColor={jsonData.mainColor}
-          exchangeRate={exchangeRate}
-          isLoadingExchangeRate={fetchExchangeRateLoadingState === "loading"}
-        />
-        <IconModal
-          iconName="CheckCircle"
-          title="Listing NFT complete!"
-          body="You have listed your NFT with success! It should be ready in a few seconds"
-          isOpened={isListNftSuccessModalVisible}
-          onClose={() => setIsListNftSuccessModalVisible(false)}
-        />
-        <IconModal
-          iconName="Warning"
-          isOpened={isListErrorModalVisible}
-          onClose={() => setIsListErrorModalVisible(false)}
-          title={"There was an error trying to list the NFT"}
-        />
-        <IconModal
-          iconName="Warning"
-          isOpened={isCreateNftErrorModalVisisble}
-          onClose={() => setIsCreateNftErrorModalVisible(false)}
-          title="There was an error trying to create the NFT"
-        />
-        <BaseTemplate
-          renderCustomNavbar={(props) => {
-            return (
-              <MarketplaceNavbar
-                {...props}
-                marketplaceName={jsonData.name}
-                marketplaceLogo={jsonData.logo}
-                mainColor={jsonData.mainColor}
-                isEditVisible={isOwner}
-                onClickEdit={() =>
-                  router.push({
-                    pathname: "/configuremarketplace",
-                    query: { marketplaceId: parsedMarketplaceId },
-                  })
-                }
-              />
-            );
-          }}
-        >
-          <div className="flex justify-center bg-gray-100 py-s40 flex flex-1">
-            <GridWrapper>
-              <MarketplaceNftsTemplate
-                nfts={nftListData}
-                isLoaderVisible={
-                  indexerNfts.data?.hasNextPage || indexerNfts.isFetching
-                }
-                onEndReached={() => {
-                  indexerNfts.data?.hasNextPage &&
-                    !indexerNfts.isFetching &&
-                    fetchPage(currentPage + 1);
-                }}
-                onClickCreateNft={() => setIsAddNftModalVisible(true)}
-                isCreateNftVisible={
-                  userIsOnList ||
-                  indexerMarketplaceData.data?.marketplace.kind ===
-                    MarketplaceKind.Public
-                }
-                mainColor={jsonData.mainColor}
-              />
-            </GridWrapper>
-          </div>
-        </BaseTemplate>
-      </React.Fragment>
-    );
-  }
-  return null;
+    </React.Fragment>
+  );
+}
+return null;
 };
 
 export default Marketplace;
