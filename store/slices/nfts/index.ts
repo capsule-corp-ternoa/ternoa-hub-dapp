@@ -68,6 +68,7 @@ export const nftApi = indexerApi.injectEndpoints({
         hasNextPage: response.nftEntities.pageInfo.hasNextPage,
       }),
     }),
+
     getNftById: builder.query<NftDetailReducerState, NftDetailQueryParams>({
       query: ({ nftId }) => ({
         body: gql`
@@ -88,6 +89,10 @@ export const nftApi = indexerApi.injectEndpoints({
             isSoulbound, 
             isListed,  
             price, 
+            delegatee,
+            isDelegated,
+            isRented,
+            rentee,
             collection 
               {
                 nodeId,

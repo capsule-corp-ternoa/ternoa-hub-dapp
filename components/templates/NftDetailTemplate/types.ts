@@ -19,5 +19,7 @@ export interface INftDetailTemplate {
   isSoulbound:boolean;
   isCapsule:boolean;
   isSecret:boolean;
+  isDelegated:boolean;
+  onDelegateClick?:() => void;
   
 }

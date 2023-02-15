@@ -27,7 +27,8 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
   isSoulbound,
   isCapsule,
   isSecret,
-
+  isDelegated,
+  onDelegateClick
 }) => {
   const [isZoomModalVisible, setIsZoomModalVisible] = useState<boolean>(false);
   const router = useRouter();
@@ -57,24 +58,63 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
           />
           <div className="absolute bottom-s16 left-s16">
             <div className="flex flex-row">
-              {isSoulbound && <div className="bg-purple-default opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200 mr-s16">
-                <div className="w-[14px] h-[18px]">
-                  <Image src="/nft-badge-icon.svg" width="14" height="18" alt="nft-badge" />
+              {isSoulbound && (
+                <div className="bg-purple-default opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200 mr-s16">
+                  <div className="w-[14px] h-[18px]">
+                    <Image
+                      src="/nft-badge-icon.svg"
+                      width="14"
+                      height="18"
+                      alt="nft-badge"
+                    />
+                  </div>
+                  <Text
+                    type="label"
+                    text="Soulbound"
+                    weight="medium"
+                    color="white-default"
+                    className="ml-s8"
+                  />
                 </div>
-                <Text type="label" text="Soulbound" weight="medium" color="white-default" className="ml-s8" />
-              </div>}
-              {isCapsule && <div className="bg-red-default opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200 mr-s16">
-                <div className="w-[14px] h-[18px]">
-                  <Image src="/nft-badge-icon.svg" width="14" height="18" alt="nft-badge" />
+              )}
+              {isCapsule && (
+                <div className="bg-red-default opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200 mr-s16">
+                  <div className="w-[14px] h-[18px]">
+                    <Image
+                      src="/nft-badge-icon.svg"
+                      width="14"
+                      height="18"
+                      alt="nft-badge"
+                    />
+                  </div>
+                  <Text
+                    type="label"
+                    text="Capsule"
+                    weight="medium"
+                    color="white-default"
+                    className="ml-s8"
+                  />
                 </div>
-                <Text type="label" text="Capsule" weight="medium" color="white-default" className="ml-s8" />
-              </div>}
-              {isSecret && <div className="bg-blue-500 opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200">
-                <div className="w-[14px] h-[18px]">
-                  <Image src="/nft-badge-icon.svg" width="14" height="18" alt="nft-badge" />
+              )}
+              {isSecret && (
+                <div className="bg-blue-500 opacity-50 rounded-[13px] p-s8 flex-1 border-[2px] flex border-gray-200">
+                  <div className="w-[14px] h-[18px]">
+                    <Image
+                      src="/nft-badge-icon.svg"
+                      width="14"
+                      height="18"
+                      alt="nft-badge"
+                    />
+                  </div>
+                  <Text
+                    type="label"
+                    text="Secret"
+                    weight="medium"
+                    color="white-default"
+                    className="ml-s8"
+                  />
                 </div>
-                <Text type="label" text="Secret" weight="medium" color="white-default" className="ml-s8" />
-              </div>}
+              )}
             </div>
           </div>
           <div
@@ -92,7 +132,7 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
             <div className="flex grow">
               <Text text={name} type="h5" weight="bold" className="break-all" />
             </div>
-            {quantity &&
+            {quantity && (
               <div className="flex shrink rounded-[10px] bg-gray-200 p-s8 justify-center items-center">
                 <Image
                   src="/quantity.svg"
@@ -103,14 +143,20 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
                 <Text
                   type="label"
                   weight="bold"
-                  text={`${quantity}${limit ? `/${limit}`:''}`}
+                  text={`${quantity}${limit ? `/${limit}` : ""}`}
                   className="pl-s4"
                 />
-              </div>}
+              </div>
+            )}
           </div>
 
           <div className="py-s16">
-            <Text type="p3" weight="light" text={description} className="break-all" />
+            <Text
+              type="p3"
+              weight="light"
+              text={description}
+              className="break-all"
+            />
           </div>
           <div className="flex">
             {collectionName && (
@@ -139,6 +185,16 @@ const NftDetailTemplate: React.FC<INftDetailTemplate> = ({
               </div>
             </div>
           </div>
+         {/*  {!isDelegated && (
+            <Button
+              type="primary"
+              text="Delegate"
+              disabled={false}
+              onClick={onDelegateClick}
+              size="large"
+              autoWidth
+            />
+          )} */}
           {displayButton && buttonText && (
             <div className="flex flex-col mt-s28">
               <Button

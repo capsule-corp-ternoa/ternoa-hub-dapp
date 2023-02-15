@@ -21,7 +21,8 @@ const Account: NextPage = () => {
     (state: RootState) => state.blockchain
   );
 
-  const [nftDetail, setNftDetail] = useState<NftDetailWithCollection | undefined>();
+  const [nftDetail, setNftDetail] =
+    useState<NftDetailWithCollection | undefined>();
 
   const [trigger, indexerNftDetail] = nftApi.useLazyGetNftByIdQuery();
 
@@ -30,7 +31,7 @@ const Account: NextPage = () => {
     isLoading,
     nftData,
     fetchCollectionData,
-    collectionData
+    collectionData,
   } = useNftDetail();
 
   useEffect(() => {
@@ -44,21 +45,34 @@ const Account: NextPage = () => {
     const data = indexerNftDetail.data?.nftDetail;
     setNftDetail(data);
     if (data?.offchainData) {
-      fetchNftData(data?.offchainData)
+      fetchNftData(data?.offchainData);
     }
     if (data?.collection?.offchainData) {
-      fetchCollectionData(data?.collection?.offchainData)
+      fetchCollectionData(data?.collection?.offchainData);
     }
   }, [indexerNftDetail.data?.nftDetail]);
 
-
-  console.log('nftDetail', nftDetail, 'nftData', nftData, 'collectionData', collectionData);
+  console.log(
+    "nftDetail",
+    nftDetail,
+    "nftData",
+    nftData,
+    "collectionData",
+    collectionData
+  );
 
   useEffect(() => {
     if (client && !account) {
       router.push("/");
     }
   }, [client, account, router]);
+
+  const onClickAction = async (route: string, queryParams: any = {}) => {
+    router.push({
+      pathname: route,
+      query: queryParams,
+    });
+  };
 
   return (
     <React.Fragment>
@@ -69,7 +83,7 @@ const Account: NextPage = () => {
             nftImage={{
               src: parseOffchainDataImage(nftData.image),
               alt: nftData.title,
-              loader: <LoaderEllipsis />
+              loader: <LoaderEllipsis />,
             }}
             id={nftDetail.id}
             name={nftData.title}
@@ -77,20 +91,26 @@ const Account: NextPage = () => {
             quantity={nftDetail.collection?.nbNfts}
             limit={nftDetail.collection?.limit}
             collectionName={collectionData?.name}
-            collectionLogo={collectionData?.profile_image ? parseOffchainDataImage(collectionData?.profile_image) : undefined}
+            collectionLogo={
+              collectionData?.profile_image
+                ? parseOffchainDataImage(collectionData?.profile_image)
+                : undefined
+            }
             creator={{ pubKey: nftDetail.creator }}
             displayButton={true}
             disabled={!nftDetail.isListed}
-            buttonText={!nftDetail.isListed ? 'Not for sale' : ""}
+            buttonText={!nftDetail.isListed ? "Not for sale" : ""}
             isCapsule={Boolean(nftDetail.isCapsule)}
             isSecret={Boolean(nftDetail.isSecret)}
             isSoulbound={Boolean(nftDetail.isSoulbound)}
-          
-          /* onClick*/
+            isDelegated={Boolean(nftDetail.isDelegated)}
+            onDelegateClick={() =>
+              onClickAction("/createnft", { delegate: true })
+            }
 
+            /* onClick*/
           />
         ) : null}
-
       </BaseTemplate>
     </React.Fragment>
   );

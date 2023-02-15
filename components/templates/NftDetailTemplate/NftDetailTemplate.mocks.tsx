@@ -22,7 +22,8 @@ const base: INftDetailTemplate = {
   buttonText: "Not for sale",
   isSoulbound:false,
   isCapsule:true,
-  isSecret:false
+  isSecret:false,
+  isDelegated:false,
 
 };
 

@@ -24,6 +24,7 @@ export type NftDetail = {
   isSecret: string;
   isSoulbound: string;
   isListed: string;
+  isDelegated:string;
 };
 
 export type Collection = {
